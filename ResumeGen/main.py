@@ -72,6 +72,10 @@ data = {
                     ''.join(['<b>Nexus Q Development</b> - http://github.com/nickdepinet/android_device_google_steelhead<br/>'])]}
 
 
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
 
 @app.route('/generate_pdf', methods=['GET'])
 def generate_pdf():
@@ -88,5 +92,5 @@ def generate_pdf():
 
 
 
-if __name__ == "__main__":
-    app.run()
+# if __name__ == "__main__":
+#     app.run()
