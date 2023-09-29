@@ -1,3 +1,6 @@
-const jobDescription = document.body.textContent;
-console.log(jobDescription)
-chrome.runtime.sendMessage({ jobDescription });
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.action === "getJobDescription") {
+    const jobDescription = document.body.textContent;
+    sendResponse({ jobDescription });
+  }
+});
