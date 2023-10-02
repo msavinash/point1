@@ -1,6 +1,9 @@
 from flask import Flask, Response
 from io import BytesIO
 from pdfGen import generate_print_pdf
+from jdRanking import rank
+import ast
+
 
 app = Flask(__name__)
 
@@ -50,26 +53,37 @@ data = {
                     ''.join(['<b>STI-Healthcare</b> - Columbus, OH<br/>',
                     'Network & Server Administration Intern: May - August 2012<br/>',])],
         'projects': [
-                    ''.join(['<b>Hangman</b> - http://github.com/nickdepinet/hangman<br/>',
-                    'Implemented a command line hangman game engine and an artifical intelligence player in python.',
-                    'The AI uses letter frequencies from the english dictionary and additionally word frequencies from the ',
-                    'Google corpus make intelligent guesses as to the next letter.']),
-                    ''.join(['<b>g()(\'al\')</b> - http://github.com/eatnumber1/goal<br/>',
-                    'Completed the first python solution to the g()(\'al\') programming challenge. ',
-                    'The "goal" of the g()(\'al\') challenge is to enable the calling of g()(\'al\') in the source of the ',
-                    'language of choice with n ()\'s, and to be returned the string "goal" with the appropriate number of "o"s.']),
-                    ''.join(['<b>DrinkPi</b> - http://github.com/jeid64/drinkpi/<br/>',
-                    'Worked with a partner to replace a failing component in the Computer Science House drink machines. ',
-                    'The software controlling the machines was previously written in java and running on Dallas TINI microcomputers. ',
-                    'These TINI\'s were failing and were no longer produced, so we re-wrote the software in python to run on a ',
-                    'Raspberry Pi. The software talks to the drink server over sockets using the SUNDAY protocol, and to the drink ',
-                    'machine hardware using the 1-Wire protocol and a usb 1-Wire bus master.']),
-                    ''.join(['<b>TempMon</b> - http://github.com/nickdepinet/tempmon/<br/>',
-                    'Implemented a temperature monitoring system for a server room using a Raspberry Pi. ',
-                    'The system monitors temperature using a series of DSB1820 temperature sensors. ',
-                    'When the temperature exceeds a set limit, an email notification is sent. ',
-                    'The software, including temperature reading, threading, and email notification is written in python.']),
-                    ''.join(['<b>Nexus Q Development</b> - http://github.com/nickdepinet/android_device_google_steelhead<br/>'])]}
+        {
+            "name": "Hangman",
+            "url": "http://github.com/nickdepinet/hangman",
+            "description": "Implemented a command line hangman game engine and an artificial intelligence player in python. The AI uses letter frequencies from the English dictionary and additionally word frequencies from the Google corpus make intelligent guesses as to the next letter."
+        },
+        {
+            "name": "g()(\'al\')",
+            "url": "http://github.com/eatnumber1/goal",
+            "description": "Completed the first Python solution to the g()(\'al\') programming challenge. The \"goal\" of the g()(\'al\') challenge is to enable the calling of g()(\'al\') in the source of the language of choice with n ()'s, and to be returned the string \"goal\" with the appropriate number of \"o\"s."
+        },
+        {
+            "name": "DrinkPi",
+            "url": "http://github.com/jeid64/drinkpi/",
+            "description": "Worked with a partner to replace a failing component in the Computer Science House drink machines. The software controlling the machines was previously written in Java and running on Dallas TINI microcomputers. These TINI's were failing and were no longer produced, so we re-wrote the software in Python to run on a Raspberry Pi. The software talks to the drink server over sockets using the SUNDAY protocol, and to the drink machine hardware using the 1-Wire protocol and a USB 1-Wire bus master."
+        },
+        {
+            "name": "TempMon",
+            "url": "http://github.com/nickdepinet/tempmon/",
+            "description": "Implemented a temperature monitoring system for a server room using a Raspberry Pi. The system monitors temperature using a series of DSB1820 temperature sensors. When the temperature exceeds a set limit, an email notification is sent. The software, including temperature reading, threading, and email notification is written in Python."
+        },
+        {
+            "name": "Nexus Q Development",
+            "url": "http://github.com/nickdepinet/android_device_google_steelhead",
+            "description": ""
+        },
+        {
+            "name": "CryptoGuard",
+            "url": "https://github.com/yourusername/cryptoguard",
+            "description": "Developed a secure messaging application using end-to-end encryption techniques. Implemented cryptographic algorithms such as AES-256 and RSA for message encryption and secure key exchange. The application ensures the privacy and confidentiality of user communications, making it resistant to eavesdropping and unauthorized access."
+        }
+    ]}
 
 
 @app.route('/')
@@ -90,7 +104,35 @@ def generate_pdf():
     response.headers['Content-Disposition'] = 'inline; filename=resume.pdf'
     return response
 
+@app.route('/generate_rankedpdf', methods=['POST'])
+def generate_rankedpdf():
+    jd = None
+    with open("sampleJD.txt", 'r', encoding='utf-8', errors='ignore') as f:
+        jd = f.read()
+    # Create an in-memory PDF
+    pdf_buffer = BytesIO()
+    # rankedProjects = request.json.get('data', [])
+    # rankedProjects = json.loads(request.form.get('data'))
+    projects = request.form.get('data')
+    projects = ast.literal_eval(projects)
+    for index in range(len(projects)):
+        projects[index] = str(projects[index])
+    rankedProjects = rank(projects, jd)
+    print(rankedProjects)
+    print(type(rankedProjects))
+    # print(rankedProjects)
+    data['projects'] = rankedProjects
+    
+    print(data['projects'])
+    generate_print_pdf(pdf_buffer, data, contact)
+
+    # Serve the generated PDF as a response
+    pdf_buffer.seek(0)
+    response = Response(pdf_buffer.read(), content_type='application/pdf')
+    response.headers['Content-Disposition'] = 'inline; filename=resume.pdf'
+    return response
 
 
-# if __name__ == "__main__":
-#     app.run()
+
+if __name__ == "__main__":
+    app.run()
