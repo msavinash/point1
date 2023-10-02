@@ -1,4 +1,4 @@
-from flask import Flask, Response
+from flask import Flask, Response, request
 from io import BytesIO
 from pdfGen import generate_print_pdf
 from jdRanking import rank
