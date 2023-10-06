@@ -1,0 +1,186 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>AvinashMangaloreSuresh-SoftwareEngineerResume</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
+
+        h1 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 14pt;
+        }
+
+        .s1 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 11pt;
+        }
+
+        .a {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 11pt;
+        }
+
+        .s2 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s3 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 10pt;
+        }
+
+        h2 {
+            color: #1154CC;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 10pt;
+        }
+
+        .s4 {
+            color: #1154CC;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 10pt;
+        }
+
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        div {
+            padding: 5px;
+        }
+
+        p {
+            line-height: 1;
+            /* Adjust as needed, e.g., 1 for normal line height */
+        }
+
+
+        h1,
+        h2,
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        @page {
+            /* size: letter landscape; */
+            margin: 1.2cm;
+        }
+    </style>
+</head>
+
+<body style=" line-height: 101%; font-size: 13.5px;">
+    <h1 style="padding-top: 3pt;padding-left: 10pt;text-indent: 0pt;text-align: center;">{{ resumeData.name }}</h1>
+    <p class="s1" style="padding-left: 10pt;text-indent: 0pt;text-align: center;"><a
+            href="mailto:{{ resumeData.email_id }}" class="a" target="_blank">{{ resumeData.phone_number }} | </a>{{ resumeData.email_id }} |
+        {{ resumeData.linkedin_link }}</p>
+    <p class="s2" style="padding-left: 10pt;text-indent: 0pt;line-height: 107%;text-align: center; margin-top: 100%">{{ resumeData.objective }}</p>
+    <br>
+    <p class="s3">WORK EXPERIENCE</p>
+
+    {% for experience in resumeData.work_experience %}
+        <h2>
+            <table>
+                <tr>
+                    <td>{{ experience.title }}, <span class="s4">{{ experience.company }} </span></td>
+                    <td align="right"><span class="s4">{{experience.from}} - {{ experience.to }}</span></td>
+                </tr>
+            </table>
+        </h2>
+
+
+        <ul>
+            {% for item in experience.description %}
+                <li>
+                    <span>{{ item  }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+
+    {% endfor %}
+    
+    <br>
+
+    <p class="s3">PROJECT EXPERIENCE</p>
+    {% for project in resumeData.project_experience %}
+    <h2>
+        <table>
+            <tr>
+                <td>{{ project.title }}, <span class="s4">{{ project.technologies | join(", ") }}</span></td>
+            </tr>
+        </table>
+    </h2>
+    <ul>
+        {% for item in project.description %}
+        <li data-list-text="●">
+            <span>{{ item }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+    
+    <br>
+
+    <p class="s3">EDUCATION</p>
+    {% for education in resumeData.education %}
+    <p class="s3">
+        <table>
+            <tr>
+                <td>{{ education.degree }}, {{ education.major }}, <span class="p">{{ education.university }}</td>
+                <td align="right"><span class="s4">{{ education.from }} - {{ education.to }}</span></td>
+            </tr>
+        </table>
+        <!-- {{ education.degree }}, {{ education.major }}, <span class="p">{{ education.university }} {{ education.from }} - {{ education.to }}</span></p> -->
+    {% endfor %}
+
+    <br>
+
+    <p class="s3">TECHNICAL SKILLS</p>
+    <p>
+    <h2 style="display: inline;">Languages: </h2><span
+        class="p">{{ resumeData.technical_skills.languages | join(", ") }}</span></p>
+    <p>
+    <h2 style="display: inline;">Developer Tools: </h2><span
+        class="p">{{ resumeData.technical_skills.developer_tools | join(", ") }}</span></p>
+    <p>
+    <h2 style="display: inline;">Technologies/Frameworks: </h2>
+    <span class="p">{{ resumeData.technical_skills.technologies_and_frameworks | join(", ") }}</span></p>
+</body>
+
+</html>

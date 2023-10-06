@@ -2,3 +2,4 @@ Flask
 nltk
 reportlab
 Gunicorn
+xhtml2pdf

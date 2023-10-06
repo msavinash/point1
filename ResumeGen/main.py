@@ -7,83 +7,113 @@ import ast
 
 app = Flask(__name__)
 
-contact = {
-        'name': 'Nicholas Depinet',
-        'website': 'http://github.com/nickdepinet/',
-        'email': 'depinetnick@gmail.com',
-        'address': '3092 Nathaniel Rochester Hall, Rochester, NY 14623',
-        'phone': '(614)365-1089'
-    }
-    
-data = {
-        'objective': ' '.join(['Seeking co-operative employment',
-                    'in the field of software development,',
-                    'preferably working in python and web backend infrastructure or distributed computing, ',
-                    'to start June 2016.']),
-        'summary': ' '.join(['I love to use programming to solve interesting problems.',
-                    'I love working in Python (which is why I generated this resume in Python using ReportLab), but I am comfortable working in a variety of languages.',
-                    'I am currently exploring the exciting world of distributed and cloud computing, and love to discuss the unique opportunities this type of computing presents.']),
-        'education': '<br/>'.join(['<b>Rochester Insitute of Technology</b>',
-                    '<b>B.S.</b>  Computer Science',
-                    '<b>Expected Graduation</b>  2017']),
-        'skills': '<br/>'.join(['<b>Languages</b>  Python, Java, C#, C, MIPS Assembly, Bash, jQuery, HTML, CSS',
-                    '<b>Tools</b>  Git/Mercurial, Vim, Django, Tornado, Twisted, Autobahn, ReportLab',
-                    '<b>Platforms</b>  Linux (Debian, RHEL), OSX, Windows',
-                    '<b>Services</b>  Microsoft Application Insights, MySQL, PostgreSQL, MongoDB, Apache/Nginx, HAProxy, Gunicorn']),
-        'experience': [''.join(['<b>Microsoft</b> - Redmond, WA<br/>',
-                    '<alignment=TA_RIGHT>Software Engineer Intern: May - August 2015</alignment><br/>',
-                    'Designed and developed a distributed testing framework to allow for the execution of ',
-                    'the principals of testing in production of Windows 10 Universal Apps across many devices.',
-                    'Development done in C#, using Microsoft Application Insights as a data backend.<br/>']),
-                    ''.join(['<b>Nebula</b> - Seattle, WA<br/>',
-                    '<alignment=TA_RIGHT>Software Development Intern, Control Plane: June - August 2014</alignment><br/>',
-                    'Developed improvements to the initial installation Out-of-box experience (OOBE) of the Nebula One product. ',
-                    'Development done in python.<br/>']),
-                    ''.join(['<b>SpkrBar</b> - Columbus, OH<br/>',
-                    '<alignment=TA_RIGHT>Software Developer: September - December 2013</alignment><br/>',
-                    'Developed and maintained the front and backend of a startup website using Python and the Django framework. ',
-                    'The website allows technical conferences, speakers, and attendees to connect and keep up to date. ']),
-                    ''.join(['<b>Olah Healthcare</b> - Columbus, OH<br/>',
-                    '<alignment=TA_RIGHT>Software Engineering Intern: May - August 2013</alignment><br/>',
-                    'Developed a web application using Python and the Django framework ',
-                    'to allow hospitals to easily store, search, and retrieve archived medical records. ',
-                    'Primary Responsibility was the design and implementation of the metadata storage backend, and search functionality.']),
-                    ''.join(['<b>Computer Science House</b> - Rochester, NY<br/>',
-                    'Drink Administrator: February 2013 - Present<br/>',]),
-                    ''.join(['<b>STI-Healthcare</b> - Columbus, OH<br/>',
-                    'Network & Server Administration Intern: May - August 2012<br/>',])],
-        'projects': [
-        {
-            "name": "Hangman",
-            "url": "http://github.com/nickdepinet/hangman",
-            "description": "Implemented a command line hangman game engine and an artificial intelligence player in python. The AI uses letter frequencies from the English dictionary and additionally word frequencies from the Google corpus make intelligent guesses as to the next letter."
-        },
-        {
-            "name": "g()(\'al\')",
-            "url": "http://github.com/eatnumber1/goal",
-            "description": "Completed the first Python solution to the g()(\'al\') programming challenge. The \"goal\" of the g()(\'al\') challenge is to enable the calling of g()(\'al\') in the source of the language of choice with n ()'s, and to be returned the string \"goal\" with the appropriate number of \"o\"s."
-        },
-        {
-            "name": "DrinkPi",
-            "url": "http://github.com/jeid64/drinkpi/",
-            "description": "Worked with a partner to replace a failing component in the Computer Science House drink machines. The software controlling the machines was previously written in Java and running on Dallas TINI microcomputers. These TINI's were failing and were no longer produced, so we re-wrote the software in Python to run on a Raspberry Pi. The software talks to the drink server over sockets using the SUNDAY protocol, and to the drink machine hardware using the 1-Wire protocol and a USB 1-Wire bus master."
-        },
-        {
-            "name": "TempMon",
-            "url": "http://github.com/nickdepinet/tempmon/",
-            "description": "Implemented a temperature monitoring system for a server room using a Raspberry Pi. The system monitors temperature using a series of DSB1820 temperature sensors. When the temperature exceeds a set limit, an email notification is sent. The software, including temperature reading, threading, and email notification is written in Python."
-        },
-        {
-            "name": "Nexus Q Development",
-            "url": "http://github.com/nickdepinet/android_device_google_steelhead",
-            "description": ""
-        },
-        {
-            "name": "CryptoGuard",
-            "url": "https://github.com/yourusername/cryptoguard",
-            "description": "Developed a secure messaging application using end-to-end encryption techniques. Implemented cryptographic algorithms such as AES-256 and RSA for message encryption and secure key exchange. The application ensures the privacy and confidentiality of user communications, making it resistant to eavesdropping and unauthorized access."
+resumeData = {"name": "Avinash Mangalore Suresh", "phone_number":"530-551-2854",
+            "email_id": "msavinash1139@gmail.com", "linkedin_link": "linkedin.com/in/avinash-m-s",
+            "objective":'''To contribute my extensive skills and experience in full stack development, cloud technologies and unit testing
+to drive innovation and deliver reliable solutions in a dynamic and collaborative environment''',
+            "work_experience":[
+                {
+                    "title":"Software Developer Intern",
+                    "company":"Wolters Kluwer Health",
+                    "from":"June 2023", "to": "Aug 2023",
+                    "description":['''Achieved 80% code coverage enhancement for C# projects through test writing using Nunit during internship.''',
+                                '''Spearheaded Jenkins-based builds and leveraged OpenCover for accurate code coverage analysis, resulting in substantial improvement in C# project code coverage.''',
+                                '''Utilized Cobertura to generate comprehensive code coverage reports, highlighting the impact on software quality'''
+                                ]
+                },
+                {
+                    "title": "Software Development Engineer",
+                    "company": "Amadeus Software Labs",
+                    "from": "Aug 2021",
+                    "to": "Aug 2022",
+                    "description": [
+                        "Developed Python scripts for PostgreSQL to automate database operations, improving efficiency and fixing errors in database migration and data transformation tasks.",
+                        "Analyzed Collibra workflows to identify issues with workflow failure and update business logic behind workflows to stay up to date with the data governance policies.",
+                        "Managed data governance operations including data asset import and workflow deployment through Collibra for over 400 users, ensuring data integrity and governance for critical data processes."
+                    ]
+                },
+                {
+                    "title": "Software Developer Intern",
+                    "company": "Amadeus Software Labs",
+                    "from": "Jan 2021",
+                    "to": "May 2021",
+                    "description": [
+                        "Led collaboration efforts with cross-functional teams to seamlessly integrate an in-house software testing application with a ticketing application through SOAP APIs, leading to a 30% improvement in ticketing speed.",
+                        "Enhanced in-house testing app's UI with Angular.js, introducing new features for smoother navigation.",
+                        "Developed backend support using Spring Java, integrating SOAP APIs to service the front end app."
+                    ]
+            }
+            ],
+            "project_experience":[
+                {
+                "title":"Hotel Amenities Management System",
+                "technologies": ["Java", "Spring", "Cassandra", "Javascript", "React"],
+                "description": [
+                                '''Implemented the backend using Java and Spring, following the Model-View-Controller (MVC) architecture.''',
+                                '''Utilized Cassandra to store and manage data related to customer requests, amenities, availability and priority.''',
+                                '''Designed a user-friendly interface for customers to manage their tickets using React'''
+                                ]
+                },
+                {
+                    "title": "Movie Ticketing Application",
+                    "technologies": ["Python", "AWS Lambda", "S3", "DynamoDB", "API Gateway"],
+                    "description": [
+                        "Created serverless Python APIs for ticket management on AWS Lambda, resulting in 30% faster development time.",
+                        "Configured AWS Application Gateway to seamlessly integrate with the ticketing application.",
+                        "Implemented data storage and retrieval using DynamoDB for JSON objects ensuring data consistency and durability."
+                    ]
+                },
+                {
+                    "title": "RideShare API Development",
+                    "technologies": ["Docker", "Python", "AWS EC2", "RabbitMQ"],
+                    "description": [
+                        "Designed REST APIs for a ride share service in a team of 3 peers, using Flask with Python for backend development.",
+                        "Hosted the REST API across different Docker containers located across different EC2 Linux instances with an AWS Elastic Load Balancer, ensuring high availability and fault tolerance for the application.",
+                        "Integrated RabbitMQ with the application to ensure synchronization in a distributed database service, allowing for efficient communication between different components of the system and ensuring data consistency."
+                    ]
+                },
+                {
+                    "title": "Accommate - Accommodation Posting Board",
+                    "technologies": ["Python", "Flask", "NLP"],
+                    "description": [
+                        "Performed ETL and annotated posting text information for over 100+ postings to create a high-quality training dataset.",
+                        "Developed pipelines using the NLTK libraries to perform named entity recognition with an accuracy of over 90%.",
+                        "Moved the extracted information into MongoDB database and integrated it with a web application built using Flask-Python, resulting in an increased response time of 30% and improved data accessibility for over 1000 users."
+                    ]
+                },
+                {
+                    "title": "MLTool",
+                    "technologies": ["Python", "Scikit-Learn", "Flask", "Vue"],
+                    "description": [
+                        "Implemented a RESTful API using Flask-Python to handle machine learning tasks, hosted on Pythonanywhere.",
+                        "Utilized Vue.js to create a dynamic user interface, with features such as live model training progress updates.",
+                        "Incorporated ML model selection and hyperparameter tuning capabilities to improve model accuracy and performance."
+                    ]
+                }
+            ],
+            "education":[
+                {
+                    "degree": "M.S",
+                    "major": "Computer Science",
+                    "university":"San Jose State University",
+                    "from": "Aug 2022",
+                    "to": "May 2024"
+                },
+                {
+                    "degree": "B.Tech",
+                    "major": "Computer Science",
+                    "university":"PES University",
+                    "from": "Aug 2017",
+                    "to": "May 2021"
+                }
+            ],
+            "technical_skills":{
+                "languages": ["Python", "Java", "C", "HTML/CSS", "JavaScript", "SQL", "Go", "C#"],
+                "developer_tools": ["Visual Studio", "Eclipse", "Google Cloud Platform", "AWS", "Jenkins"],
+                "technologies_and_frameworks": ["Flask", "Spring", ".NET", "Angular.js", "React"]
+            }
         }
-    ]}
+
 
 
 @app.route('/')
@@ -91,20 +121,23 @@ def hello_world():
     return 'Hello, World!'
 
 
-@app.route('/generate_pdf', methods=['GET'])
-def generate_pdf():
+# @app.route('/generate_pdf', methods=['GET'])
+# def generate_pdf():
     
-    # Create an in-memory PDF
-    pdf_buffer = BytesIO()
-    generate_print_pdf(pdf_buffer, data, contact)
+#     # Create an in-memory PDF
+#     pdf_buffer = BytesIO()
+#     generate_print_pdf(pdf_buffer, data, contact)
 
-    # Serve the generated PDF as a response
-    pdf_buffer.seek(0)
-    response = Response(pdf_buffer.read(), content_type='application/pdf')
-    response.headers['Content-Disposition'] = 'inline; filename=resume.pdf'
-    return response
+#     # Serve the generated PDF as a response
+#     pdf_buffer.seek(0)
+#     response = Response(pdf_buffer.read(), content_type='application/pdf')
+#     response.headers['Content-Disposition'] = 'inline; filename=resume.pdf'
+#     return response
 
-@app.route('/generate_rankedpdf', methods=['POST'])
+
+
+# @app.route('/generate_rankedpdf', methods=['POST'])
+@app.route('/generate_rankedpdf', methods=['GET'])
 def generate_rankedpdf():
     jd = None
     with open("sampleJD.txt", 'r', encoding='utf-8', errors='ignore') as f:
@@ -113,22 +146,25 @@ def generate_rankedpdf():
     pdf_buffer = BytesIO()
     # rankedProjects = request.json.get('data', [])
     # rankedProjects = json.loads(request.form.get('data'))
-    projects = request.form.get('data')
-    projects = ast.literal_eval(projects)
+    # projects = request.form.get('data')
+    # projects = ast.literal_eval(projects)
+    projects = resumeData["project_experience"]
     for index in range(len(projects)):
         projects[index] = str(projects[index])
-    rankedProjects = rank(projects, jd)
+    ranks = rank(projects, jd)
+    rankedProjects = [projects[i] for  i in ranks]
     print(rankedProjects)
     print(type(rankedProjects))
     # print(rankedProjects)
-    data['projects'] = rankedProjects
-    
-    print(data['projects'])
-    generate_print_pdf(pdf_buffer, data, contact)
+    resumeData["project_experience"] = rankedProjects
+    for index in range(len(resumeData["project_experience"])):
+        resumeData["project_experience"][index] = ast.literal_eval(resumeData["project_experience"][index])
+    print(resumeData["project_experience"])
+    pdf_bytes = generate_print_pdf(resumeData)
 
     # Serve the generated PDF as a response
     pdf_buffer.seek(0)
-    response = Response(pdf_buffer.read(), content_type='application/pdf')
+    response = Response(pdf_bytes, content_type='application/pdf')
     response.headers['Content-Disposition'] = 'inline; filename=resume.pdf'
     return response
 

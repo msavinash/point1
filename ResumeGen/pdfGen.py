@@ -1,108 +1,55 @@
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import inch
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfbase.pdfmetrics import registerFont, registerFontFamily
-from reportlab.pdfbase.ttfonts import TTFont
 
 
-# Rest of your code (including font registration, styles, and PDF generation functions)...
-# Import our font
-registerFont(TTFont('Inconsolata', 'fonts/Inconsolata-Regular.ttf'))
-registerFont(TTFont('InconsolataBold', 'fonts/Inconsolata-Bold.ttf'))
-registerFontFamily('Inconsolata', normal='Inconsolata', bold='InconsolataBold')
+from flask import Flask, render_template, jsonify, render_template_string 
 
-# Set the page height and width
-HEIGHT = 11 * inch
-WIDTH = 8.5 * inch
+from io import BytesIO
+from xhtml2pdf import pisa
 
-# Set our styles
-styles = getSampleStyleSheet()
-styles.add(ParagraphStyle(name='Content',
-                          fontFamily='Inconsolata',
-                          fontSize=8,
-                          spaceAfter=.1*inch))
+def create_pdf(html_content, page_width="8.5in", page_height="11in"):
 
 
+    custom_style = f"""
+    <style type="text/css">
+        @page {{
+            size: {page_width} {page_height};
+            margin: 1cm;
+        }}
+    </style>
+    """
 
-
-
-
-def generate_print_pdf(pdf_buffer, data, contact):
-
-    pdfData = [
-        ['OBJECTIVE', Paragraph(data['objective'], styles['Content'])],
-        ['SUMMARY', Paragraph(data['summary'], styles['Content'])],
-        ['EDUCATION', Paragraph(data['education'], styles['Content'])],
-        ['SKILLS', Paragraph(data['skills'], styles['Content'])],
-        ['EXPERIENCE', [Paragraph(x, styles['Content']) for x in data['experience']]],
-        ['PROJECTS', [Paragraph(x, styles['Content']) for x in data['projects']]]
-    ]
-
-
-    doc = SimpleDocTemplate(
-        pdf_buffer,
-        pagesize=letter,
-        bottomMargin=.5 * inch,
-        topMargin=.7 * inch,
-        rightMargin=.4 * inch,
-        leftMargin=.4 * inch)
-
-    style = styles["Normal"]  # set the style to normal
-    story = []  # create a blank story to tell
-    contentTable = Table(
-        pdfData,
-        colWidths=[
-            0.8 * inch,
-            6.9 * inch])
-    tblStyle = TableStyle([
-        ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
-        ('FONT', (0, 0), (-1, -1), 'Inconsolata'),
-        ('FONTSIZE', (0, 0), (-1, -1), 8),
-        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT')])
-    contentTable.setStyle(tblStyle)
-    story.append(contentTable)
-    doc.build(
-        story,
-        onFirstPage=myPageWrapper(
-            contact)
-        )
+    html_with_style = f"{custom_style}{html_content}"
+    # Create a PDF document
+    # pdf_document = open(pdf_file, "w+b")
     
-def myPageWrapper(contact):
-    # template for static, non-flowables, on the first page
-    # draws all of the contact information at the top of the page
-    def myPage(canvas, doc):
-        canvas.saveState()  # save the current state
-        canvas.setFont('InconsolataBold', 16)  # set the font for the name
-        canvas.drawString(
-            .4 * inch,
-            HEIGHT - (.4 * inch),
-            contact['name'])  # draw the name on top left page 1
-        canvas.setFont('Inconsolata', 8)  # sets the font for contact
-        canvas.drawRightString(
-            WIDTH - (.4 * inch),
-            HEIGHT - (.4 * inch),
-            contact['website'])  
-        canvas.line(.4 * inch, HEIGHT - (.47 * inch), 
-            WIDTH - (.4 * inch), HEIGHT - (.47 * inch))
-        canvas.drawString(
-            .4 * inch,
-            HEIGHT - (.6 * inch),
-            contact['phone'])
-        canvas.drawCentredString(
-			WIDTH / 2.0,
-			HEIGHT - (.6 * inch),
-			contact['address'])
-        canvas.drawRightString(
-			WIDTH - (.4 * inch),
-			HEIGHT - (.6 * inch),
-			contact['email'])
-        # restore the state to what it was when saved
-        canvas.restoreState()
-    return myPage
+    # Generate the PDF from HTML
+
+    pdf_buffer = BytesIO()
+    pisa_status = pisa.CreatePDF(html_with_style, dest=pdf_buffer)
+    pdf_bytes = None
+    # Check if PDF generation was successful
+    if pisa_status.err:
+        print(f"Error during PDF generation: {pisa_status.err}")
+    else:
+        # Get the PDF content as bytes
+        pdf_bytes = pdf_buffer.getvalue()
+
+        # Now, pdf_bytes contains the PDF content as bytes
+        # You can assign it to a variable or use it as needed
+
+        # If you want to save it to a file, you can do so like this:
+        # with open('output.pdf', 'wb') as f:
+        #     f.write(pdf_bytes)
+
+    # Remember to close the BytesIO object when you're done with it
+    pdf_buffer.close()
+    return pdf_bytes
+
+
+def generate_print_pdf(resumeData):
+    html_template = None
+    with open("templates/resumeTemplate.html", errors="ignore") as f:
+        html_template = f.read()
+    html_content = render_template_string(html_template, resumeData=resumeData)
+    print(html_content)
+    result = create_pdf(html_content)
+    return result

@@ -76,16 +76,20 @@ def rank(project_descriptions, jd):
         overlap_count = len(set(given_skills) & set(project_skills))
         skill_overlap_counts[project['description']] = overlap_count
 
+    tmp = list(skill_overlap_counts.items())
+    for i in range(len(tmp)):
+        tmp[i] = (i, tmp[i])
     # Sort projects based on overlap count in descending order
-    sorted_projects = sorted(skill_overlap_counts.items(), key=lambda x: x[1], reverse=True)
+    sorted_projects = sorted(tmp, key=lambda x: x[1][1], reverse=True)
 
     # Extract the ordered project descriptions
-    ordered_descriptions = [project[0] for project in sorted_projects]
+    # ordered_descriptions = [project[0] for project in sorted_projects]
+    order = [project[0] for project in sorted_projects]
 
     # Print the ordered project descriptions
     # for index, description in enumerate(ordered_descriptions):
     #     print(f"{index + 1}. {description} (Overlap Count: {skill_overlap_counts[description]})")
-    return ordered_descriptions
+    return order
 
 
 if __name__=="__main__":
