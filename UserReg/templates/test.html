@@ -55,23 +55,23 @@
             <div class="workExperienceItem">
                 <div class="form-group">
                     <label>Title:</label>
-                    <input type="text" class="form-control" name="work_experience_title[]" required>
+                    <input type="text" class="form-control" name="work_experience[0][title]" required>
                 </div>
                 <div class="form-group">
                     <label>Company:</label>
-                    <input type="text" class="form-control" name="work_experience_company[]" required>
+                    <input type="text" class="form-control" name="work_experience[0][company]" required>
                 </div>
                 <div class="form-group">
                     <label>From:</label>
-                    <input type="month" class="form-control" name="work_experience_from[]" required>
+                    <input type="month" class="form-control" name="work_experience[0][from]" required>
                 </div>
                 <div class="form-group">
                     <label>To:</label>
-                    <input type="month" name="work_experience_to[]" class="form-control">
+                    <input type="month" name="work_experience[0][to]" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Description:</label>
-                    <textarea class="form-control" rows="3" name="work_experience_description[]" required></textarea>
+                    <textarea class="form-control" rows="3" name="work_experience[0][description]" required></textarea>
                 </div>
             </div>
         </div>
@@ -82,16 +82,16 @@
             <div class="projectExperienceItem">
                 <div class="form-group">
                     <label>Title:</label>
-                    <input type="text" class="form-control" name="project_experience_title[]" required>
+                    <input type="text" class="form-control" name="project_experience[0][title]" required>
                 </div>
                 <div class="form-group">
                     <label>Technologies (comma separated):</label>
                     <!-- <input type="text" class="form-control" required> -->
-                    <select class="tag-select form-control" name="project_experience_technologies[]" multiple="multiple"></select>
+                    <select class="tag-select form-control" name="project_experience[0][technologies]" multiple="multiple"></select>
                 </div>
                 <div class="form-group">
                     <label>Description:</label>
-                    <textarea class="form-control" name="project_experience_description[]" rows="3" required></textarea>
+                    <textarea class="form-control" name="project_experience[0][description]" rows="3" required></textarea>
                 </div>
             </div>
         </div>
@@ -102,23 +102,23 @@
             <div class="educationItem">
                 <div class="form-group">
                     <label>Degree:</label>
-                    <input type="text" name="education_degree[]" class="form-control" required>
+                    <input type="text" name="education[0][degree]" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label>Major:</label>
-                    <input type="text" name="education_major[]" class="form-control" required>
+                    <input type="text" name="education[0][major]" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label>University:</label>
-                    <input type="text" name="education_university[]" class="form-control" required>
+                    <input type="text" name="education[0][university]" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label>From:</label>
-                    <input type="month" name="education_from[]" class="form-control" required>
+                    <input type="month" name="education[0][from]" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label>To:</label>
-                    <input type="month" name="education_to[]" class="form-control">
+                    <input type="month" name="education[0][to]" class="form-control">
                 </div>
             </div>
         </div>
@@ -128,17 +128,17 @@
         <div class="form-group">
             <label>Languages (comma separated):</label>
             <!-- <input type="text" name="technical_skills_languages" class="form-control" required> -->
-            <select class="tag-select form-control" name="technical_skills_languages" multiple="multiple"></select>
+            <select class="tag-select form-control" name="technical_skills_languages[]" multiple="multiple"></select>
         </div>
         <div class="form-group">
             <label>Developer Tools (comma separated):</label>
             <!-- <input type="text" name="technical_skills_developer_tools" class="form-control" required> -->
-            <select class="tag-select form-control" name="technical_skills_developer_tools" multiple="multiple"></select>
+            <select class="tag-select form-control" name="technical_skills_developer_tools[]" multiple="multiple"></select>
         </div>
         <div class="form-group">
             <label>Technologies and Frameworks (comma separated):</label>
             <!-- <input type="text" name="technical_skills_technologies_and_frameworks" class="form-control" required> -->
-            <select class="tag-select form-control" name="technical_skills_technologies_and_frameworks" multiple="multiple"></select>
+            <select class="tag-select form-control" name="technical_skills_technologies_and_frameworks[]" multiple="multiple"></select>
         </div>
 
         <button type="submit" class="btn btn-primary mt-3">Submit</button>
@@ -146,6 +146,10 @@
 </div>
 
 <script>
+
+    let workExperienceCount = 1;
+    let projectExperienceCount = 1;
+    let educationCount = 1;
     $(document).ready(function(){
         // Function to add work experience fields
         $("#addWorkExperience").click(function() {
@@ -153,27 +157,28 @@
             <div class="workExperienceItem">
                 <div class="form-group">
                     <label>Title:</label>
-                    <input type="text" class="form-control" name="work_experience_title[]" required>
+                    <input type="text" class="form-control" name="work_experience[${workExperienceCount}][title]" required>
                 </div>
                 <div class="form-group">
                     <label>Company:</label>
-                    <input type="text" class="form-control" name="work_experience_company[]" required>
+                    <input type="text" class="form-control" name="work_experience[${workExperienceCount}][company]" required>
                 </div>
                 <div class="form-group">
                     <label>From:</label>
-                    <input type="month" class="form-control" name="work_experience_from[]" required>
+                    <input type="month" class="form-control" name="work_experience[${workExperienceCount}][from]" required>
                 </div>
                 <div class="form-group">
                     <label>To:</label>
-                    <input type="month" name="work_experience_to[]" class="form-control">
+                    <input type="month" name="work_experience[${workExperienceCount}][to]" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Description:</label>
-                    <textarea class="form-control" rows="3" name="work_experience_description[]" required></textarea>
+                    <textarea class="form-control" rows="3" name="work_experience[${workExperienceCount}][description]" required></textarea>
                 </div>
             </div>
             `;
             $("#workExperienceContainer").append(workExperienceHtml);
+            workExperienceCount+=1;
         });
 
         // Function to add project experience fields
@@ -182,20 +187,25 @@
             <div class="projectExperienceItem">
                 <div class="form-group">
                     <label>Title:</label>
-                    <input type="text" class="form-control" name="project_experience_title[]" required>
+                    <input type="text" class="form-control" name="project_experience[${projectExperienceCount}][title]" required>
                 </div>
                 <div class="form-group">
                     <label>Technologies (comma separated):</label>
                     <!-- <input type="text" class="form-control" required> -->
-                    <select class="tag-select form-control" name="project_experience_technologies[]" multiple="multiple"></select>
+                    <select class="tag-select form-control" name="project_experience[${projectExperienceCount}][technologies]" multiple="multiple"></select>
                 </div>
                 <div class="form-group">
                     <label>Description:</label>
-                    <textarea class="form-control" name="project_experience_description[]" rows="3" required></textarea>
+                    <textarea class="form-control" name="project_experience[${projectExperienceCount}][description]" rows="3" required></textarea>
                 </div>
             </div>
             `;
             $("#projectExperienceContainer").append(projectExperienceHtml);
+            $('.tag-select').select2({
+                tags: true,
+                tokenSeparators: [',']
+            });
+            projectExperienceCount+=1;
         });
 
         // Function to add education fields
@@ -204,27 +214,28 @@
             <div class="educationItem">
                 <div class="form-group">
                     <label>Degree:</label>
-                    <input type="text" class="form-control" required>
+                    <input type="text" name="education[${educationCount}][degree]" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label>Major:</label>
-                    <input type="text" class="form-control" required>
+                    <input type="text" name="education[${educationCount}][major]" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label>University:</label>
-                    <input type="text" class="form-control" required>
+                    <input type="text" name="education[${educationCount}][university]" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label>From:</label>
-                    <input type="month" class="form-control" required>
+                    <input type="month" name="education[${educationCount}][from]" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label>To:</label>
-                    <input type="month" class="form-control">
+                    <input type="month" name="education[${educationCount}][to]" class="form-control">
                 </div>
             </div>
             `;
             $("#educationContainer").append(educationHtml);
+            educationCount
         });
 
         $("#resumeDataForm").submit(function(event){
@@ -237,7 +248,8 @@
 
     $(document).ready(function() {
         $('.tag-select').select2({
-            tags: true
+            tags: true,
+            tokenSeparators: [',']
         });
     });
 
@@ -248,6 +260,21 @@
   $('#resumeDataForm').submit(function(event) {
     event.preventDefault(); // Prevent the default form submission
 
+    // form = $('#resumeDataForm');
+    // Get all the <input type="month"> elements within the form
+    // const monthInputs = $('#resumeDataForm input[type="month"]');
+
+    // // Iterate through each input and format its value
+    // monthInputs.each(function() {
+    //   const rawValue = $(this).val();
+    //   const date = new Date(rawValue);
+    //   const formattedValue = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+    //   $(this).val(formattedValue);
+    // });
+
+
+
+    
     // Serialize the form data into a format suitable for a POST request
     var formData = $('#resumeDataForm').serialize();
 

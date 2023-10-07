@@ -116,6 +116,53 @@ to drive innovation and deliver reliable solutions in a dynamic and collaborativ
 
 
 
+import pymongo
+
+# Replace these with your MongoDB connection details
+mongo_uri = "mongodb+srv://msavinash1139:point1@cluster0.opvthne.mongodb.net/point1?retryWrites=true&w=majority"
+collection_name = "user_profiles"
+def getResumeData():
+    search_email = "msavinash1139@gmail.com"  # Replace with the email you want to search for
+
+    # Connect to MongoDB
+    client = pymongo.MongoClient(mongo_uri)
+
+    # Access the desired database and collection
+    db = client.get_database()
+    collection = db[collection_name]
+
+    # Create a query to find the document with the specified email
+    query = {"email_id": search_email}
+
+    # Retrieve the document with the specified email
+    result = collection.find_one(query)
+
+    if result:
+        print("Found document with email:", result)
+    else:
+        print("Document not found for email:", search_email)
+
+    # Close the MongoDB connection
+    client.close()
+    return result
+
+
+
+def convert_newlines_to_list(data):
+    if isinstance(data, dict):
+        for key, value in data.items():
+            data[key] = convert_newlines_to_list(value)
+    elif isinstance(data, list):
+        for i, item in enumerate(data):
+            data[i] = convert_newlines_to_list(item)
+    elif isinstance(data, str):
+        if '\n' in data:
+            data = data.split('\n')
+    return data
+
+
+
+
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
@@ -148,6 +195,8 @@ def generate_rankedpdf():
     # rankedProjects = json.loads(request.form.get('data'))
     # projects = request.form.get('data')
     # projects = ast.literal_eval(projects)
+    resumeData = getResumeData()
+    resumeData = convert_newlines_to_list(resumeData)
     projects = resumeData["project_experience"]
     for index in range(len(projects)):
         projects[index] = str(projects[index])
@@ -172,3 +221,4 @@ def generate_rankedpdf():
 
 if __name__ == "__main__":
     app.run()
+    # getResumeData()

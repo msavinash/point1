@@ -107,6 +107,150 @@ def convert_to_json(data):
 
 
 
+
+
+
+
+
+
+from collections import defaultdict
+
+def convert_to_resume_data(data):
+    resume_data = {}
+    work_experience = defaultdict(dict)
+    project_experience = defaultdict(dict)
+    education = defaultdict(dict)
+    technical_skills = defaultdict(list)
+
+    for key, value in data.items():
+        if "[" in key and "]" in key:
+            section, index, subkey = key.split('[')[0], key.split('[')[1].split(']')[0], key.split('[')[2].split(']')[0]
+            
+            if section == "work_experience":
+                if subkey not in work_experience[index]:
+                    work_experience[index][subkey] = []
+                work_experience[index][subkey].append(value)
+            elif section == "project_experience":
+                if subkey not in project_experience[index]:
+                    project_experience[index][subkey] = []
+                project_experience[index][subkey].append(value)
+            elif section == "education":
+                if subkey not in education[index]:
+                    education[index][subkey] = []
+                education[index][subkey].append(value)
+            elif section == "technical_skills":
+                technical_skills[subkey].append(value)
+        else:
+            resume_data[key] = value
+
+    print("!"*100)
+    print(work_experience)
+
+    resume_data["work_experience"] = [dict(val) for val in work_experience.values()]
+    resume_data["project_experience"] = [dict(val) for val in project_experience.values()]
+    resume_data["education"] = [dict(val) for val in education.values()]
+    resume_data["technical_skills"] = dict(technical_skills)
+
+    return resume_data
+
+
+
+
+
+from werkzeug.datastructures import ImmutableMultiDict
+
+def convert_to_resume_data2(data):
+    # Helper function to extract data from the ImmutableMultiDict
+    def extract_data(prefix, keys):
+        extracted_data = {}
+        for key in keys:
+            full_key = f"{key}"
+            if full_key in data:
+                extracted_data[key] = data[full_key]
+        return extracted_data
+
+    # Helper function to extract list data from the ImmutableMultiDict
+    def extract_list_data(prefix, keys):
+        extracted_data = []
+        i = 0
+        while True:
+            item_data = {}
+            found = False
+            for key in keys:
+                full_key = f"{prefix}[{i}][{key}]"
+                if key == "technologies":
+                    # Handle multiple project technologies
+                    technologies = data.getlist(full_key)
+                    if technologies:
+                        item_data[key] = technologies
+                        found = True
+                else:
+                    if full_key in data:
+                        item_data[key] = data[full_key]
+                        found = True
+            if not found:
+                break
+            extracted_data.append(item_data)
+            i += 1
+        return extracted_data
+
+    # Extracting data
+    resume_data = extract_data("", ["name", "phone_number", "email_id", "linkedin_link", "objective"])
+    print("ON HERE!!!!!!!!!!!!!!!!!!")
+    pprint(resume_data)
+    resume_data["work_experience"] = extract_list_data("work_experience", ["title", "company", "from", "to", "description"])
+    resume_data["project_experience"] = extract_list_data("project_experience", ["title", "technologies", "description"])
+    resume_data["education"] = extract_list_data("education", ["degree", "major", "university", "from", "to"])
+    resume_data["technical_skills"] = {
+        "languages": data.getlist("technical_skills_languages[]"),
+        "developer_tools": data.getlist("technical_skills_developer_tools[]"),
+        "technologies_and_frameworks": data.getlist("technical_skills_technologies_and_frameworks[]")
+    }
+
+    return resume_data
+
+
+# # Example usage
+# data = ImmutableMultiDict([...])  # Your data here
+# resume_data = convert_to_resume_data(data)
+# print(resume_data)
+
+
+
+
+
+import pymongo
+
+# Replace these with your MongoDB connection details
+mongo_uri = "mongodb+srv://msavinash1139:point1@cluster0.opvthne.mongodb.net/point1?retryWrites=true&w=majority"
+collection_name = "user_profiles"
+
+
+def sendToMongo(data):
+    # JSON data to be stored
+    # resume_data_json = convert_to_json(data)
+
+    # Connect to MongoDB
+    client = pymongo.MongoClient(mongo_uri)
+
+    # Access the desired database and collection
+    db = client.get_database()
+    collection = db[collection_name]
+
+    # Insert the JSON data into the collection
+    insert_result = collection.insert_one(data)
+
+    # Check if the insertion was successful
+    if insert_result.acknowledged:
+        print("Data inserted successfully with ObjectId:", insert_result.inserted_id)
+    else:
+        print("Data insertion failed")
+
+    # Close the MongoDB connection
+    client.close()
+
+import traceback
+
 @app.route('/')
 # ‘/’ URL is bound with hello_world() function.
 def hello_world():
@@ -120,8 +264,11 @@ def store_user_data():
     try:
         # Get the form data from the request
         data = request.form
-        resume_data_json = convert_to_json(data)
-
+        print(data)
+        resume_data_json = convert_to_resume_data2(data)
+        print("BEFORE SENDING")
+        pprint(resume_data_json)
+        sendToMongo(resume_data_json)
 
         pprint(resume_data_json)
         # # Convert the form data to a JSON object
@@ -139,7 +286,10 @@ def store_user_data():
 
     except Exception as e:
         print("ERROR!!")
-        print(e)
+        print("Exception Type:", type(e).__name__)  # Print the type of exception
+        print("Exception Message:", str(e))  # Print the error message
+        print("Line Number:", sys.exc_info()[-1].tb_lineno)  # Print the line number where the exception occurred
+        traceback.print_exc()  # Print the full traceback information
         return jsonify({'error': str(e)}), 500
 
 
