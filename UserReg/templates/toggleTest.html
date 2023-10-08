@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Data Input</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <style>
+        .select2-dropdown {
+            display: none;
+        }
+
+        .tag-select {
+            width: 50%;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h2>Enter Resume Data</h2>
+        <label>Editing Mode:
+            <div class="switch">
+                <input type="checkbox" id="editToggle">
+                <span class="slider round"></span>
+            </div>
+        </label>
+        <form id="resumeDataForm">
+            <h4>Personal Information</h4>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ data.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" class="form-control" id="phone_number" name="phone_number"
+                    value="{{ data.phone_number }}" required>
+            </div>
+            <div class="form-group">
+                <label for="email_id">Email:</label>
+                <input type="email" class="form-control" id="email_id" name="email_id" value="{{ data.email_id }}"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="linkedin_link">LinkedIn:</label>
+                <input type="url" class="form-control" id="linkedin_link" name="linkedin_link"
+                    value="{{ data.linkedin_link }}" required>
+            </div>
+            <div class="form-group">
+                <label for="objective">Objective:</label>
+                <textarea class="form-control" id="objective" name="objective" rows="3"
+                    required>{{ data.objective }}</textarea>
+            </div>
+
+            <h4>Work Experience</h4>
+            <div id="workExperienceContainer">
+                {% for experience in data.work_experience %}
+                <div class="workExperienceItem">
+                    <div class="form-group">
+                        <label>Title:</label>
+                        <input type="text" class="form-control" name="work_experience[{{ loop.index-1 }}][title]"
+                            value="{{ experience.title }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Company:</label>
+                        <input type="text" class="form-control" name="work_experience[{{ loop.index-1 }}][company]"
+                            value="{{ experience.company }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>From:</label>
+                        <input type="month" class="form-control" name="work_experience[{{ loop.index-1 }}][from]"
+                            value="{{ experience.from }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>To:</label>
+                        <input type="month" class="form-control" name="work_experience[{{ loop.index-1 }}][to]"
+                            value="{{ experience.to }}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea class="form-control" rows="3" name="work_experience[{{ loop.index-1 }}][description]"
+                            required>{{ experience.description }}</textarea>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <h4>Project Experience </h4>
+            <div id="projectExperienceContainer">
+                {% for experience in data.project_experience %}
+                <div class="projectExperienceItem">
+                    <div class="form-group">
+                        <label>Title:</label>
+                        <input type="text" class="form-control" name="project_experience[{{ loop.index-1 }}][title]"
+                            value="{{ experience.title }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Technologies (comma separated):</label>
+                        <!-- <input type="text" class="form-control" required> -->
+                        <select class="tag-select form-control"
+                            name="project_experience[{{ loop.index-1 }}][technologies]"
+                            value="{{ experience.technologies }}" multiple="multiple"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea class="form-control" name="project_experience[{{ loop.index-1 }}][description]"
+                            rows="3" required>{{ experience.description }}</textarea>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <h4>Education</h4>
+            <div id="educationContainer">
+                {% for education in data.education %}
+                <div class="educationItem">
+                    <div class="form-group">
+                        <label>Degree:</label>
+                        <input type="text" name="education[{{ loop.index-1 }}][degree]" value="{{ education.degree }}"
+                            class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Major:</label>
+                        <input type="text" name="education[{{ loop.index-1 }}][major]" value="{{ education.major }}"
+                            class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>University:</label>
+                        <input type="text" name="education[{{ loop.index-1 }}][university]"
+                            value="{{ education.university }}" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>From:</label>
+                        <input type="month" name="education[{{ loop.index-1 }}][from]" value="{{ education.from }}"
+                            class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>To:</label>
+                        <input type="month" name="education[{{ loop.index-1 }}][to]" value="{{ education.to }}"
+                            class="form-control">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <h4>Technical Skills</h4>
+            <div class="form-group">
+                <label>Languages (comma separated):</label>
+                <select class="tag-select form-control" name="technical_skills_languages[]"
+                    value="{{ data.technical_skills_languages }}" multiple="multiple"></select>
+            </div>
+            <div class="form-group">
+                <label>Developer Tools (comma separated):</label>
+                <select class="tag-select form-control" name="technical_skills_developer_tools[]"
+                    value="{{ data.technical_skills_developer_tools }}" multiple="multiple"></select>
+            </div>
+            <div class="form-group">
+                <label>Technologies and Frameworks (comma separated):</label>
+                <select class="tag-select form-control" name="technical_skills_technologies_and_frameworks[]"
+                    value="{{ data.technical_skills_technologies_and_frameworks }}" multiple="multiple"></select>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const my_list = {{ data.project_experience | tojson | safe }};
+        technical_skills = {{ data.technical_skills | tojson | safe }};
+
+        for (let i = 0; i < my_list.length; i++) {
+            nameAttribute = `project_experience[${i}][technologies]`;
+            selectElement = $(`select[name='${nameAttribute}']`);
+            options = my_list[i]["technologies"];
+            options.forEach(option => {
+                selectElement.append(`<option selected>${option}</option>`);
+            });
+            selectElement.trigger('change');
+        }
+
+
+        nameAttribute = `technical_skills_languages[]`;
+        selectElement = $(`select[name='${nameAttribute}']`);
+        options = technical_skills["languages"];
+        options.forEach(option => {
+            selectElement.append(`<option selected>${option}</option>`);
+        });
+        selectElement.trigger('change');
+
+
+        nameAttribute = `technical_skills_developer_tools[]`;
+        selectElement = $(`select[name='${nameAttribute}']`);
+        options = technical_skills["developer_tools"];
+        options.forEach(option => {
+            selectElement.append(`<option selected>${option}</option>`);
+        });
+        selectElement.trigger('change');
+
+
+        nameAttribute = `technical_skills_technologies_and_frameworks[]`;
+        selectElement = $(`select[name='${nameAttribute}']`);
+        options = technical_skills["technologies_and_frameworks"];
+        options.forEach(option => {
+            selectElement.append(`<option selected>${option}</option>`);
+        });
+        selectElement.trigger('change');
+
+
+        // Initialize Select2 tag elements
+        $(document).ready(function () {
+            $('.tag-select').select2({
+                tags: true,
+                tokenSeparators: [',']
+            });
+        });
+
+
+
+
+        // Handle form submission
+        $(document).ready(function () {
+            $('#resumeDataForm').submit(function (event) {
+                event.preventDefault();
+                var formData = $('#resumeDataForm').serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'profile-data',
+                    data: formData,
+                    success: function (response) {
+                        console.log('Data sent successfully:', response);
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+
+        document.getElementById('editToggle').addEventListener('change', function () {
+            const formElements = document.getElementById('resumeDataForm').elements;
+            for (let i = 0; i < formElements.length; i++) {
+                formElements[i].disabled = !this.checked;
+            }
+        });
+
+
+        // By default make form non-editable
+        const checkbox = document.getElementById('editToggle');
+        const changeEvent = new Event('change', {
+            bubbles: true,
+            cancelable: true,
+        });
+        checkbox.dispatchEvent(changeEvent);
+
+    </script>
+
+</body>
+
+</html>
