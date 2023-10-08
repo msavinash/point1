@@ -85,11 +85,6 @@ def getResumeData():
     collection = db[collection_name]
     query = {"email_id": search_email}
     result = collection.find_one(query)
-    # if result:
-    #     print("Found document with email:", result)
-    # else:
-    #     print("Document not found for email:", search_email)
-
     client.close()
     return result
 
