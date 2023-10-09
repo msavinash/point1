@@ -100,6 +100,7 @@ from nltk import word_tokenize, pos_tag
 import re
 
 nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 
 def extract_nouns(text):
     """Extract all nouns from a given text."""
