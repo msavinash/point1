@@ -7,16 +7,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // Add an event listener to the popup button
 document.getElementById('downloadButton').addEventListener('click', function() {
     // Get the job description or any other required data here
+    const jobDescription = "Your job description here"; // Replace with actual data retrieval
+    // const email = "user@example.com"; // Replace with actual email retrieval
+    const email = "msavinash1139@gmail.com";
 
-    // Assuming you have the job description in a variable named 'jobDescription'
-    
     // Fetch and generate the PDF
-	console.log("HERE!")
-    fetch(`https://resumegen.onrender.com/generate_pdf`, {
-        method: 'GET',
+    console.log("HERE!");
+    fetch(`https://resumegen.onrender.com/generate_rankedpdf`, {
+        method: 'POST',
         headers: {
-            'Content-Type': 'multipart/form-data',
-        }
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            job_description: jobDescription,
+            email: email
+        })
     })
     .then((response) => response.blob())
     .then((blob) => {
@@ -44,5 +49,6 @@ document.getElementById('downloadButton').addEventListener('click', function() {
         console.error('Failed to generate PDF:', error);
     });
 });
+
 
 

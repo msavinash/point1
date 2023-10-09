@@ -121,8 +121,8 @@ import pymongo
 # Replace these with your MongoDB connection details
 mongo_uri = "mongodb+srv://msavinash1139:point1@cluster0.opvthne.mongodb.net/point1?retryWrites=true&w=majority"
 collection_name = "user_profiles"
-def getResumeData():
-    search_email = "msavinash1139@gmail.com"  # Replace with the email you want to search for
+def getResumeData(search_email):
+    # search_email = "msavinash1139@gmail.com"  # Replace with the email you want to search for
 
     # Connect to MongoDB
     client = pymongo.MongoClient(mongo_uri)
@@ -168,23 +168,46 @@ def hello_world():
     return 'Hello, World!'
 
 
-# @app.route('/generate_pdf', methods=['GET'])
-# def generate_pdf():
-    
-#     # Create an in-memory PDF
-#     pdf_buffer = BytesIO()
-#     generate_print_pdf(pdf_buffer, data, contact)
-
-#     # Serve the generated PDF as a response
-#     pdf_buffer.seek(0)
-#     response = Response(pdf_buffer.read(), content_type='application/pdf')
-#     response.headers['Content-Disposition'] = 'inline; filename=resume.pdf'
-#     return response
-
-
-
 # @app.route('/generate_rankedpdf', methods=['POST'])
-@app.route('/generate_rankedpdf', methods=['GET'])
+@app.route('/generate_getrankedpdf', methods=['GET'])
+def generate_getrankedpdf():
+    jd = None
+    with open("sampleJD.txt", 'r', encoding='utf-8', errors='ignore') as f:
+        jd = f.read()
+    # Create an in-memory PDF
+    pdf_buffer = BytesIO()
+    # rankedProjects = request.json.get('data', [])
+    # rankedProjects = json.loads(request.form.get('data'))
+    email = "msavinash1139@gmail.com"
+    print("Got email:", email)
+    # jd = request.form.get('job_description')
+    print("Got JD:", jd)
+    # projects = ast.literal_eval(projects)
+    resumeData = getResumeData(email)
+    resumeData = convert_newlines_to_list(resumeData)
+    projects = resumeData["project_experience"]
+    for index in range(len(projects)):
+        projects[index] = str(projects[index])
+    ranks = rank(projects, jd)
+    rankedProjects = [projects[i] for  i in ranks]
+    # print(rankedProjects)
+    # print(type(rankedProjects))
+    # print(rankedProjects)
+    resumeData["project_experience"] = rankedProjects
+    for index in range(len(resumeData["project_experience"])):
+        resumeData["project_experience"][index] = ast.literal_eval(resumeData["project_experience"][index])
+    # print(resumeData["project_experience"])
+    pdf_bytes = generate_print_pdf(resumeData)
+
+    # Serve the generated PDF as a response
+    pdf_buffer.seek(0)
+    response = Response(pdf_bytes, content_type='application/pdf')
+    response.headers['Content-Disposition'] = 'inline; filename=resume.pdf'
+    print("Returning response")
+    return response
+
+@app.route('/generate_rankedpdf', methods=['POST'])
+# @app.route('/generate_rankedpdf', methods=['GET'])
 def generate_rankedpdf():
     jd = None
     with open("sampleJD.txt", 'r', encoding='utf-8', errors='ignore') as f:
@@ -193,28 +216,32 @@ def generate_rankedpdf():
     pdf_buffer = BytesIO()
     # rankedProjects = request.json.get('data', [])
     # rankedProjects = json.loads(request.form.get('data'))
-    # projects = request.form.get('data')
+    email = request.form.get('email')
+    print("Got email:", email)
+    jd = request.form.get('job_description')
+    print("Got JD:", jd)
     # projects = ast.literal_eval(projects)
-    resumeData = getResumeData()
+    resumeData = getResumeData(email)
     resumeData = convert_newlines_to_list(resumeData)
     projects = resumeData["project_experience"]
     for index in range(len(projects)):
         projects[index] = str(projects[index])
     ranks = rank(projects, jd)
     rankedProjects = [projects[i] for  i in ranks]
-    print(rankedProjects)
-    print(type(rankedProjects))
+    # print(rankedProjects)
+    # print(type(rankedProjects))
     # print(rankedProjects)
     resumeData["project_experience"] = rankedProjects
     for index in range(len(resumeData["project_experience"])):
         resumeData["project_experience"][index] = ast.literal_eval(resumeData["project_experience"][index])
-    print(resumeData["project_experience"])
+    # print(resumeData["project_experience"])
     pdf_bytes = generate_print_pdf(resumeData)
 
     # Serve the generated PDF as a response
     pdf_buffer.seek(0)
     response = Response(pdf_bytes, content_type='application/pdf')
     response.headers['Content-Disposition'] = 'inline; filename=resume.pdf'
+    print("Returning response")
     return response
 
 
