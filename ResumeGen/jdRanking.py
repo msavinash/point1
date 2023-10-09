@@ -99,6 +99,7 @@ import nltk
 from nltk import word_tokenize, pos_tag
 import re
 
+nltk.download('punkt')
 
 def extract_nouns(text):
     """Extract all nouns from a given text."""
