@@ -54,10 +54,13 @@ google = oauth.remote_app(
 
 @app.route('/')
 def index():
-    if 'google_token' in session:
-        user_email = google.get('userinfo').data['email']
-        data = getResumeData(user_email)
-        return render_template('user.html', data=data)
+    # if 'google_token' in session:
+    #     user_email = google.get('userinfo').data['email']
+    #     data = getResumeData(user_email)
+    #     return render_template('user.html', data=data)
+    # user_email = "msavinash1139@gmail.com"
+    # data = getResumeData(user_email)
+    return render_template('newUser.html')
 
 
 @app.route('/newuser')
