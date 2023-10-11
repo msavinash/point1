@@ -1,22 +1,32 @@
 {
-    "manifest_version": 3,
-    "name": "Point1",
-    "version": "1.0",
-    "permissions": [
-      "activeTab",
-      "storage",
-      "webNavigation",
-      "downloads",
-      "tabs"
-    ],
-    "content_scripts": [
-      {
-        "matches": ["https://*/*"],
-        "js": ["scripts/content.js"]
-      }
-    ],
-    "action": {
-      "default_popup": "popup.html"
-    }
-  }
-  
+	"manifest_version": 3,
+	"name": "Point1",
+	"version": "1.0",
+	"key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhqo//QN/G/h0QP5XRBwFZP8SM048EDAnB9Jlo9lit8JgbwKtMBodjh8gM0UVishsioHtYraMA2uwc/RqOjUZ2VfMtpeWVSJlx0X4kjIE2j1Sgme2cxMossZOal5HAAVKtOalU06kExLzddmSic1TPDlYcW5wMHjXSsF0p+fq9I4jpzGunugqwDppzR7LN+I9bM/TAMopOgYc9UwZKZJyFBewie7LyAdIZcJNXdZnbRkytRoO1jN7wi3f6DIqoPI8ezVcdk453BIHmHAPxeCxREgS7JzZnLhurQe6AYF3aC5H0yZ/pYwrpn4ZRN4IcXgc2+UZ1gy7c88hYk8tEbbarQIDAQAB",
+	"permissions": [
+		"activeTab",
+		"storage",
+		"webNavigation",
+		"downloads",
+		"tabs",
+		"storage",
+		"identity"
+	],
+	"content_scripts": [
+		{
+			"matches": [
+				"https://*/*"
+			],
+			"js": [
+				"scripts/content.js"
+			]
+		}
+	],
+	"oauth2": {
+        "client_id": "438379937789-uid45ohosv09g1ut4n6a338jgvhvoibb.apps.googleusercontent.com",
+        "scopes":["https://www.googleapis.com/auth/contacts.readonly", "https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"]
+      },
+	"action": {
+		"default_popup": "popup.html"
+	}
+}
