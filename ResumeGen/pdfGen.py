@@ -51,7 +51,7 @@ def generate_print_pdf(resumeData):
         html_template = f.read()
     html_content = render_template_string(html_template, resumeData=resumeData)
     # print(html_content)
-    with open("tml.html", "w") as f:
-        f.write(html_content)
+    # with open("tml.html", "w") as f:
+    #     f.write(html_content)
     result = create_pdf(html_content)
     return result

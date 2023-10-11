@@ -119,7 +119,8 @@
             <table>
                 <tr>
                     <td>{{ experience.title }}, <span class="s4">{{ experience.company }} </span></td>
-                    <td align="right"><span class="s4">{{experience.from}} - {{ experience.to }}</span></td>
+                    <td align="right"><span class="s4">
+                        {{ experience.from | format_date }} - {{ experience.to | format_date}}</span></td>
                 </tr>
             </table>
         </h2>
@@ -163,7 +164,7 @@
         <table>
             <tr>
                 <td>{{ education.degree }}, {{ education.major }}, <span class="p">{{ education.university }}</td>
-                <td align="right"><span class="s4">{{ education.from }} - {{ education.to }}</span></td>
+                <td align="right"><span class="s4">{{ education.from | format_date }} - {{ education.to | format_date }}</span></td>
             </tr>
         </table>
         <!-- {{ education.degree }}, {{ education.major }}, <span class="p">{{ education.university }} {{ education.from }} - {{ education.to }}</span></p> -->

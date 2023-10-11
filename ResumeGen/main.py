@@ -5,17 +5,34 @@ from jdRanking import rank
 import ast
 import pymongo
 from time import time
-
+import datetime
 
 app = Flask(__name__)
 
 mongo_uri = "mongodb+srv://msavinash1139:point1@cluster0.opvthne.mongodb.net/point1?retryWrites=true&w=majority"
 collection_name = "user_profiles"
 
+
+def format_date(date_str):
+    try:
+        from_date = date_str.split('-')
+        year, month = int(from_date[0]), int(from_date[1])
+        month_name = datetime.date(year, month, 1).strftime('%B')
+        if len(month_name)>4:
+            month_name = month_name[:3]
+        return f"{month_name} {year}"
+    except Exception as e:
+        return date_str
+
+app.jinja_env.filters['format_date'] = format_date
+
+
+client = pymongo.MongoClient(mongo_uri)
+db = client.get_database()
+collection = db[collection_name]
+collection.create_index([("email_id", pymongo.ASCENDING)])
+
 def getResumeData(search_email):
-    client = pymongo.MongoClient(mongo_uri)
-    db = client.get_database()
-    collection = db[collection_name]
     query = {"email_id": search_email}
     result = collection.find_one(query)
     # if result:
@@ -91,25 +108,25 @@ def generate_rankedpdf():
     print("Got email:", email)
     jd = request.form.get('job_description')
     print("Got JD:", jd)
-    print("Got request params:", time()-t, "ms")
+    print("Got request params:", time()-t, "s")
     t = time()
     # projects = ast.literal_eval(projects)
     resumeData = getResumeData(email)
-    print("Got data from MongoDB:", time()-t, "ms")
+    print("Got data from MongoDB:", time()-t, "s")
     t = time()
     resumeData = convert_newlines_to_list(resumeData)
-    print("Converted new lines to lists:", time()-t, "ms")
+    print("Converted new lines to lists:", time()-t, "s")
     t = time()
     projects = resumeData["project_experience"].copy()
     # print(projects)
     for index, project in enumerate(projects):
         projects[index] = project["title"]+" ".join(project["technologies"])+" ".join(project["description"])
-    print("Prepped project data for ranking:", time()-t, "ms")
+    print("Prepped project data for ranking:", time()-t, "s")
     t = time()
     ranks = rank(projects, jd)
     # print(ranks)
     # print(resumeData["project_experience"])
-    print("Ranked projects:", time()-t, "ms")
+    print("Ranked projects:", time()-t, "s")
     t = time()
     rankedProjects = [resumeData["project_experience"][i] for i in ranks]
     # print(rankedProjects)
@@ -120,10 +137,10 @@ def generate_rankedpdf():
     #     resumeData["project_experience"][index] = ast.literal_eval(resumeData["project_experience"][index])
     # # print(resumeData["project_experience"])
     # print(resumeData)
-    print("Got data ready for pdf gen:", time()-t, "ms")
+    print("Got data ready for pdf gen:", time()-t, "s")
     t = time()
     pdf_bytes = generate_print_pdf(resumeData)
-    print("Generated PDF:", time()-t, "ms")
+    print("Generated PDF:", time()-t, "s")
     # Serve the generated PDF as a response
     pdf_buffer.seek(0)
     response = Response(pdf_bytes, content_type='application/pdf')
