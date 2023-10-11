@@ -100,22 +100,26 @@ def generate_rankedpdf():
     resumeData = convert_newlines_to_list(resumeData)
     print("Converted new lines to lists:", time()-t, "ms")
     t = time()
-    projects = resumeData["project_experience"]
-    for index in range(len(projects)):
-        projects[index] = str(projects[index])
+    projects = resumeData["project_experience"].copy()
+    # print(projects)
+    for index, project in enumerate(projects):
+        projects[index] = project["title"]+" ".join(project["technologies"])+" ".join(project["description"])
     print("Prepped project data for ranking:", time()-t, "ms")
     t = time()
     ranks = rank(projects, jd)
+    # print(ranks)
+    # print(resumeData["project_experience"])
     print("Ranked projects:", time()-t, "ms")
     t = time()
-    rankedProjects = [projects[i] for  i in ranks]
+    rankedProjects = [resumeData["project_experience"][i] for i in ranks]
     # print(rankedProjects)
     # print(type(rankedProjects))
     # print(rankedProjects)
     resumeData["project_experience"] = rankedProjects
-    for index in range(len(resumeData["project_experience"])):
-        resumeData["project_experience"][index] = ast.literal_eval(resumeData["project_experience"][index])
-    # print(resumeData["project_experience"])
+    # for index in range(len(resumeData["project_experience"])):
+    #     resumeData["project_experience"][index] = ast.literal_eval(resumeData["project_experience"][index])
+    # # print(resumeData["project_experience"])
+    # print(resumeData)
     print("Got data ready for pdf gen:", time()-t, "ms")
     t = time()
     pdf_bytes = generate_print_pdf(resumeData)
