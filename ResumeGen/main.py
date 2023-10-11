@@ -30,7 +30,7 @@ app.jinja_env.filters['format_date'] = format_date
 client = pymongo.MongoClient(mongo_uri)
 db = client.get_database()
 collection = db[collection_name]
-collection.create_index([("email_id", pymongo.ASCENDING)])
+# collection.create_index([("email_id", pymongo.ASCENDING)])
 
 def getResumeData(search_email):
     query = {"email_id": search_email}
@@ -39,7 +39,7 @@ def getResumeData(search_email):
     #     print("Found document with email:", result)
     # else:
     #     print("Document not found for email:", search_email)
-    client.close()
+    # client.close()
     return result
 
 
