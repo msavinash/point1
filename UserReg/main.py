@@ -147,7 +147,7 @@ google = oauth.remote_app(
 # def landingPage():
 #     return render_template("landingPage.html")
 
-@app.route('/useprofile')
+@app.route('/profile')
 def userProfile():
     user_email = google.get('userinfo').data['email']
     data = getResumeData(user_email)
@@ -158,7 +158,7 @@ def userProfile():
 @app.route('/')
 def index():
     if 'google_token' in session and "email" in google.get('userinfo').data:
-        return redirect("/useprofile")
+        return redirect("/profile")
     else:
         return redirect("/login")
         # user_email = google.get('userinfo').data['email']
@@ -172,8 +172,16 @@ def index():
 
 @app.route('/newuser')
 def newUserIndex():
-    if 'google_token' in session:
+    if 'google_token' in session and "email" in google.get('userinfo').data:
+        print(session['google_token'])
+        user_email = google.get('userinfo').data
+        print(user_email)
         return render_template('newUser.html')
+    else:
+        return redirect("/login")
+        # user_email = google.get('userinfo').data['email']
+        # data = getResumeData(user_email)
+        # return render_template('user.html', data=data)
 
 @app.route('/login')
 def login():
@@ -242,4 +250,4 @@ def store_user_data():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5001)

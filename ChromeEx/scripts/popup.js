@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			buttons.innerHTML = `
 		  <button class="btn btn-success" id="downloadButton">Download PDF</button>
 		  <button class="btn btn-danger" id="signOutButton">Sign Out</button>
+		  <button class="btn btn-primary" id="viewProfileButton">View Profile</button>
 		`;
 			document.getElementById('signOutButton').addEventListener('click', signOut);
 			document.getElementById('downloadButton').addEventListener('click', function () {
@@ -72,15 +73,28 @@ document.addEventListener('DOMContentLoaded', function () {
 			progressBar.style.width = '0%';
 
 			});
+			document.getElementById('viewProfileButton').addEventListener('click', function () {
+				chrome.tabs.create({ url: 'http://localhost:5001/profile' });
+			});
 		} else {
 			console.log("not signed in")
 			loginStatus.innerText = 'Not signed in';
 			buttons.innerHTML = `
-		  <button class="btn btn-primary" id="signInButton">Sign In with Google</button>
+			<button class="btn btn-primary" id="signInButton">Sign In with Google</button>
+			<button class="btn btn-secondary" id="signUpButton">Sign Up</button>
 		`;
-			document.getElementById('signInButton').addEventListener('click', signIn);
+		document.getElementById('signInButton').addEventListener('click', signIn);
+        document.getElementById('signUpButton').addEventListener('click', signUp);
 		}
 	}
+
+
+
+	function signUp() {
+		// Open a new window with the "/newuserlogin" URL
+		chrome.windows.create({ url: chrome.runtime.getURL("/newuserlogin") });
+	}
+
 
 	function signIn() {
 		chrome.identity.getAuthToken({ interactive: true }, function (token) {
@@ -101,8 +115,25 @@ document.addEventListener('DOMContentLoaded', function () {
 				})
 				.then(data => {
 					userEmail = data.emailAddresses[0].value;
-					chrome.storage.sync.set({ 'userEmail': userEmail });
-					updateUI(true, userEmail);
+					checkMyUserExists(userEmail).then((userExists) => {
+						if (userExists) {
+							chrome.storage.sync.set({ 'userEmail': userEmail });
+							updateUI(true, userEmail);
+						}
+						else{
+							signUp();
+						}
+					});
+					
+					
+					// {
+					// 	chrome.storage.sync.set({ 'userEmail': userEmail });
+					// 	updateUI(true, userEmail);
+					// }
+					// else{
+					// 	signUp();
+					// }
+					
 				})
 				.catch(error => {
 					console.error('Error making request to People API:', error);
@@ -143,4 +174,63 @@ document.addEventListener('DOMContentLoaded', function () {
 		const isSignedIn = userEmail ? true : false;
 		updateUI(isSignedIn, userEmail);
 	});
+
+
+
+
+	// Call to checkmyuserexists returs true if user exists, false if not as a string, a get request
+	// function checkMyUserExists(userEmail) {
+	// 	console.log("checking if user exists");
+	// 	// const url = 'https://resumegen.onrender.com/checkmyuserexists?email=' + userEmail;
+	// 	const url = 'http://localhost:5000/checkmyuserexists?email=' + userEmail;
+	// 	fetch(url)
+	// 		.then((response) => response.text())
+	// 		.then((data) => {
+	// 			console.log(data);
+	// 			if (data == "false") {
+	// 				// createMyUser(userEmail);
+	// 				console.log("user does not exist");
+	// 				return false;
+	// 				// signUp();
+	// 			}
+	// 			else {
+	// 				console.log("user exists");
+	// 				return true;
+	// 			}
+	// 		})
+	// 		.catch((error) => {
+	// 			console.error('Error:', error);
+	// 		});
+	// }
+
+
+
+	function checkMyUserExists(userEmail) {
+		console.log("checking if user exists");
+		// const url = 'https://resumegen.onrender.com/checkmyuserexists?email=' + userEmail;
+		const url = 'http://localhost:5000/checkmyuserexists?email=' + userEmail;
+		
+		// Return a promise that resolves with the result
+		return fetch(url)
+		  .then((response) => response.text())
+		  .then((data) => {
+			console.log(data);
+			if (data == "false") {
+			  console.log("user does not exist");
+			  return false;
+			} else {
+			  console.log("user exists");
+			  return true;
+			}
+		  })
+		  .catch((error) => {
+			console.error('Error:', error);
+			throw error; // Rethrow the error to be caught by the caller
+		  });
+	  }
+
+
+
 });
+
+

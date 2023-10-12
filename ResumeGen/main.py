@@ -6,8 +6,10 @@ import ast
 import pymongo
 from time import time
 import datetime
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 mongo_uri = "mongodb+srv://msavinash1139:point1@cluster0.opvthne.mongodb.net/point1?retryWrites=true&w=majority"
 collection_name = "user_profiles"
@@ -147,6 +149,22 @@ def generate_rankedpdf():
     response.headers['Content-Disposition'] = 'inline; filename=resume.pdf'
     print("Returning response")
     return response
+
+
+
+@app.route('/checkmyuserexists', methods=['GET'])
+def checkmyuserexists():
+    email = request.args.get('email')
+    print("Got email:", email)
+    result = getResumeData(email)
+    if result:
+        print("Found document with email:", result)
+        return "true"
+    else:
+        print("Document not found for email:", email)
+        return "false"
+    return "NULL"
+
 
 
 
