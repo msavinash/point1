@@ -125,11 +125,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	function signUp() {
 		// Open a new window with the "/newuserlogin" URL
-		chrome.windows.create({ url: chrome.runtime.getURL("/newuserlogin") });
+		// chrome.windows.create({ url: chrome.runtime.getURL(`${BASE_URL}/newuser`) });
+		chrome.tabs.create({ url: `${BASE_URL}/newuser` });
 	}
 
 
 	function signIn() {
+		signOut();
 		chrome.identity.getAuthToken({ interactive: true }, function (token) {
 			if (chrome.runtime.lastError) {
 				console.error(chrome.runtime.lastError);
@@ -201,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 	}
-
+	// chrome.storage.sync.remove('userEmail');
 	chrome.storage.sync.get('userEmail', function (data) {
 		const userEmail = data.userEmail;
 		const isSignedIn = userEmail ? true : false;
