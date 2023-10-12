@@ -54,217 +54,149 @@ function downloadPdf(userEmail) {
 					console.error('Failed to generate PDF:', error);
 				});
 		})
-		// .catch((error) => {
-		// 	console.error('Failed to get job description:', error);
-		// });
 	});
 }
 
 
-document.addEventListener('DOMContentLoaded', function () {
-	const progress = document.getElementById('progress');
-	const progressBar = document.getElementById('progress-bar');
-	//   progress.style.display = '';
-	// progressBar.style.width = '50%';
-	// $(".progress-bar").css("width", 50 + "%");
-	// console.log("progress bar", progressBar.style.width);
+function updateUI(isSignedIn, userEmail) {
+	const loginStatus = document.getElementById('loginStatus');
+	const buttons = document.getElementById('buttons');
 
-	function updateUI(isSignedIn, userEmail) {
-		const loginStatus = document.getElementById('loginStatus');
-		const buttons = document.getElementById('buttons');
+	if (isSignedIn) {
+		console.log("signed in")
+		loginStatus.innerText = `Signed in as: ${userEmail}`;
+		buttons.innerHTML = `
+			<button class="btn btn-success" id="downloadButton">Download PDF</button>
+			<button class="btn btn-danger" id="signOutButton">Sign Out</button>
+			<button class="btn btn-primary" id="viewProfileButton">View Profile</button>
+			<div id="progress" class="progress mt-3" style="display: None;">
+				<div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" style="width: 0;"></div>
+			</div>
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" id="toggleSwitch">
+				<label class="form-check-label" for="toggleSwitch">Highlight keywords</label>
+			</div>
+	`;
+		document.getElementById('signOutButton').addEventListener('click', signOut);
+		document.getElementById('downloadButton').addEventListener('click', function () {
+			downloadPdf(userEmail);
 
-		if (isSignedIn) {
-			console.log("signed in")
-			loginStatus.innerText = `Signed in as: ${userEmail}`;
-			buttons.innerHTML = `
-		  <button class="btn btn-success" id="downloadButton">Download PDF</button>
-		  <button class="btn btn-danger" id="signOutButton">Sign Out</button>
-		  <button class="btn btn-primary" id="viewProfileButton">View Profile</button>
-		  <div id="progress" class="progress mt-3" style="display: None;">
-			<div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" style="width: 0;"></div>
-		</div>
-		<div class="form-check form-switch">
-			<input class="form-check-input" type="checkbox" id="toggleSwitch">
-			<label class="form-check-label" for="toggleSwitch">Highlight keywords</label>
-		</div>
-		`;
-			document.getElementById('signOutButton').addEventListener('click', signOut);
-			document.getElementById('downloadButton').addEventListener('click', function () {
-				downloadPdf(userEmail);
-
-			});
-			document.getElementById('viewProfileButton').addEventListener('click', function () {
-				chrome.tabs.create({ url: `${BASE_URL}/profile` });
-			});
-
-			// $('#toggleSwitch').bootstrapSwitch({
-			// 	onText: 'true',
-			// 	offText: 'false',
-			// 	onSwitchChange: function(event, state) {
-			// 	  // Send the selected value to the backend
-			// 	  // You can use an AJAX request to send the value to the server
-			// 	  const valueToSend = state ? 'true' : 'false';
-			// 	  // Make an AJAX request here to send `valueToSend` to the backend
-			// 	}
-			//   });
+		});
+		document.getElementById('viewProfileButton').addEventListener('click', function () {
+			chrome.tabs.create({ url: `${BASE_URL}/profile` });
+		});
+	} else {
+		console.log("not signed in")
+		loginStatus.innerText = 'Not signed in';
+		buttons.innerHTML = `
+		<button class="btn btn-primary" id="signInButton">Sign In with Google</button>
+		<button class="btn btn-secondary" id="signUpButton">Sign Up</button>
+	`;
+		document.getElementById('signInButton').addEventListener('click', signIn);
+		document.getElementById('signUpButton').addEventListener('click', signUp);
+	}
+}
 
 
-		} else {
-			console.log("not signed in")
-			loginStatus.innerText = 'Not signed in';
-			buttons.innerHTML = `
-			<button class="btn btn-primary" id="signInButton">Sign In with Google</button>
-			<button class="btn btn-secondary" id="signUpButton">Sign Up</button>
-		`;
-			document.getElementById('signInButton').addEventListener('click', signIn);
-			document.getElementById('signUpButton').addEventListener('click', signUp);
+
+function signUp() {
+	chrome.tabs.create({ url: `${BASE_URL}/newuser` });
+}
+
+
+function signIn() {
+	signOut();
+	chrome.identity.getAuthToken({ interactive: true }, function (token) {
+		if (chrome.runtime.lastError) {
+			console.error(chrome.runtime.lastError);
+			return;
 		}
-	}
-
-
-
-	function signUp() {
-		// Open a new window with the "/newuserlogin" URL
-		// chrome.windows.create({ url: chrome.runtime.getURL(`${BASE_URL}/newuser`) });
-		chrome.tabs.create({ url: `${BASE_URL}/newuser` });
-	}
-
-
-	function signIn() {
-		signOut();
-		chrome.identity.getAuthToken({ interactive: true }, function (token) {
-			if (chrome.runtime.lastError) {
-				console.error(chrome.runtime.lastError);
-				return;
-			}
-			fetch('https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses', {
-				headers: {
-					'Authorization': 'Bearer ' + token,
-				},
+		fetch('https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses', {
+			headers: {
+				'Authorization': 'Bearer ' + token,
+			},
+		})
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				return response.json();
 			})
-				.then(response => {
-					if (!response.ok) {
-						throw new Error('Network response was not ok');
+			.then(data => {
+				userEmail = data.emailAddresses[0].value;
+				checkMyUserExists(userEmail).then((userExists) => {
+					if (userExists) {
+						chrome.storage.sync.set({ 'userEmail': userEmail });
+						updateUI(true, userEmail);
 					}
-					return response.json();
-				})
-				.then(data => {
-					userEmail = data.emailAddresses[0].value;
-					checkMyUserExists(userEmail).then((userExists) => {
-						if (userExists) {
-							chrome.storage.sync.set({ 'userEmail': userEmail });
-							updateUI(true, userEmail);
-						}
-						else {
-							signUp();
-						}
-					});
-
-
-					// {
-					// 	chrome.storage.sync.set({ 'userEmail': userEmail });
-					// 	updateUI(true, userEmail);
-					// }
-					// else{
-					// 	signUp();
-					// }
-
-				})
-				.catch(error => {
-					console.error('Error making request to People API:', error);
-				});
-		});
-
-	}
-
-	function signOut() {
-		chrome.identity.getAuthToken({ interactive: false }, function (currentToken) {
-			if (!chrome.runtime.lastError) {
-				fetch('https://accounts.google.com/o/oauth2/revoke?token=' + currentToken, {
-					method: 'post',
-					mode: 'cors',
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded',
-					},
-				}).then(function (response) {
-					if (response.status === 200) {
-						console.log('Token revoked successfully.');
-					} else {
-						console.log('Error revoking token:', response.statusText);
+					else {
+						signUp();
 					}
 				});
-				chrome.identity.removeCachedAuthToken({ token: currentToken }, function () {
-					console.log('Token removed from cache.');
-				});
-				chrome.storage.sync.remove('userEmail');
-				updateUI(false, null);
+			})
+			.catch(error => {
+				console.error('Error making request to People API:', error);
+			});
+	});
+
+}
+
+function signOut() {
+	chrome.identity.getAuthToken({ interactive: false }, function (currentToken) {
+		if (!chrome.runtime.lastError) {
+			fetch('https://accounts.google.com/o/oauth2/revoke?token=' + currentToken, {
+				method: 'post',
+				mode: 'cors',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+			}).then(function (response) {
+				if (response.status === 200) {
+					console.log('Token revoked successfully.');
+				} else {
+					console.log('Error revoking token:', response.statusText);
+				}
+			});
+			chrome.identity.removeCachedAuthToken({ token: currentToken }, function () {
+				console.log('Token removed from cache.');
+			});
+			chrome.storage.sync.remove('userEmail');
+			updateUI(false, null);
+		} else {
+			console.error(chrome.runtime.lastError);
+		}
+	});
+}
+
+
+function checkMyUserExists(userEmail) {
+	console.log("checking if user exists");
+	const url = `${BASE_URL}/checkmyuserexists?email=${userEmail}`;
+	return fetch(url)
+		.then((response) => response.text())
+		.then((data) => {
+			console.log(data);
+			if (data == "false") {
+				console.log("user does not exist");
+				return false;
 			} else {
-				console.error(chrome.runtime.lastError);
+				console.log("user exists");
+				return true;
 			}
+		})
+		.catch((error) => {
+			console.error('Error:', error);
+			throw error;
 		});
-	}
-	// chrome.storage.sync.remove('userEmail');
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
 	chrome.storage.sync.get('userEmail', function (data) {
 		const userEmail = data.userEmail;
 		const isSignedIn = userEmail ? true : false;
 		updateUI(isSignedIn, userEmail);
 	});
-
-
-
-
-	// Call to checkmyuserexists returs true if user exists, false if not as a string, a get request
-	// function checkMyUserExists(userEmail) {
-	// 	console.log("checking if user exists");
-	// 	// const url = 'https://resumegen.onrender.com/checkmyuserexists?email=' + userEmail;
-	// 	const url = 'http://localhost:5000/checkmyuserexists?email=' + userEmail;
-	// 	fetch(url)
-	// 		.then((response) => response.text())
-	// 		.then((data) => {
-	// 			console.log(data);
-	// 			if (data == "false") {
-	// 				// createMyUser(userEmail);
-	// 				console.log("user does not exist");
-	// 				return false;
-	// 				// signUp();
-	// 			}
-	// 			else {
-	// 				console.log("user exists");
-	// 				return true;
-	// 			}
-	// 		})
-	// 		.catch((error) => {
-	// 			console.error('Error:', error);
-	// 		});
-	// }
-
-
-
-	function checkMyUserExists(userEmail) {
-		console.log("checking if user exists");
-		const url = `${BASE_URL}/checkmyuserexists?email=${userEmail}`;
-
-		// Return a promise that resolves with the result
-		return fetch(url)
-			.then((response) => response.text())
-			.then((data) => {
-				console.log(data);
-				if (data == "false") {
-					console.log("user does not exist");
-					return false;
-				} else {
-					console.log("user exists");
-					return true;
-				}
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-				throw error; // Rethrow the error to be caught by the caller
-			});
-	}
-
-
-
 });
 
 
