@@ -3,3 +3,5 @@ nltk
 Gunicorn
 xhtml2pdf
 pymongo
+flask_cors
+flask_oauthlib

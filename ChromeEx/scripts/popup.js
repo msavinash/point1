@@ -12,14 +12,15 @@ function downloadPdf(userEmail, progressBar) {
 	formData.append('job_description', jobDescription);
 	formData.append('email', userEmail);
 	progressBar.style.width = '50%';
-	fetch('https://resumegen.onrender.com/generate_rankedpdf', {
+	// fetch('https://resumegen.onrender.com/generate_rankedpdf', {
+	fetch('http://localhost:5000/generate_rankedpdf', {
 		method: 'POST',
 		body: formData
 	})
 		.then((response) => response.blob())
 		.then((blob) => {
 			progressBar.style.width = '70%';
-			const filename = 'job_description.pdf';
+			const filename = 'resume.pdf';
 			const reader = new FileReader();
 			reader.onload = () => {
 				progressBar.style.width = '80%';
@@ -74,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			});
 			document.getElementById('viewProfileButton').addEventListener('click', function () {
-				chrome.tabs.create({ url: 'http://localhost:5001/profile' });
+				chrome.tabs.create({ url: 'http://localhost:5000/profile' });
 			});
 		} else {
 			console.log("not signed in")
