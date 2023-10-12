@@ -225,10 +225,15 @@ def convert_newlines_to_list(data):
 # UserReg routes
 @app.route('/profile')
 def userProfile():
-    user_email = google.get('userinfo').data['email']
-    data = getResumeData(user_email)
-    # print(data)
-    return render_template("user.html", data=data)
+    if 'google_token' in session and "email" in google.get('userinfo').data:
+        user_email = google.get('userinfo').data['email']
+        data = getResumeData(user_email)
+        # print(data)
+        return render_template("user.html", data=data)
+    else:
+        return redirect("/login")
+
+    
 
 
 @app.route('/')

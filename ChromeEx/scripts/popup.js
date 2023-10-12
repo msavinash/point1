@@ -1,4 +1,8 @@
+// const BASE_URL = 'http://localhost:5000';
+const BASE_URL = 'https://resumegen.onrender.com';
+
 function downloadPdf(userEmail, progressBar) {
+	document.getElementById('progress').style.display = '';
 	jobDescription = null;
 	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 		chrome.tabs.sendMessage(tabs[0].id, { action: "getJobDescription" }, function (response) {
@@ -12,8 +16,7 @@ function downloadPdf(userEmail, progressBar) {
 	formData.append('job_description', jobDescription);
 	formData.append('email', userEmail);
 	progressBar.style.width = '50%';
-	// fetch('https://resumegen.onrender.com/generate_rankedpdf', {
-	fetch('http://localhost:5000/generate_rankedpdf', {
+	fetch('${BASE_URL}/generate_rankedpdf', {
 		method: 'POST',
 		body: formData
 	})
@@ -67,6 +70,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		  <button class="btn btn-success" id="downloadButton">Download PDF</button>
 		  <button class="btn btn-danger" id="signOutButton">Sign Out</button>
 		  <button class="btn btn-primary" id="viewProfileButton">View Profile</button>
+		  <div id="progress" class="progress mt-3" style="display: hidden;">
+			<div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" style="width: 0;"></div>
+		</div>
 		`;
 			document.getElementById('signOutButton').addEventListener('click', signOut);
 			document.getElementById('downloadButton').addEventListener('click', function () {
@@ -75,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			});
 			document.getElementById('viewProfileButton').addEventListener('click', function () {
-				chrome.tabs.create({ url: 'http://localhost:5000/profile' });
+				chrome.tabs.create({ url: '${BASE_URL}/profile' });
 			});
 		} else {
 			console.log("not signed in")
@@ -208,8 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	function checkMyUserExists(userEmail) {
 		console.log("checking if user exists");
-		// const url = 'https://resumegen.onrender.com/checkmyuserexists?email=' + userEmail;
-		const url = 'http://localhost:5000/checkmyuserexists?email=' + userEmail;
+		const url = '${BASE_URL}/checkmyuserexists?email=' + userEmail;
 		
 		// Return a promise that resolves with the result
 		return fetch(url)
