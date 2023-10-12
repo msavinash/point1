@@ -400,6 +400,7 @@ def generate_rankedpdf():
     print("Got data from MongoDB:", time()-t, "s")
     t = time()
     resumeData = convert_newlines_to_list(resumeData)
+    pprint(resumeData)
     print("Converted new lines to lists:", time()-t, "s")
     t = time()
     projects = resumeData["project_experience"].copy()
@@ -415,6 +416,10 @@ def generate_rankedpdf():
     t = time()
     rankedProjects = [resumeData["project_experience"][i] for i in ranks]
 
+    for index, project in enumerate(rankedProjects):
+        if type(project["description"]) == str:
+            rankedProjects[index]["description"] = [project["description"]]
+
     print("Got words", words)
     if highlight == "true":
         for pIndex, project in enumerate(rankedProjects):
@@ -424,6 +429,8 @@ def generate_rankedpdf():
                     # Create a regex pattern that matches the word case-insensitively
                     pattern = re.compile(fr'\b({re.escape(word)})\b', re.IGNORECASE)
                     sentence = pattern.sub(r'<b>\1</b>', sentence)
+                print(rankedProjects[pIndex]["description"])
+                print(rankedProjects[pIndex]["description"][dIndex])
                 rankedProjects[pIndex]["description"][dIndex] = sentence
 
     # print(rankedProjects)
