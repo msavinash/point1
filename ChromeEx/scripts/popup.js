@@ -1,63 +1,71 @@
 // const BASE_URL = 'http://localhost:5000';
 const BASE_URL = 'https://resumegen.onrender.com';
 
-function downloadPdf(userEmail, progressBar) {
-	document.getElementById('progress').style.display = '';
+function downloadPdf(userEmail) {
+	const progress = document.getElementById('progress');
+	const progressBar = document.getElementById('progress-bar');
+
+
+	progress.style.display = '';
+	progressBar.style.width = '10%';
 	jobDescription = null;
 	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+		console.log("tabs", tabs)
 		chrome.tabs.sendMessage(tabs[0].id, { action: "getJobDescription" }, function (response) {
 			jobDescription = response.jobDescription;
 			progressBar.style.width = '10%';
 			console.log("Job Description:", jobDescription);
 
-	console.log("Job Description:", jobDescription);
-	console.log("User Email:", userEmail);
-	const formData = new FormData();
-	formData.append('job_description', jobDescription);
-	formData.append('email', userEmail);
-	progressBar.style.width = '50%';
-	fetch('${BASE_URL}/generate_rankedpdf', {
-		method: 'POST',
-		body: formData
-	})
-		.then((response) => response.blob())
-		.then((blob) => {
-			progressBar.style.width = '70%';
-			const filename = 'resume.pdf';
-			const reader = new FileReader();
-			reader.onload = () => {
-				progressBar.style.width = '80%';
-				const buffer = reader.result;
-				const blobUrl = `data:${blob.type};base64,${btoa(new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), ''))}`;
-				chrome.downloads.download({
-					url: blobUrl,
-					filename: filename,
-					saveAs: true,
-					conflictAction: "uniquify"
-				}, () => {
-					progressBar.style.width = '100%';
-					console.log('PDF download complete');
-				});
-			};
-			reader.readAsArrayBuffer(blob);
-			progressBar.style.width = '0%';
+			console.log("Job Description:", jobDescription);
+			console.log("User Email:", userEmail);
+			const formData = new FormData();
+			formData.append('job_description', jobDescription);
+			formData.append('email', userEmail);
+			progressBar.style.width = '50%';
+			fetch(`${BASE_URL}/generate_rankedpdf`, {
+				method: 'POST',
+				body: formData
+			})
+				.then((response) => response.blob())
+				.then((blob) => {
+					progressBar.style.width = '70%';
+					const filename = 'resume.pdf';
+					const reader = new FileReader();
+					reader.onload = () => {
+						progressBar.style.width = '80%';
+						const buffer = reader.result;
+						const blobUrl = `data:${blob.type};base64,${btoa(new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), ''))}`;
+						chrome.downloads.download({
+							url: blobUrl,
+							filename: filename,
+							saveAs: true,
+							conflictAction: "uniquify"
+						}, () => {
+							progressBar.style.width = '100%';
+							console.log('PDF download complete');
+						});
+					};
+					reader.readAsArrayBuffer(blob);
+					progressBar.style.width = '0%';
 
-		})
-		.catch((error) => {
-			console.error('Failed to generate PDF:', error);
+				})
+				.catch((error) => {
+					console.error('Failed to generate PDF:', error);
+				});
+		}).catch((error) => {
+			console.error('Failed to get job description:', error);
 		});
 	});
-});
 }
 
 
 document.addEventListener('DOMContentLoaded', function () {
 	const progress = document.getElementById('progress');
-  	const progressBar = document.getElementById('progress-bar');
-	  progress.style.display = '';
+	const progressBar = document.getElementById('progress-bar');
+	//   progress.style.display = '';
 	// progressBar.style.width = '50%';
 	// $(".progress-bar").css("width", 50 + "%");
-	console.log("progress bar", progressBar.style.width);
+	// console.log("progress bar", progressBar.style.width);
 
 	function updateUI(isSignedIn, userEmail) {
 		const loginStatus = document.getElementById('loginStatus');
@@ -70,18 +78,17 @@ document.addEventListener('DOMContentLoaded', function () {
 		  <button class="btn btn-success" id="downloadButton">Download PDF</button>
 		  <button class="btn btn-danger" id="signOutButton">Sign Out</button>
 		  <button class="btn btn-primary" id="viewProfileButton">View Profile</button>
-		  <div id="progress" class="progress mt-3" style="display: hidden;">
+		  <div id="progress" class="progress mt-3" style="display: None;">
 			<div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" style="width: 0;"></div>
 		</div>
 		`;
 			document.getElementById('signOutButton').addEventListener('click', signOut);
 			document.getElementById('downloadButton').addEventListener('click', function () {
-				downloadPdf(userEmail, progressBar);
-			progressBar.style.width = '0%';
+				downloadPdf(userEmail);
 
 			});
 			document.getElementById('viewProfileButton').addEventListener('click', function () {
-				chrome.tabs.create({ url: '${BASE_URL}/profile' });
+				chrome.tabs.create({ url: `${BASE_URL}/profile` });
 			});
 		} else {
 			console.log("not signed in")
@@ -90,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			<button class="btn btn-primary" id="signInButton">Sign In with Google</button>
 			<button class="btn btn-secondary" id="signUpButton">Sign Up</button>
 		`;
-		document.getElementById('signInButton').addEventListener('click', signIn);
-        document.getElementById('signUpButton').addEventListener('click', signUp);
+			document.getElementById('signInButton').addEventListener('click', signIn);
+			document.getElementById('signUpButton').addEventListener('click', signUp);
 		}
 	}
 
@@ -127,12 +134,12 @@ document.addEventListener('DOMContentLoaded', function () {
 							chrome.storage.sync.set({ 'userEmail': userEmail });
 							updateUI(true, userEmail);
 						}
-						else{
+						else {
 							signUp();
 						}
 					});
-					
-					
+
+
 					// {
 					// 	chrome.storage.sync.set({ 'userEmail': userEmail });
 					// 	updateUI(true, userEmail);
@@ -140,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					// else{
 					// 	signUp();
 					// }
-					
+
 				})
 				.catch(error => {
 					console.error('Error making request to People API:', error);
@@ -214,26 +221,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	function checkMyUserExists(userEmail) {
 		console.log("checking if user exists");
-		const url = '${BASE_URL}/checkmyuserexists?email=' + userEmail;
-		
+		const url = `${BASE_URL}/checkmyuserexists?email=${userEmail}`;
+
 		// Return a promise that resolves with the result
 		return fetch(url)
-		  .then((response) => response.text())
-		  .then((data) => {
-			console.log(data);
-			if (data == "false") {
-			  console.log("user does not exist");
-			  return false;
-			} else {
-			  console.log("user exists");
-			  return true;
-			}
-		  })
-		  .catch((error) => {
-			console.error('Error:', error);
-			throw error; // Rethrow the error to be caught by the caller
-		  });
-	  }
+			.then((response) => response.text())
+			.then((data) => {
+				console.log(data);
+				if (data == "false") {
+					console.log("user does not exist");
+					return false;
+				} else {
+					console.log("user exists");
+					return true;
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+				throw error; // Rethrow the error to be caught by the caller
+			});
+	}
 
 
 
