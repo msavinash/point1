@@ -20,6 +20,10 @@ import requests
 import json
 import pymongo
 
+import re
+
+
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 CORS(app)
@@ -387,6 +391,8 @@ def generate_rankedpdf():
     print("Got email:", email)
     jd = request.form.get('job_description')
     print("Got JD:", jd)
+    highlight = request.form.get("highlight")
+    print("GOT HIGHLIGHT!!!!", highlight)
     print("Got request params:", time()-t, "s")
     t = time()
     # projects = ast.literal_eval(projects)
@@ -402,12 +408,24 @@ def generate_rankedpdf():
         projects[index] = project["title"]+" ".join(project["technologies"])+" ".join(project["description"])
     print("Prepped project data for ranking:", time()-t, "s")
     t = time()
-    ranks = rank(projects, jd)
+    ranks, words = rank(projects, jd)
     # print(ranks)
     # print(resumeData["project_experience"])
     print("Ranked projects:", time()-t, "s")
     t = time()
     rankedProjects = [resumeData["project_experience"][i] for i in ranks]
+
+    print("Got words", words)
+    if highlight == "true":
+        for pIndex, project in enumerate(rankedProjects):
+            for dIndex, description in enumerate(project["description"]):
+                sentence = description
+                for word in words:
+                    # Create a regex pattern that matches the word case-insensitively
+                    pattern = re.compile(fr'\b({re.escape(word)})\b', re.IGNORECASE)
+                    sentence = pattern.sub(r'<b>\1</b>', sentence)
+                rankedProjects[pIndex]["description"][dIndex] = sentence
+
     # print(rankedProjects)
     # print(type(rankedProjects))
     # print(rankedProjects)

@@ -150,7 +150,7 @@
     <ul>
         {% for item in project.description %}
         <li data-list-text="●">
-            <span>{{ item }}</span>
+            <span>{{ item | safe }}</span>
         </li>
         {% endfor %}
     </ul>

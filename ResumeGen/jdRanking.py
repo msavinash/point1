@@ -157,7 +157,7 @@ def rank(project_descriptions, jd):
     # Extract the ordered project descriptions
     order = [project[0] for project in sorted_projects]
 
-    return order
+    return order, jd_proper_nouns
 
 
 if __name__=="__main__":

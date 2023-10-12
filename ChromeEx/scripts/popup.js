@@ -4,7 +4,7 @@ const BASE_URL = 'https://resumegen.onrender.com';
 function downloadPdf(userEmail) {
 	const progress = document.getElementById('progress');
 	const progressBar = document.getElementById('progress-bar');
-
+	console.log(document.getElementById('toggleSwitch').checked);
 
 	progress.style.display = '';
 	progressBar.style.width = '10%';
@@ -21,6 +21,7 @@ function downloadPdf(userEmail) {
 			const formData = new FormData();
 			formData.append('job_description', jobDescription);
 			formData.append('email', userEmail);
+			formData.append('highlight', document.getElementById('toggleSwitch').checked);
 			progressBar.style.width = '50%';
 			fetch(`${BASE_URL}/generate_rankedpdf`, {
 				method: 'POST',
@@ -52,9 +53,10 @@ function downloadPdf(userEmail) {
 				.catch((error) => {
 					console.error('Failed to generate PDF:', error);
 				});
-		}).catch((error) => {
-			console.error('Failed to get job description:', error);
-		});
+		})
+		// .catch((error) => {
+		// 	console.error('Failed to get job description:', error);
+		// });
 	});
 }
 
@@ -81,6 +83,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		  <div id="progress" class="progress mt-3" style="display: None;">
 			<div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" style="width: 0;"></div>
 		</div>
+		<div class="form-check form-switch">
+			<input class="form-check-input" type="checkbox" id="toggleSwitch">
+			<label class="form-check-label" for="toggleSwitch">Highlight keywords</label>
+		</div>
 		`;
 			document.getElementById('signOutButton').addEventListener('click', signOut);
 			document.getElementById('downloadButton').addEventListener('click', function () {
@@ -90,6 +96,19 @@ document.addEventListener('DOMContentLoaded', function () {
 			document.getElementById('viewProfileButton').addEventListener('click', function () {
 				chrome.tabs.create({ url: `${BASE_URL}/profile` });
 			});
+
+			// $('#toggleSwitch').bootstrapSwitch({
+			// 	onText: 'true',
+			// 	offText: 'false',
+			// 	onSwitchChange: function(event, state) {
+			// 	  // Send the selected value to the backend
+			// 	  // You can use an AJAX request to send the value to the server
+			// 	  const valueToSend = state ? 'true' : 'false';
+			// 	  // Make an AJAX request here to send `valueToSend` to the backend
+			// 	}
+			//   });
+
+
 		} else {
 			console.log("not signed in")
 			loginStatus.innerText = 'Not signed in';
