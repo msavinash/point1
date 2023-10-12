@@ -18,7 +18,10 @@
 				"https://*/*"
 			],
 			"js": [
-				"scripts/content.js"
+				"scripts/content.js",
+				"scripts/jquery-3.7.1.slim.min.js",
+				"scripts/popper.min.js",
+				"scripts/bootstrap.min.js"
 			]
 		}
 	],
