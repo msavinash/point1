@@ -66,25 +66,31 @@ function updateUI(isSignedIn, userEmail) {
 		console.log("signed in")
 		loginStatus.innerText = `Signed in as: ${userEmail}`;
 		buttons.innerHTML = `
-			<button class="btn btn-success" id="downloadButton">Download PDF</button>
-			<button class="btn btn-danger" id="signOutButton">Sign Out</button>
-			<button class="btn btn-primary" id="viewProfileButton">View Profile</button>
-			<div id="progress" class="progress mt-3" style="display: None;">
+			<button id="downloadButton" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" style="color: green;">
+				<i class="material-icons">download_for_offline</i>
+			</button>
+			<button id="profilePageButton" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
+				<i class="material-icons">account_circle</i>
+			</button>
+            <div id="progress" class="progress mt-3" style="display: None;">
 				<div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" style="width: 0;"></div>
 			</div>
 			<div class="form-check form-switch">
 				<input class="form-check-input" type="checkbox" id="toggleSwitch">
 				<label class="form-check-label" for="toggleSwitch">Highlight keywords</label>
 			</div>
-	`;
-		document.getElementById('signOutButton').addEventListener('click', signOut);
+        `;
+		// document.getElementById('signOutButton').addEventListener('click', signOut);
 		document.getElementById('downloadButton').addEventListener('click', function () {
 			downloadPdf(userEmail);
 
 		});
-		document.getElementById('viewProfileButton').addEventListener('click', function () {
-			chrome.tabs.create({ url: `${BASE_URL}/profile` });
-		});
+		// document.getElementById('viewProfileButton').addEventListener('click', function () {
+		// 	chrome.tabs.create({ url: `${BASE_URL}/profile` });
+		// });
+		document.getElementById('profilePageButton').addEventListener('click', function () {
+            window.location.href = 'profile.html'; // this will change the popup view to page2.html
+        });
 	} else {
 		console.log("not signed in")
 		loginStatus.innerText = 'Not signed in';

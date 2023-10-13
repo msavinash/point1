@@ -21,7 +21,8 @@
 				"scripts/content.js",
 				"scripts/libraries/jquery-3.7.1.slim.min.js",
 				"scripts/libraries/popper.min.js",
-				"scripts/libraries/bootstrap.min.js"
+				"scripts/libraries/bootstrap.min.js",
+				"scripts/libraries/material.min.js"
 			]
 		}
 	],
@@ -31,5 +32,11 @@
       },
 	"action": {
 		"default_popup": "popup.html"
-	}
+	},
+	"web_accessible_resources": [
+	  {
+		"resources": ["profile.html", "scripts/profile.js"],
+		"matches": ["<all_urls>"]
+	  }
+	]
 }
