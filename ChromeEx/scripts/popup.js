@@ -142,6 +142,7 @@ function signIn() {
 }
 
 function signOut() {
+	chrome.storage.sync.remove('userEmail');
 	chrome.identity.getAuthToken({ interactive: false }, function (currentToken) {
 		if (!chrome.runtime.lastError) {
 			fetch('https://accounts.google.com/o/oauth2/revoke?token=' + currentToken, {
@@ -160,7 +161,7 @@ function signOut() {
 			chrome.identity.removeCachedAuthToken({ token: currentToken }, function () {
 				console.log('Token removed from cache.');
 			});
-			chrome.storage.sync.remove('userEmail');
+			// chrome.storage.sync.remove('userEmail');
 			updateUI(false, null);
 		} else {
 			console.error(chrome.runtime.lastError);
