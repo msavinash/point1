@@ -12,7 +12,12 @@ function downloadPdf(userEmail) {
 	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 		console.log("tabs", tabs)
 		chrome.tabs.sendMessage(tabs[0].id, { action: "getJobDescription" }, function (response) {
-			jobDescription = response.jobDescription;
+			console.log("Got response from content script:", response)
+			if(!response){
+				alert("Please select text before using the buttons.");
+				progress.style.display = 'None';
+				return;
+			}
 			progressBar.style.width = '10%';
 			console.log("Job Description:", jobDescription);
 
@@ -61,28 +66,36 @@ function downloadPdf(userEmail) {
 function updateUI(isSignedIn, userEmail) {
 	const loginStatus = document.getElementById('loginStatus');
 	const buttons = document.getElementById('buttons');
+	const profileOptions = document.getElementById('profile_options');
 
 	if (isSignedIn) {
 		console.log("signed in")
-		loginStatus.innerText = `Signed in as: ${userEmail}`;
+		// loginStatus.innerText = `Signed in as: ${userEmail}`;
+		profileOptions.innerHTML = `<button id="profilePageButton" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" style="color: black; height: 40px; width: 40px;">
+										<i class="material-icons" style="font-size: 45px; left: 20%;">account_circle</i>
+									</button>`;
 		buttons.innerHTML = `
-			<button id="downloadButton" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" style="color: green;">
-				<i class="material-icons">download_for_offline</i>
-			</button>
-			<button id="profilePageButton" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
-				<i class="material-icons">account_circle</i>
-			</button>
+		<div class="row">
+			<div class="col">
+				<div class="form-check form-switch">
+					<label class="form-check-label" for="toggleSwitch">Highlight keywords</label>
+					<input class="form-check-input" type="checkbox" id="toggleSwitch" style="font-size: 20px">
+				</div>
+			</div>
+			<div class="col align-items-center">
+				<button id="downloadButton" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" style="color: green; height: 100px; width: 100px;">
+					<i class="material-icons" style="font-size: 110px; left: 7%;">download_for_offline</i>
+				</button>
+			</div>
+		</div>
+
             <div id="progress" class="progress mt-3" style="display: None;">
 				<div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" style="width: 0;"></div>
-			</div>
-			<div class="form-check form-switch">
-				<input class="form-check-input" type="checkbox" id="toggleSwitch">
-				<label class="form-check-label" for="toggleSwitch">Highlight keywords</label>
 			</div>
         `;
 		// document.getElementById('signOutButton').addEventListener('click', signOut);
 		document.getElementById('downloadButton').addEventListener('click', function () {
-			downloadPdf(userEmail);
+			ans = downloadPdf(userEmail);
 
 		});
 		// document.getElementById('viewProfileButton').addEventListener('click', function () {
@@ -91,6 +104,8 @@ function updateUI(isSignedIn, userEmail) {
 		document.getElementById('profilePageButton').addEventListener('click', function () {
             window.location.href = 'profile.html'; // this will change the popup view to page2.html
         });
+
+
 	} else {
 		console.log("not signed in")
 		loginStatus.innerText = 'Not signed in';
