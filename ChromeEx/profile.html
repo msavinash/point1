@@ -21,14 +21,23 @@
 </head>
 <body>
     <div style="margin: 20px;">
-        <h1>User Profile</h1>
+        <div class="row">
+			<div class="col-10">
+				<h3 style="margin: 0px">Point1</h3>
+			</div>
+			<div class="col-2">
+				<button id="backButton" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+			</div>
+		</div>
+
+        <hr class="hr" />
         <button class="btn btn-primary" id="viewProfileButton">View Profile</button>
         <button class="btn btn-danger" id="signOutButton">Sign Out</button>
         <hr>
         <!-- <button class="btn btn-secondary" id="backButton">Go Back</button> -->
-        <button id="backButton" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
-            <i class="material-icons">arrow_back</i>
-        </button>
+        
     </div>
     <script src="scripts/profile.js"></script>
 </body>
