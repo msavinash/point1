@@ -5,6 +5,16 @@ from flask import Flask, render_template, jsonify, render_template_string
 from io import BytesIO
 from xhtml2pdf import pisa
 
+import PyPDF2
+from io import BytesIO
+
+def count_pdf_pages(pdf_content):
+    pdf_buffer = BytesIO(pdf_content)
+    pdf = PyPDF2.PdfReader(pdf_buffer)
+    num_pages = len(pdf.pages)
+    return num_pages
+
+
 def create_pdf(html_content, page_width="8.5in", page_height="11in"):
 
 
@@ -54,4 +64,5 @@ def generate_print_pdf(resumeData):
     # with open("tml.html", "w") as f:
     #     f.write(html_content)
     result = create_pdf(html_content)
-    return result
+    num_pages = count_pdf_pages(result)
+    return result, num_pages

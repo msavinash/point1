@@ -1,10 +1,9 @@
-// const BASE_URL = 'http://localhost:5000';
-const BASE_URL = 'https://resumegen.onrender.com';
+const BASE_URL = 'http://localhost:5000';
+// const BASE_URL = 'https://resumegen.onrender.com';
 
 function downloadPdf(userEmail) {
 	const progress = document.getElementById('progress');
 	const progressBar = document.getElementById('progress-bar');
-	console.log(document.getElementById('toggleSwitch').checked);
 
 	progress.style.display = '';
 	progressBar.style.width = '10%';
@@ -26,7 +25,8 @@ function downloadPdf(userEmail) {
 			const formData = new FormData();
 			formData.append('job_description', jobDescription);
 			formData.append('email', userEmail);
-			formData.append('highlight', document.getElementById('toggleSwitch').checked);
+			formData.append('highlight', document.getElementById('highlightKeywordSwitch').checked);
+			formData.append('onepage', document.getElementById('singlePageSwitch').checked);
 			progressBar.style.width = '50%';
 			fetch(`${BASE_URL}/generate_rankedpdf`, {
 				method: 'POST',
@@ -76,13 +76,35 @@ function updateUI(isSignedIn, userEmail) {
 									</button>`;
 		buttons.innerHTML = `
 		<div class="row">
-			<div class="col">
-				<div class="form-check form-switch">
-					<label class="form-check-label" for="toggleSwitch">Highlight keywords</label>
-					<input class="form-check-input" type="checkbox" id="toggleSwitch" style="font-size: 20px">
+			<div class="col-8">
+				<div style="margin-top: 20px">
+					<div class="row">
+						<div class="form-check form-switch">
+							<div class="row">
+								<div class="col-10">
+									<label class="form-check-label" for="highlightKeywordSwitch">Highlight Keywords</label>
+								</div>
+								<div class="col-2">
+									<input class="form-check-input" type="checkbox" id="highlightKeywordSwitch" style="font-size: 20px">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-check form-switch">
+							<div class="row">
+								<div class="col-10">
+									<label class="form-check-label" for="singlePageSwitch">Single Page</label>
+								</div>
+								<div class="col-2">
+									<input class="form-check-input" type="checkbox" id="singlePageSwitch" style="font-size: 20px">
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="col align-items-center">
+			<div class="col-4 align-items-center">
 				<button id="downloadButton" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" style="color: green; height: 100px; width: 100px;">
 					<i class="material-icons" style="font-size: 110px; left: 7%;">download_for_offline</i>
 				</button>

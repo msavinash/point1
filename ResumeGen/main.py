@@ -392,6 +392,7 @@ def generate_rankedpdf():
     jd = request.form.get('job_description')
     print("Got JD:", jd)
     highlight = request.form.get("highlight")
+    onepage = request.form.get("onepage")
     print("GOT HIGHLIGHT!!!!", highlight)
     print("Got request params:", time()-t, "s")
     t = time()
@@ -443,7 +444,17 @@ def generate_rankedpdf():
     # print(resumeData)
     print("Got data ready for pdf gen:", time()-t, "s")
     t = time()
-    pdf_bytes = generate_print_pdf(resumeData)
+    pdf_bytes = None
+    if onepage == "true":
+        while True:
+            pdf_bytes, num_pages = generate_print_pdf(resumeData)
+            print("Num pages:", num_pages)
+            if num_pages > 1:
+                resumeData["project_experience"] = resumeData["project_experience"][:-1]
+            else:
+                break
+    else:
+        pdf_bytes, _ = generate_print_pdf(resumeData)
     print("Generated PDF:", time()-t, "s")
     # Serve the generated PDF as a response
     pdf_buffer.seek(0)
