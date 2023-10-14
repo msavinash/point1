@@ -17,6 +17,7 @@ function downloadPdf(userEmail) {
 				progress.style.display = 'None';
 				return;
 			}
+			jobDescription = response.jobDescription;
 			progressBar.style.width = '10%';
 			console.log("Job Description:", jobDescription);
 
@@ -49,6 +50,8 @@ function downloadPdf(userEmail) {
 						}, () => {
 							progressBar.style.width = '100%';
 							console.log('PDF download complete');
+							setTimeout(()=>{progress.style.display = 'None';}, 1000)
+							console.log("done");
 						});
 					};
 					reader.readAsArrayBuffer(blob);
