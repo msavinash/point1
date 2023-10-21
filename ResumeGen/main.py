@@ -40,7 +40,7 @@ def check_user_exists(search_email):
     collection = db[collection_name]
     query = {"email_id": search_email}
     result = collection.find_one(query)
-    print(result)
+    # print(result)
     client.close()
     if result:
         return True
@@ -316,7 +316,7 @@ def store_user_data():
         data = request.form
         resume_data_json = convert_to_resume_data(data)
         print("SENDING")
-        pprint(resume_data_json)
+        # pprint(resume_data_json)
         sendToMongo(resume_data_json)
         return jsonify({'message': 'User data stored successfully'})
 
@@ -388,12 +388,12 @@ def generate_rankedpdf():
     # rankedProjects = request.json.get('data', [])
     # rankedProjects = json.loads(request.form.get('data'))
     email = request.form.get('email')
-    print("Got email:", email)
+    # print("Got email:", email)
     jd = request.form.get('job_description')
-    print("Got JD:", jd)
+    # print("Got JD:", jd)
     highlight = request.form.get("highlight")
     onepage = request.form.get("onepage")
-    print("GOT HIGHLIGHT!!!!", highlight)
+    # print("GOT HIGHLIGHT!!!!", highlight)
     print("Got request params:", time()-t, "s")
     t = time()
     # projects = ast.literal_eval(projects)
@@ -401,7 +401,7 @@ def generate_rankedpdf():
     print("Got data from MongoDB:", time()-t, "s")
     t = time()
     resumeData = convert_newlines_to_list(resumeData)
-    pprint(resumeData)
+    # pprint(resumeData)
     print("Converted new lines to lists:", time()-t, "s")
     t = time()
     projects = resumeData["project_experience"].copy()
@@ -421,7 +421,7 @@ def generate_rankedpdf():
         if type(project["description"]) == str:
             rankedProjects[index]["description"] = [project["description"]]
 
-    print("Got words", words)
+    # print("Got words", words)
     if highlight == "true":
         for pIndex, project in enumerate(rankedProjects):
             for dIndex, description in enumerate(project["description"]):
@@ -430,8 +430,8 @@ def generate_rankedpdf():
                     # Create a regex pattern that matches the word case-insensitively
                     pattern = re.compile(fr'\b({re.escape(word)})\b', re.IGNORECASE)
                     sentence = pattern.sub(r'<b>\1</b>', sentence)
-                print(rankedProjects[pIndex]["description"])
-                print(rankedProjects[pIndex]["description"][dIndex])
+                # print(rankedProjects[pIndex]["description"])
+                # print(rankedProjects[pIndex]["description"][dIndex])
                 rankedProjects[pIndex]["description"][dIndex] = sentence
 
     # print(rankedProjects)
@@ -471,7 +471,7 @@ def checkmyuserexists():
     print("Got email:", email)
     result = getResumeData(email)
     if result:
-        print("Found document with email:", result)
+        print("Found document with email:")
         return "true"
     else:
         print("Document not found for email:", email)

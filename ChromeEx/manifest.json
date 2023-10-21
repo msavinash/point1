@@ -33,7 +33,7 @@
 	},
 	"web_accessible_resources": [
 	  {
-		"resources": ["profile.html", "scripts/profile.js"],
+		"resources": [],
 		"matches": []
 	  }
 	]
