@@ -32,6 +32,18 @@ mongo_uri = "mongodb+srv://msavinash1139:point1@cluster0.opvthne.mongodb.net/poi
 collection_name = "user_profiles"
 
 
+
+
+import base64
+
+def b64encode_filter(s):
+    return base64.b64encode(s).decode("utf-8")
+app.jinja_env.filters['b64encode'] = b64encode_filter
+
+
+
+
+
 # UserReg modules
 
 def check_user_exists(search_email):
@@ -232,8 +244,13 @@ def userProfile():
     if 'google_token' in session and "email" in google.get('userinfo').data:
         user_email = google.get('userinfo').data['email']
         data = getResumeData(user_email)
+        data = convert_newlines_to_list(data)
+        print(user_email)
         # print(data)
-        return render_template("user.html", data=data)
+        pdf_bytes, _ = generate_print_pdf(data)
+        encoded_data = base64.b64encode(pdf_bytes).decode('utf-8')
+        print("EMBEDDING PDF")
+        return render_template("user.html", data=data, pdf_bytes=pdf_bytes, encoded_data=encoded_data)
     else:
         return redirect("/login")
 
