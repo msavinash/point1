@@ -268,7 +268,7 @@ def userProfile():
         data = getResumeData(user_email)
         # data = convert_newlines_to_list(data)
         print(user_email)
-        print(data)
+        # print(data)
         pdf_bytes, _ = generate_print_pdf(data)
         encoded_data = base64.b64encode(pdf_bytes).decode('utf-8')
         print("EMBEDDING PDF")
