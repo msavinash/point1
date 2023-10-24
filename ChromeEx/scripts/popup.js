@@ -1,5 +1,5 @@
-// const BASE_URL = 'http://localhost:5000';
-const BASE_URL = 'https://resumegen.onrender.com';
+const BASE_URL = 'http://localhost:5000';
+// const BASE_URL = 'https://resumegen.onrender.com';
 
 function downloadPdf(userEmail) {
 	const progress = document.getElementById('progress');

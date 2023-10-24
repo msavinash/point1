@@ -275,13 +275,13 @@
                         <div class="col">
                             <div class="form-group">
                                 <label>Title:</label>
-                                <input type="text" class="form-control" name="work_experience[0][title]" required>
+                                <input type="text" class="form-control" name="work_experience[${workExperienceCount}][title]" required>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label>Company:</label>
-                                <input type="text" class="form-control" name="work_experience[0][company]" required>
+                                <input type="text" class="form-control" name="work_experience[${workExperienceCount}][company]" required>
                             </div>
                         </div>
                     </div>
@@ -289,13 +289,13 @@
                         <div class="col">
                             <div class="form-group">
                                 <label>From:</label>
-                                <input type="month" class="form-control" name="work_experience[0][from]" required>
+                                <input type="month" class="form-control" name="work_experience[${workExperienceCount}][from]" required>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label>To:</label>
-                                <input type="month" name="work_experience[0][to]" class="form-control">
+                                <input type="month" name="work_experience[${workExperienceCount}][to]" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -303,7 +303,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label>Description:</label>
-                                <textarea class="form-control" rows="3" name="work_experience[0][description]" required></textarea>
+                                <textarea class="form-control" rows="3" name="work_experience[${workExperienceCount}][description]" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -322,7 +322,7 @@
                         <div class="form-group">
                             <label>Title:</label>
                             <input type="text" class="form-control"
-                                name="project_experience[0][title]" required>
+                                name="project_experience[${projectExperienceCount}][title]" required>
                         </div>
                     </div>
                     <div class="col">
@@ -330,7 +330,7 @@
                             <label>Technologies (comma separated):</label>
                             <!-- <input type="text" class="form-control" required> -->
                             <select class="tag-select form-control"
-                                name="project_experience[0][technologies]"
+                                name="project_experience[${projectExperienceCount}][technologies]"
                                 multiple="multiple"></select>
                         </div>
                     </div>
@@ -339,7 +339,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label>Description:</label>
-                            <textarea class="form-control" name="project_experience[0][description]"
+                            <textarea class="form-control" name="project_experience[${projectExperienceCount}][description]"
                                 rows="3" required></textarea>
                         </div>
                     </div>
@@ -363,14 +363,14 @@
                     <div class="col">
                         <div class="form-group">
                             <label>Degree:</label>
-                            <input type="text" name="education[0][degree]" class="form-control"
+                            <input type="text" name="education[${educationCount}][degree]" class="form-control"
                                 required>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label>Major:</label>
-                            <input type="text" name="education[0][major]" class="form-control"
+                            <input type="text" name="education[${educationCount}][major]" class="form-control"
                                 required>
                         </div>
                     </div>
@@ -379,7 +379,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label>University:</label>
-                            <input type="text" name="education[0][university]" class="form-control"
+                            <input type="text" name="education[${educationCount}][university]" class="form-control"
                                 required>
                         </div>
                     </div>
@@ -388,14 +388,14 @@
                     <div class="col">
                         <div class="form-group">
                             <label>From:</label>
-                            <input type="month" name="education[0][from]" class="form-control"
+                            <input type="month" name="education[${educationCount}][from]" class="form-control"
                                 required>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label>To:</label>
-                            <input type="month" name="education[0][to]" class="form-control">
+                            <input type="month" name="education[${educationCount}][to]" class="form-control">
                         </div>
                     </div>
                 </div>

@@ -10,12 +10,12 @@
                     <button class="btn btn-primary" id="previewButton">Preview</button>
                     <div id="editResume">
                         <h2>Enter Resume Data</h2>
-                        <label>Editing Mode:
+                        <!-- <label>Editing Mode:
                             <div class="switch">
                                 <input type="checkbox" id="editToggle">
                                 <span class="slider round"></span>
                             </div>
-                        </label>
+                        </label> -->
                         <form id="resumeDataForm">
                             <h4>Personal Information</h4>
                             <div class="form-group">
@@ -69,7 +69,7 @@
                                     <div class="form-group">
                                         <label>Description:</label>
                                         <textarea class="form-control" rows="3" name="work_experience[{{ loop.index-1 }}][description]"
-                                            required>{{ experience.description }}</textarea>
+                                            required>{{ experience.description|join('\n') }}</textarea>
                                     </div>
                                 </div>
                                 {% endfor %}
@@ -93,7 +93,7 @@
                                     <div class="form-group">
                                         <label>Description:</label>
                                         <textarea class="form-control" name="project_experience[{{ loop.index-1 }}][description]" rows="3"
-                                            required>{{ experience.description }}</textarea>
+                                            required>{{ experience.description|join('\n') }}</textarea>
                                     </div>
                                 </div>
                                 {% endfor %}
@@ -256,21 +256,21 @@
         });
     });
 
-    document.getElementById('editToggle').addEventListener('change', function () {
-        const formElements = document.getElementById('resumeDataForm').elements;
-        for (let i = 0; i < formElements.length; i++) {
-            formElements[i].disabled = !this.checked;
-        }
-    });
+    // document.getElementById('editToggle').addEventListener('change', function () {
+    //     const formElements = document.getElementById('resumeDataForm').elements;
+    //     for (let i = 0; i < formElements.length; i++) {
+    //         formElements[i].disabled = !this.checked;
+    //     }
+    // });
 
 
     // By default make form non-editable
-    const checkbox = document.getElementById('editToggle');
-    const changeEvent = new Event('change', {
-        bubbles: true,
-        cancelable: true,
-    });
-    checkbox.dispatchEvent(changeEvent);
+    // const checkbox = document.getElementById('editToggle');
+    // const changeEvent = new Event('change', {
+    //     bubbles: true,
+    //     cancelable: true,
+    // });
+    // checkbox.dispatchEvent(changeEvent);
 
 </script>
 

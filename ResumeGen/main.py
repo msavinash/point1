@@ -22,6 +22,8 @@ import pymongo
 
 import re
 
+import sys
+
 
 
 app = Flask(__name__)
@@ -79,6 +81,7 @@ def convert_to_resume_data(data):
             full_key = f"{key}"
             if full_key in data:
                 extracted_data[key] = data[full_key]
+                
         return extracted_data
 
     # Helper function to extract list data from the ImmutableMultiDict
@@ -95,6 +98,13 @@ def convert_to_resume_data(data):
                     technologies = data.getlist(full_key)
                     if technologies:
                         item_data[key] = technologies
+                        found = True
+                elif key == "description":
+                    # print("FOUND DESCRIPTION")
+                    # print(full_key)
+                    if full_key in data:
+                        description = data[full_key].splitlines()
+                        item_data[key] = description
                         found = True
                 else:
                     if full_key in data:
@@ -218,17 +228,17 @@ def getResumeData(search_email):
     return result
 
 
-def convert_newlines_to_list(data):
-    if isinstance(data, dict):
-        for key, value in data.items():
-            data[key] = convert_newlines_to_list(value)
-    elif isinstance(data, list):
-        for i, item in enumerate(data):
-            data[i] = convert_newlines_to_list(item)
-    elif isinstance(data, str):
-        if '\n' in data:
-            data = data.split('\n')
-    return data
+# def convert_newlines_to_list(data):
+#     if isinstance(data, dict):
+#         for key, value in data.items():
+#             data[key] = convert_newlines_to_list(value)
+#     elif isinstance(data, list):
+#         for i, item in enumerate(data):
+#             data[i] = convert_newlines_to_list(item)
+#     elif isinstance(data, str):
+#         if '\n' in data:
+#             data = data.split('\n')
+#     return data
 
 
 
@@ -244,7 +254,7 @@ def userProfile():
     if 'google_token' in session and "email" in google.get('userinfo').data:
         user_email = google.get('userinfo').data['email']
         data = getResumeData(user_email)
-        data = convert_newlines_to_list(data)
+        # data = convert_newlines_to_list(data)
         print(user_email)
         # print(data)
         pdf_bytes, _ = generate_print_pdf(data)
@@ -331,7 +341,10 @@ def get_google_oauth_token():
 def store_user_data():
     try:
         data = request.form
+        print(data)
+        print("="*100)
         resume_data_json = convert_to_resume_data(data)
+        print(resume_data_json)
         print("SENDING")
         # pprint(resume_data_json)
         sendToMongo(resume_data_json)
@@ -375,7 +388,7 @@ def generate_getrankedpdf():
     print("Got JD:")
     # projects = ast.literal_eval(projects)
     resumeData = getResumeData(email)
-    resumeData = convert_newlines_to_list(resumeData)
+    # resumeData = convert_newlines_to_list(resumeData)
     projects = resumeData["project_experience"]
     for index in range(len(projects)):
         projects[index] = str(projects[index])
@@ -417,7 +430,7 @@ def generate_rankedpdf():
     resumeData = getResumeData(email)
     print("Got data from MongoDB:", time()-t, "s")
     t = time()
-    resumeData = convert_newlines_to_list(resumeData)
+    # resumeData = convert_newlines_to_list(resumeData)
     # pprint(resumeData)
     print("Converted new lines to lists:", time()-t, "s")
     t = time()
