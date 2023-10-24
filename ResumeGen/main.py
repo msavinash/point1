@@ -134,7 +134,7 @@ def convert_to_resume_data(data):
 
 
 
-def sendToMongo(data):
+def addToMongo(data):
     client = pymongo.MongoClient(mongo_uri)
     db = client.get_database()
     collection = db[collection_name]
@@ -145,6 +145,18 @@ def sendToMongo(data):
         print("Data insertion failed")
     client.close()
 
+
+def updateInMongo(email, data):
+    client = pymongo.MongoClient(mongo_uri)
+    db = client.get_database()
+    collection = db[collection_name]
+    query = {"email_id": email}
+    update_result = collection.update_one(query, {"$set": data})
+    if update_result.acknowledged:
+        print("Data updated successfully")
+    else:
+        print("Data updation failed")
+    client.close()
 
 
 
@@ -256,7 +268,7 @@ def userProfile():
         data = getResumeData(user_email)
         # data = convert_newlines_to_list(data)
         print(user_email)
-        # print(data)
+        print(data)
         pdf_bytes, _ = generate_print_pdf(data)
         encoded_data = base64.b64encode(pdf_bytes).decode('utf-8')
         print("EMBEDDING PDF")
@@ -341,13 +353,17 @@ def get_google_oauth_token():
 def store_user_data():
     try:
         data = request.form
-        print(data)
-        print("="*100)
+        # print(data)
+        # print("="*100)
         resume_data_json = convert_to_resume_data(data)
-        print(resume_data_json)
-        print("SENDING")
+        # print(resume_data_json)
+        # print("SENDING")
         # pprint(resume_data_json)
-        sendToMongo(resume_data_json)
+        user_email = google.get('userinfo').data['email']
+        if check_user_exists(user_email):
+            updateInMongo(user_email, resume_data_json)
+        else:
+            addToMongo(resume_data_json)
         return jsonify({'message': 'User data stored successfully'})
 
     except Exception as e:
