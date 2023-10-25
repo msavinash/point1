@@ -1,5 +1,5 @@
-// const BASE_URL = 'http://localhost:5000';
-const BASE_URL = 'https://resumegen.onrender.com';
+const BASE_URL = 'http://localhost:5000';
+// const BASE_URL = 'https://resumegen.onrender.com';
 
 function downloadPdf(userEmail) {
 	const progress = document.getElementById('progress');
@@ -117,9 +117,13 @@ function updateUI(isSignedIn, userEmail) {
 				</div>
 			</div>
 			<div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">Info</div>
-			<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-				<button class="btn btn-primary" id="viewProfileButton">View Profile</button>
-				<button class="btn btn-danger" id="signOutButton">Sign Out</button>
+			<div class="tab-pane fade" id="settings" role="tabpanel" style="width: 50%; margin-left: 25%">
+				<div class="row mt-3">
+					<button class="btn btn-primary" id="viewProfileButton">View Profile</button>
+				</div>
+				<div class="row mt-3">
+					<button class="btn btn-danger" id="signOutButton">Sign Out</button>
+				</div>
 			</div>
 		</div>
         `;
@@ -158,25 +162,25 @@ function updateUI(isSignedIn, userEmail) {
 		document.getElementById('viewProfileButton').addEventListener('click', function () {
 			chrome.tabs.create({ url: `${BASE_URL}/profile` });
 		});
-		
-		document.getElementById('signOutButton').addEventListener('click', function () {
-			// Add your sign-out functionality here
-			signOut();
-		});
-		
+
+		// document.getElementById('signOutButton').addEventListener('click', function () {
+		// 	// Add your sign-out functionality here
+		// 	signOut();
+		// });
+
 		// document.getElementById('backButton').addEventListener('click', function () {
 		// 	console.log('back')
 		// 	window.location.href = 'popup.html';
 		// });
 
-		
+
 		document.getElementById('closeButton').addEventListener('click', function () {
 			window.close();
 		});
 
 
 	} else {
-		
+
 		console.log("not signed in")
 		topRight.innerHTML = `
 		<button class="gsi-material-button" id="signInButton">
@@ -195,6 +199,9 @@ function updateUI(isSignedIn, userEmail) {
 		  <span style="display: none;">Sign in with Google</span>
 		</div>
 	  </button>
+	  	<div class="spinner-border text-primary" role="status" id="signinLoader">
+			<span class="visually-hidden"></span>
+		</div>
 	`;
 		const extensionBody = document.getElementById('extensionBody');
 		extensionBody.innerHTML = `
@@ -207,6 +214,7 @@ function updateUI(isSignedIn, userEmail) {
 	`
 		document.getElementById('signInButton').addEventListener('click', signIn);
 		document.getElementById('signUpButton').addEventListener('click', signUp);
+		$("#signinLoader").hide();
 	}
 }
 
@@ -218,24 +226,26 @@ function signUp() {
 
 
 function signIn() {
-	signOut();
+	$("#signInButton").hide();
+	$("#signinLoader").show();
+	// console.log("signing in");
+	// signOut();
 	chrome.identity.getAuthToken({ interactive: true }, function (token) {
-		if (chrome.runtime.lastError) {
-			console.error(chrome.runtime.lastError);
-			return;
-		}
+		// console.log("token", token)
 		fetch('https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses', {
 			headers: {
 				'Authorization': 'Bearer ' + token,
 			},
 		})
 			.then(response => {
+				// console.log("got response")
 				if (!response.ok) {
 					throw new Error('Network response was not ok');
 				}
 				return response.json();
 			})
 			.then(data => {
+				console.log("got data")
 				userEmail = data.emailAddresses[0].value;
 				checkMyUserExists(userEmail).then((userExists) => {
 					if (userExists) {
@@ -255,7 +265,7 @@ function signIn() {
 }
 
 function signOut() {
-	chrome.storage.sync.remove('userEmail');
+	// chrome.storage.sync.remove('userEmail');
 	chrome.identity.getAuthToken({ interactive: false }, function (currentToken) {
 		if (!chrome.runtime.lastError) {
 			fetch('https://accounts.google.com/o/oauth2/revoke?token=' + currentToken, {
@@ -265,19 +275,20 @@ function signOut() {
 					'Content-Type': 'application/x-www-form-urlencoded',
 				},
 			}).then(function (response) {
+				chrome.identity.removeCachedAuthToken({ token: currentToken }, function () {
+					console.log('Token removed from cache.');
+				});
+				chrome.storage.sync.remove('userEmail');
 				if (response.status === 200) {
 					console.log('Token revoked successfully.');
 				} else {
 					console.log('Error revoking token:', response.statusText);
 				}
+				location.reload();
 			});
-			chrome.identity.removeCachedAuthToken({ token: currentToken }, function () {
-				console.log('Token removed from cache.');
-			});
-			chrome.storage.sync.remove('userEmail');
-			// updateUI(false, null);
-			location.reload();	
+
 		} else {
+			alert(chrome.runtime.lastError.message)
 			console.error(chrome.runtime.lastError);
 		}
 	});

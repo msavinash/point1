@@ -19,246 +19,328 @@
 <div class="container mt-5">
     <h2>Enter Resume Data</h2>
     <form id="resumeDataForm">
-        <div class="splide">
-            <div class="my-carousel-progress">
-                <div class="my-carousel-progress-bar"></div>
-            </div>
-            <div class="splide__track">
-                <ul class="splide__list">
-                    <li class="splide__slide">
-                        <div class="card grid" style="width: 70%; margin: auto">
-                            <div class="card-body">
-                                <h4 class="card-title">Personal Information</h4>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="name">Name:</label>
-                                            <input type="text" class="form-control" id="name" name="name" required>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="phone_number">Phone Number:</label>
-                                            <input type="text" class="form-control" id="phone_number" name="phone_number"
-                                                required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="email">Email:</label>
-                                            <input type="email" class="form-control" id="email_id" name="email_id" required>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="linkedin">LinkedIn:</label>
-                                            <input type="text" class="form-control" id="linkedin_link" name="linkedin_link" required>
-                                        </div>
+        <div>
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" hidden>
+                <li class="nav-item">
+                    <a class="nav-link active" id="step1-tab" data-toggle="pill" href="#step1" role="tab">Step 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="step2-tab" data-toggle="pill" href="#step2" role="tab">Step 2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="step3-tab" data-toggle="pill" href="#step3" role="tab">Step 3</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="step4-tab" data-toggle="pill" href="#step4" role="tab">Step 4</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="step1" role="tabpanel">
+                    <div class="card grid" style="width: 70%; margin: auto">
+                        <div class="card-body">
+                            <h4 class="card-title">Personal Information</h4>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="name">Name:</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="objective">Objective:</label>
-                                            <textarea class="form-control" id="objective" name="objective" rows="3"
-                                                required></textarea>
-                                        </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="phone_number">Phone Number:</label>
+                                        <input type="text" class="form-control" id="phone_number" name="phone_number"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" class="form-control" id="email_id" name="email_id" required>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="linkedin">LinkedIn:</label>
+                                        <input type="text" class="form-control" id="linkedin_link" name="linkedin_link"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="objective">Objective:</label>
+                                        <textarea class="form-control" id="objective" name="objective" rows="3"
+                                            required></textarea>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </li>
-                    <li class="splide__slide">
-                        <div class="card grid" style="width: 70%; margin: auto">
-                            <div class="card-body">
-                                <h4 class="card-title">Work Experience <button type="button" class="btn btn-sm btn-primary"
-                                        id="addWorkExperience">Add</button></h4>
-                                <div id="workExperienceContainer">
-                                    <div class="workExperienceItem">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>Title:</label>
-                                                    <input type="text" class="form-control" name="work_experience[0][title]"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>Company:</label>
-                                                    <input type="text" class="form-control"
-                                                        name="work_experience[0][company]" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>From:</label>
-                                                    <input type="month" class="form-control" name="work_experience[0][from]"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>To:</label>
-                                                    <input type="month" name="work_experience[0][to]" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>Description:</label>
-                                                    <textarea class="form-control" rows="3"
-                                                        name="work_experience[0][description]" required></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-6"></div>
+                                <div class="col-6" align="right">
+                                    <button class="btn btn-primary next-step">Next</button>
                                 </div>
                             </div>
                         </div>
-                    </li>
-                    <li class="splide__slide">
-                        <div class="card grid" style="width: 70%; margin: auto">
-                            <div class="card-body">
-                                <h4 class="card-title">Project Experience <button type="button" class="btn btn-sm btn-primary"
-                                        id="addProjectExperience">Add</button></h4>
-                                <div id="projectExperienceContainer">
-                                    <div class="projectExperienceItem">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>Title:</label>
-                                                    <input type="text" class="form-control"
-                                                        name="project_experience[0][title]" required>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>Technologies (comma separated):</label>
-                                                    <!-- <input type="text" class="form-control" required> -->
-                                                    <select class="tag-select form-control"
-                                                        name="project_experience[0][technologies]"
-                                                        multiple="multiple"></select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>Description:</label>
-                                                    <textarea class="form-control" name="project_experience[0][description]"
-                                                        rows="3" required></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
+                    </div>
+
+                </div>
+                <div class="tab-pane fade" id="step2" role="tabpanel">
+                    <div class="card grid" style="width: 70%; margin: auto">
+                        <div class="card-body">
+                            <h4 class="card-title">Work Experience <button type="button" class="btn btn-sm btn-primary"
+                                    id="addWorkExperience">Add</button></h4>
+                            <div id="workExperienceContainer">
+                                <div class="workExperienceItem card mt-3" id="workExperience-0" style="padding: 10px;">
+                                    <div class="row" style="width: 100%;">
+                                        <button id="projectExperience-0--button"
+                                            class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                                            style="margin-left: 100%">
+                                            <i class="material-icons">close</i>
+                                        </button>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="splide__slide">
-                        <div class="card grid" style="width: 70%; margin: auto">
-                            <div class="card-body">
-                                <h4 class="card-title">Education <button type="button" class="btn btn-sm btn-primary"
-                                        id="addEducation">Add</button></h4>
-                                <div id="educationContainer">
-                                    <div class="educationItem">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>Degree:</label>
-                                                    <input type="text" name="education[0][degree]" class="form-control"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>Major:</label>
-                                                    <input type="text" name="education[0][major]" class="form-control"
-                                                        required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>University:</label>
-                                                    <input type="text" name="education[0][university]" class="form-control"
-                                                        required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>From:</label>
-                                                    <input type="month" name="education[0][from]" class="form-control"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>To:</label>
-                                                    <input type="month" name="education[0][to]" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="splide__slide">
-                        <div class="card grid" style="width: 70%; margin: auto">
-                            <div class="card-body">
-                                <h4 class="card-title">Technical Skills</h4>
-                                <div class="form-group">
                                     <div class="row">
                                         <div class="col">
-                                            <label>Languages (comma separated):</label>
+                                            <div class="form-group">
+                                                <label>Title:</label>
+                                                <input type="text" class="form-control" name="work_experience[0][title]"
+                                                    required>
+                                            </div>
                                         </div>
                                         <div class="col">
-                                            <select class="tag-select form-control" name="technical_skills_languages[]"
-                                                multiple="multiple"></select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col">
-                                            <label>Developer Tools (comma separated):</label>
-                                        </div>
-                                        <div class="col">
-                                            <select class="tag-select form-control"
-                                                name="technical_skills_developer_tools[]" multiple="multiple"></select>
+                                            <div class="form-group">
+                                                <label>Company:</label>
+                                                <input type="text" class="form-control"
+                                                    name="work_experience[0][company]" required>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="row">
                                         <div class="col">
-                                            <label>Technologies and Frameworks (comma separated):</label>
+                                            <div class="form-group">
+                                                <label>From:</label>
+                                                <input type="month" class="form-control" name="work_experience[0][from]"
+                                                    required>
+                                            </div>
                                         </div>
                                         <div class="col">
-                                            <select class="tag-select form-control"
-                                                name="technical_skills_technologies_and_frameworks[]"
-                                                multiple="multiple"></select>
+                                            <div class="form-group">
+                                                <label>To:</label>
+                                                <input type="month" name="work_experience[0][to]" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Description:</label>
+                                                <textarea class="form-control" rows="3"
+                                                    name="work_experience[0][description]" required></textarea>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </li>
-                </ul>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-6">
+                                    <button class="btn btn-primary back-step">Back</button>
+                                </div>
+                                <div class="col-6" align="right">
+                                    <button class="btn btn-primary next-step">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="step3" role="tabpanel">
+                    <div class="card grid" style="width: 70%; margin: auto">
+                        <div class="card-body">
+                            <h4 class="card-title">Project Experience <button type="button"
+                                    class="btn btn-sm btn-primary" id="addProjectExperience">Add</button></h4>
+                            <div id="projectExperienceContainer">
+                                <div class="projectExperienceItem card mt-3" id="projectExperience-0"
+                                    style="padding: 10px;">
+                                    <div class="row" style="width: 100%;">
+                                        <button id="projectExperience-0--button"
+                                            class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                                            style="margin-left: 100%">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Title:</label>
+                                                <input type="text" class="form-control"
+                                                    name="project_experience[0][title]" required>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Technologies (comma separated):</label>
+                                                <!-- <input type="text" class="form-control" required> -->
+                                                <select class="tag-select form-control"
+                                                    name="project_experience[0][technologies]"
+                                                    multiple="multiple"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Description:</label>
+                                                <textarea class="form-control" name="project_experience[0][description]"
+                                                    rows="3" required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-6">
+                                    <button class="btn btn-primary back-step">Back</button>
+                                </div>
+                                <div class="col-6" align="right">
+                                    <button class="btn btn-primary next-step">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="step4" role="tabpanel">
+                    <div class="card grid" style="width: 70%; margin: auto">
+                        <div class="card-body">
+                            <h4 class="card-title">Education <button type="button" class="btn btn-sm btn-primary"
+                                    id="addEducation">Add</button></h4>
+                            <div id="educationContainer">
+                                <div class="educationItem card mt-3" id="education-0" style="padding: 10px;">
+                                    <div class="row" style="width: 100%;">
+                                        <button id="education-0--button"
+                                            class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                                            style="margin-left: 100%">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Degree:</label>
+                                                <input type="text" name="education[0][degree]" class="form-control"
+                                                    required>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Major:</label>
+                                                <input type="text" name="education[0][major]" class="form-control"
+                                                    required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>University:</label>
+                                                <input type="text" name="education[0][university]" class="form-control"
+                                                    required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>From:</label>
+                                                <input type="month" name="education[0][from]" class="form-control"
+                                                    required>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>To:</label>
+                                                <input type="month" name="education[0][to]" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-6">
+                                    <button class="btn btn-primary back-step">Back</button>
+                                </div>
+                                <div class="col-6" align="right">
+                                    <button class="btn btn-primary next-step">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="step5" role="tabpanel">
+                    <div class="card grid" style="width: 70%; margin: auto">
+                        <div class="card-body">
+                            <h4 class="card-title">Technical Skills</h4>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <label>Languages (comma separated):</label>
+                                    </div>
+                                    <div class="col">
+                                        <select class="tag-select form-control" name="technical_skills_languages[]"
+                                            multiple="multiple"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <label>Developer Tools (comma separated):</label>
+                                    </div>
+                                    <div class="col">
+                                        <select class="tag-select form-control"
+                                            name="technical_skills_developer_tools[]" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <label>Technologies and Frameworks (comma separated):</label>
+                                    </div>
+                                    <div class="col">
+                                        <select class="tag-select form-control"
+                                            name="technical_skills_technologies_and_frameworks[]"
+                                            multiple="multiple"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-6">
+                                    <button class="btn btn-primary back-step">Back</button>
+                                </div>
+                                <div class="col-6" align="right">
+                                    <button class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Submit</button>
-    </form>
+</div>
+</form>
 </div>
 
 <script>
@@ -267,119 +349,65 @@
     let projectExperienceCount = 1;
     let educationCount = 1;
     $(document).ready(function () {
-        // Function to add work experience fields
-        $("#addWorkExperience").click(function () {
-            let workExperienceHtml = `
-                <div class="workExperienceItem">
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Title:</label>
-                                <input type="text" class="form-control" name="work_experience[${workExperienceCount}][title]" required>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Company:</label>
-                                <input type="text" class="form-control" name="work_experience[${workExperienceCount}][company]" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>From:</label>
-                                <input type="month" class="form-control" name="work_experience[${workExperienceCount}][from]" required>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label>To:</label>
-                                <input type="month" name="work_experience[${workExperienceCount}][to]" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Description:</label>
-                                <textarea class="form-control" rows="3" name="work_experience[${workExperienceCount}][description]" required></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                `;
-            $("#workExperienceContainer").append(workExperienceHtml);
-            workExperienceCount += 1;
+
+        $('.next-step').click(function () {
+            console.log("HERE")
+            let currentStep = $(this).closest('.tab-pane');
+            let nextStep = currentStep.next();
+
+            if (nextStep.length) {
+                currentStep.removeClass('show active');
+                nextStep.addClass('show active');
+
+                let currentTab = $(`#${currentStep.attr('id')}-tab`);
+                let nextTab = $(`#${nextStep.attr('id')}-tab`);
+
+                currentTab.removeClass('active');
+                nextTab.addClass('active');
+            }
         });
 
-        // Function to add project experience fields
-        $("#addProjectExperience").click(function () {
-            let projectExperienceHtml = `
-            <div class="projectExperienceItem">
+        $('.back-step').click(function () {
+            let currentStep = $(this).closest('.tab-pane');
+            let prevStep = currentStep.prev();
+
+            if (prevStep.length) {
+                currentStep.removeClass('show active');
+                prevStep.addClass('show active');
+
+                let currentTab = $(`#${currentStep.attr('id')}-tab`);
+                let prevTab = $(`#${prevStep.attr('id')}-tab`);
+
+                currentTab.removeClass('active');
+                prevTab.addClass('active');
+            }
+        });
+
+    });
+
+        $("#addWorkExperience").click(function () {
+            var workExperienceCount = $("#workExperienceContainer").children().length;
+            let workExperienceHtml = `
+            <div class="workExperienceItem card mt-3" id="workExperience-${workExperienceCount}" style="padding: 10px;">
+                <div class="row" style="width: 100%;">
+                    <button id="workExperience-${workExperienceCount}--button"
+                    class="mdl-button mdl-js-button mdl-button--fab closeButton" style="margin-left: 100%">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
                             <label>Title:</label>
                             <input type="text" class="form-control"
-                                name="project_experience[${projectExperienceCount}][title]" required>
+                                name="work_experience[${workExperienceCount}][title]" required>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label>Technologies (comma separated):</label>
-                            <!-- <input type="text" class="form-control" required> -->
-                            <select class="tag-select form-control"
-                                name="project_experience[${projectExperienceCount}][technologies]"
-                                multiple="multiple"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Description:</label>
-                            <textarea class="form-control" name="project_experience[${projectExperienceCount}][description]"
-                                rows="3" required></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                `;
-            $("#projectExperienceContainer").append(projectExperienceHtml);
-
-            $('.tag-select').select2({
-                tags: true,
-                tokenSeparators: [',']
-            });
-            projectExperienceCount += 1;
-        });
-
-        // Function to add education fields
-        $("#addEducation").click(function () {
-            let educationHtml = `
-            <div class="educationItem">
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Degree:</label>
-                            <input type="text" name="education[${educationCount}][degree]" class="form-control"
-                                required>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Major:</label>
-                            <input type="text" name="education[${educationCount}][major]" class="form-control"
-                                required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>University:</label>
-                            <input type="text" name="education[${educationCount}][university]" class="form-control"
+                            <label>Company:</label>
+                            <input type="text" class="form-control"
+                                name="work_experience[${workExperienceCount}][company]"
                                 required>
                         </div>
                     </div>
@@ -388,99 +416,248 @@
                     <div class="col">
                         <div class="form-group">
                             <label>From:</label>
-                            <input type="month" name="education[${educationCount}][from]" class="form-control"
-                                required>
+                            <input type="month" class="form-control"
+                                name="work_experience[${workExperienceCount}][from]" required>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label>To:</label>
-                            <input type="month" name="education[${educationCount}][to]" class="form-control">
+                            <input type="month"
+                                name="work_experience[${workExperienceCount}][to]"
+                                class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea class="form-control" rows="3"
+                                name="work_experience[${workExperienceCount}][description]"
+                                required></textarea>
                         </div>
                     </div>
                 </div>
             </div>
                 `;
+            $("#workExperienceContainer").append(workExperienceHtml);
+            workExperienceCount += 1;
+            document.querySelectorAll('.closeButton').forEach(item => {
+                item.addEventListener('click', event => {
+                    console.log(event.currentTarget)
+                    // the target could be something INSIDE the button, so we need to get the parent
+
+                    const elementId = event.currentTarget.id.split('--')[0];
+                    console.log(elementId);
+                    const element = document.getElementById(elementId);
+                    console.log(element);
+                    element.remove();
+                })
+            })
+        });
+
+
+
+        $("#addProjectExperience").click(function () {
+            var projectExperienceCount = $("#projectExperienceContainer").children().length;
+            let projectExperienceHtml = `
+        <div class="projectExperienceItem card mt-3" id="projectExperience-${projectExperienceCount}"
+                                            style="padding: 10px;">
+                                            <div class="row" style="width: 100%;">
+                                                <button id="projectExperience-${projectExperienceCount}--button"
+                                                    class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                                                    style="margin-left: 100%">
+                                                    <i class="material-icons">close</i>
+                                                </button>
+                                            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Title:</label>
+                        <input type="text" class="form-control"
+                            name="project_experience[${projectExperienceCount}][title]" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Technologies (comma separated):</label>
+                        <!-- <input type="text" class="form-control" required> -->
+                        <select class="tag-select form-control"
+                            name="project_experience[${projectExperienceCount}][technologies]"
+                            multiple="multiple"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea class="form-control"
+                            name="project_experience[${projectExperienceCount}][description]"
+                            rows="3"
+                            required></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+                `;
+
+
+
+            $("#projectExperienceContainer").append(projectExperienceHtml);
+
+            $('.tag-select').select2({
+                tags: true,
+                tokenSeparators: [',']
+            });
+
+            document.querySelectorAll('.closeButton').forEach(item => {
+                item.addEventListener('click', event => {
+                    console.log(event.currentTarget)
+                    // the target could be something INSIDE the button, so we need to get the parent
+
+                    const elementId = event.currentTarget.id.split('--')[0];
+                    console.log(elementId);
+                    const element = document.getElementById(elementId);
+                    console.log(element);
+                    element.remove();
+                })
+            })
+        });
+
+
+        $("#addEducation").click(function () {
+            console.log("clicked")
+            var educationCount = $("#educationContainer").children().length;
+            let educationHtml = `
+        <div class="educationItem card mt-3" id="education-${educationCount}"
+            style="padding: 10px;">
+            <div class="row" style="width: 100%;">
+                <button id="education-${educationCount}--button"
+                    class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                    style="margin-left: 100%">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Degree:</label>
+                        <input type="text" name="education[${educationCount}][degree]"
+                            class="form-control""
+                            required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Major:</label>
+                        <input type="text" name="education[${educationCount}][major]"
+                            class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>University:</label>
+                        <input type="text"
+                            name="education[${educationCount}][university]"
+                            class="form-control"
+                            required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>From:</label>
+                        <input type="month" name="education[${educationCount}][from]"
+                            class="form-control" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>To:</label>
+                        <input type="month" name="education[${educationCount}][to]"
+                            class="form-control" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+
+
             $("#educationContainer").append(educationHtml);
-            educationCount
-        });
 
-    });
+            document.querySelectorAll('.closeButton').forEach(item => {
+                item.addEventListener('click', event => {
+                    console.log(event.currentTarget)
+                    // the target could be something INSIDE the button, so we need to get the parent
 
-
-    $(document).ready(function () {
-        $('.tag-select').select2({
-            tags: true,
-            tokenSeparators: [','],
-            width: "100%"
-        });
-    });
-
-
-
-    $(document).ready(function () {
-        // Capture form submission
-        $('#resumeDataForm').submit(function (event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            // form = $('#resumeDataForm');
-            // Get all the <input type="month"> elements within the form
-            // const monthInputs = $('#resumeDataForm input[type="month"]');
-
-            // // Iterate through each input and format its value
-            // monthInputs.each(function() {
-            //   const rawValue = $(this).val();
-            //   const date = new Date(rawValue);
-            //   const formattedValue = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-            //   $(this).val(formattedValue);
-            // });
+                    const elementId = event.currentTarget.id.split('--')[0];
+                    console.log(elementId);
+                    const element = document.getElementById(elementId);
+                    console.log(element);
+                    element.remove();
+                })
+            })
+        })
 
 
 
 
-            // Serialize the form data into a format suitable for a POST request
-            var formData = $('#resumeDataForm').serialize();
 
-            // Send a POST request to the server
-            $.ajax({
-                type: 'POST',
-                url: 'profile-data',
-                data: formData,
-                success: function (response) {
-                    // Handle the server's response if needed
-                    console.log('Data sent successfully:', response);
-                    window.location.href = "/profile";
-                },
-                error: function (error) {
-                    // Handle errors if any
-                    console.error('Error:', error);
-                }
+        $(document).ready(function () {
+            $('.tag-select').select2({
+                tags: true,
+                tokenSeparators: [','],
+                width: "100%"
             });
         });
-    });
 
 
 
-    var splide = new Splide('.splide', {});
-    var bar = splide.root.querySelector('.my-carousel-progress-bar');
+        $(document).ready(function () {
+            // Capture form submission
+            $('#resumeDataForm').submit(function (event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // form = $('#resumeDataForm');
+                // Get all the <input type="month"> elements within the form
+                // const monthInputs = $('#resumeDataForm input[type="month"]');
+
+                // // Iterate through each input and format its value
+                // monthInputs.each(function() {
+                //   const rawValue = $(this).val();
+                //   const date = new Date(rawValue);
+                //   const formattedValue = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                //   $(this).val(formattedValue);
+                // });
 
 
-    // Updates the bar width whenever the carousel moves:
-    splide.on('mounted move', function () {
-        var end = splide.Components.Controller.getEnd() + 1;
-        var rate = Math.min((splide.index + 1) / end, 1);
-        bar.style.width = String(100 * rate) + '%';
 
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth' // You can use 'auto' for instant scrolling
+
+                // Serialize the form data into a format suitable for a POST request
+                var formData = $('#resumeDataForm').serialize();
+
+                // Send a POST request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: 'profile-data',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the server's response if needed
+                        console.log('Data sent successfully:', response);
+                        window.location.href = "/profile";
+                    },
+                    error: function (error) {
+                        // Handle errors if any
+                        console.error('Error:', error);
+                    }
+                });
+            });
         });
-
-
-    });
-
-
-    splide.mount();
 
 
 
