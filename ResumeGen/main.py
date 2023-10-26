@@ -3,7 +3,6 @@ from io import BytesIO
 from pdfGen import generate_print_pdf
 from jdRanking import rank
 import ast
-import pymongo
 from time import time
 import datetime
 from flask_cors import CORS
@@ -12,17 +11,26 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify, render_template
 import json
 from pprint import pprint
-import pymongo
 import traceback
 from flask import Flask, redirect, url_for, render_template, session, request
 from flask_oauthlib.client import OAuth
 import requests
 import json
-import pymongo
 
 import re
 
 import sys
+
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+# Use a service account.
+cred = credentials.Certificate('firestore_cred.json')
+
+app = firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 
 
@@ -30,8 +38,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 CORS(app)
 
-mongo_uri = "mongodb+srv://msavinash1139:point1@cluster0.opvthne.mongodb.net/point1?retryWrites=true&w=majority"
-collection_name = "user_profiles"
+collection_name = "resume-data"
 
 
 
@@ -49,28 +56,34 @@ app.jinja_env.filters['b64encode'] = b64encode_filter
 # UserReg modules
 
 def check_user_exists(search_email):
-    client = pymongo.MongoClient(mongo_uri)
-    db = client.get_database()
-    collection = db[collection_name]
-    query = {"email_id": search_email}
-    result = collection.find_one(query)
-    # print(result)
-    client.close()
-    if result:
-        return True
-    else:
+    doc_ref = db.collection(collection_name).document(search_email)
+    try:
+        doc = doc_ref.get()
+        if doc.exists:
+            # print(f'Document data: {doc.to_dict()}')
+            return True
+        else:
+            print('Document does not exist')
+            return False
+    except google.cloud.exceptions.NotFound:
+        print('Document not found')
         return False
     
 
 
 def getResumeData(search_email):
-    client = pymongo.MongoClient(mongo_uri)
-    db = client.get_database()
-    collection = db[collection_name]
-    query = {"email_id": search_email}
-    result = collection.find_one(query)
-    client.close()
-    return result
+    doc_ref = db.collection(collection_name).document(search_email)
+    try:
+        doc = doc_ref.get()
+        if doc.exists:
+            # print(f'Document data: {doc.to_dict()}')
+            return doc.to_dict()
+        else:
+            print('Document does not exist')
+            return False
+    except google.cloud.exceptions.NotFound:
+        print('Document not found')
+        return False
 
 
 def convert_to_resume_data(data):
@@ -134,29 +147,9 @@ def convert_to_resume_data(data):
 
 
 
-def addToMongo(data):
-    client = pymongo.MongoClient(mongo_uri)
-    db = client.get_database()
-    collection = db[collection_name]
-    insert_result = collection.insert_one(data)
-    if insert_result.acknowledged:
-        print("Data inserted successfully with ObjectId:", insert_result.inserted_id)
-    else:
-        print("Data insertion failed")
-    client.close()
-
-
-def updateInMongo(email, data):
-    client = pymongo.MongoClient(mongo_uri)
-    db = client.get_database()
-    collection = db[collection_name]
-    query = {"email_id": email}
-    update_result = collection.update_one(query, {"$set": data})
-    if update_result.acknowledged:
-        print("Data updated successfully")
-    else:
-        print("Data updation failed")
-    client.close()
+def addToFirestore(data):
+    doc_ref = db.collection(collection_name).document(data["email_id"])
+    doc_ref.set(data)
 
 
 
@@ -222,41 +215,6 @@ def format_date(date_str):
         return date_str
 
 app.jinja_env.filters['format_date'] = format_date
-
-
-client = pymongo.MongoClient(mongo_uri)
-db = client.get_database()
-collection = db[collection_name]
-# collection.create_index([("email_id", pymongo.ASCENDING)])
-
-def getResumeData(search_email):
-    query = {"email_id": search_email}
-    result = collection.find_one(query)
-    # if result:
-    #     print("Found document with email:", result)
-    # else:
-    #     print("Document not found for email:", search_email)
-    # client.close()
-    return result
-
-
-# def convert_newlines_to_list(data):
-#     if isinstance(data, dict):
-#         for key, value in data.items():
-#             data[key] = convert_newlines_to_list(value)
-#     elif isinstance(data, list):
-#         for i, item in enumerate(data):
-#             data[i] = convert_newlines_to_list(item)
-#     elif isinstance(data, str):
-#         if '\n' in data:
-#             data = data.split('\n')
-#     return data
-
-
-
-
-
-
 
 
 
@@ -359,11 +317,7 @@ def store_user_data():
         # print(resume_data_json)
         # print("SENDING")
         # pprint(resume_data_json)
-        user_email = google.get('userinfo').data['email']
-        if check_user_exists(user_email):
-            updateInMongo(user_email, resume_data_json)
-        else:
-            addToMongo(resume_data_json)
+        addToFirestore(resume_data_json)
         return jsonify({'message': 'User data stored successfully'})
 
     except Exception as e:
@@ -444,7 +398,7 @@ def generate_rankedpdf():
     t = time()
     # projects = ast.literal_eval(projects)
     resumeData = getResumeData(email)
-    print("Got data from MongoDB:", time()-t, "s")
+    print("Got data from Firestore:", time()-t, "s")
     t = time()
     # resumeData = convert_newlines_to_list(resumeData)
     # pprint(resumeData)
@@ -514,15 +468,12 @@ def generate_rankedpdf():
 @app.route('/checkmyuserexists', methods=['GET'])
 def checkmyuserexists():
     email = request.args.get('email')
-    print("Got email:", email)
-    result = getResumeData(email)
-    if result:
+    if check_user_exists(email):
         print("Found document with email:")
         return "true"
     else:
         print("Document not found for email:", email)
         return "false"
-    return "NULL"
 
 
 

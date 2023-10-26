@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Point1",
-	"version": "1.1",
+	"version": "1.1.1",
 	"key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhqo//QN/G/h0QP5XRBwFZP8SM048EDAnB9Jlo9lit8JgbwKtMBodjh8gM0UVishsioHtYraMA2uwc/RqOjUZ2VfMtpeWVSJlx0X4kjIE2j1Sgme2cxMossZOal5HAAVKtOalU06kExLzddmSic1TPDlYcW5wMHjXSsF0p+fq9I4jpzGunugqwDppzR7LN+I9bM/TAMopOgYc9UwZKZJyFBewie7LyAdIZcJNXdZnbRkytRoO1jN7wi3f6DIqoPI8ezVcdk453BIHmHAPxeCxREgS7JzZnLhurQe6AYF3aC5H0yZ/pYwrpn4ZRN4IcXgc2+UZ1gy7c88hYk8tEbbarQIDAQAB",
 	"permissions": [
 		"storage",

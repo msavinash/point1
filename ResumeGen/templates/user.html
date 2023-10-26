@@ -2,292 +2,303 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="splide">
-        <div class="splide__track">
-            <ul class="splide__list">
-                <li class="splide__slide">
-                    <button class="btn btn-primary" id="previewButton">Preview</button>
-                    <div id="editResume">
-                        <h2>Edit Resume Data</h2>
-                        <!-- <label>Editing Mode:
+
+
+<style>
+    a {
+        color: #007bff
+    }
+
+    #pills-tab {
+        border: 1px solid;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid;
+        padding: 5px;
+        border-radius: 10px;
+
+    }
+
+    .card {
+        margin-top: 20px;
+    }
+</style>
+<div class="container mt-5" style="width: 50%; margin: auto">
+    <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="edit-tab" data-toggle="pill" href="#edit" role="tab">Edit Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="preview-tab" data-toggle="pill" href="#preview" role="tab">Preview PDf</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="edit" role="tabpanel">
+            <div id="editResume">
+                <!-- <label>Editing Mode:
                             <div class="switch">
                                 <input type="checkbox" id="editToggle">
                                 <span class="slider round"></span>
                             </div>
                         </label> -->
-                        <form id="resumeDataForm">
-                            <div class="card grid" style="width: 70%; margin: auto">
-                                <div class="card-body">
-                                    <h4 class="card-title">Personal Information</h4>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label for="name">Name:</label>
-                                                <input type="text" class="form-control" id="name"
-                                                    value="{{ data.name }}" name="name" required>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label for="phone_number">Phone Number:</label>
-                                                <input type="text" class="form-control" id="phone_number"
-                                                    value="{{ data.phone_number }}" name="phone_number" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label for="email">Email:</label>
-                                                <input type="email" class="form-control" id="email_id"
-                                                    value="{{ data.email_id }}" name="email_id" required>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label for="linkedin">LinkedIn:</label>
-                                                <input type="text" class="form-control" id="linkedin_link"
-                                                    value="{{ data.linkedin_link }}" name="linkedin_link" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label for="objective">Objective:</label>
-                                                <textarea class="form-control" id="objective" name="objective" rows="3"
-                                                    required>{{ data.objective }}</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card grid" style="width: 70%; margin: auto">
-                                <div class="card-body">
-                                    <h4 class="card-title">Work Experience <button type="button"
-                                            class="btn btn-sm btn-primary" id="addWorkExperience">Add</button></h4>
-                                    <div id="workExperienceContainer">
-                                        {% for experience in data.work_experience %}
-                                        <div class="workExperienceItem card" id="workExperience-{{loop.index-1}}"
-                                            style="padding: 10px;">
-                                            <div class="row" style="width: 100%;">
-                                                <button id="workExperience-{{loop.index-1}}--button"
-                                                    class="mdl-button mdl-js-button mdl-button--fab closeButton"
-                                                    style="margin-left: 100%">
-                                                    <i class="material-icons">close</i>
-                                                </button>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Title:</label>
-                                                        <input type="text" class="form-control"
-                                                            value="{{ experience.title }}"
-                                                            name="work_experience[{{ loop.index-1 }}][title]" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Company:</label>
-                                                        <input type="text" class="form-control"
-                                                            value="{{ experience.company }}"
-                                                            name="work_experience[{{ loop.index-1 }}][company]"
-                                                            required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>From:</label>
-                                                        <input type="month" class="form-control"
-                                                            value="{{ experience.from }}"
-                                                            name="work_experience[{{ loop.index-1 }}][from]" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>To:</label>
-                                                        <input type="month" value="{{ experience.to }}"
-                                                            name="work_experience[{{ loop.index-1 }}][to]"
-                                                            class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Description:</label>
-                                                        <textarea class="form-control" rows="3"
-                                                            name="work_experience[{{ loop.index-1 }}][description]"
-                                                            required>{{ experience.description|join('\n') }}</textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card grid" style="width: 70%; margin: auto">
-                                <div class="card-body">
-                                    <h4 class="card-title">Project Experience <button type="button"
-                                            class="btn btn-sm btn-primary" id="addProjectExperience">Add</button></h4>
-                                    <div id="projectExperienceContainer">
-                                        {% for experience in data.project_experience %}
-                                        <div class="projectExperienceItem card" id="projectExperience-{{loop.index-1}}"
-                                            style="padding: 10px;">
-                                            <div class="row" style="width: 100%;">
-                                                <button id="projectExperience-{{loop.index-1}}--button"
-                                                    class="mdl-button mdl-js-button mdl-button--fab closeButton"
-                                                    style="margin-left: 100%">
-                                                    <i class="material-icons">close</i>
-                                                </button>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Title:</label>
-                                                        <input type="text" class="form-control"
-                                                            name="project_experience[{{ loop.index-1 }}][title]"
-                                                            value="{{ experience.title }}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Technologies (comma separated):</label>
-                                                        <!-- <input type="text" class="form-control" required> -->
-                                                        <select class="tag-select form-control"
-                                                            name="project_experience[{{ loop.index-1 }}][technologies]"
-                                                            value="{{ experience.technologies }}"
-                                                            multiple="multiple"></select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Description:</label>
-                                                        <textarea class="form-control"
-                                                            name="project_experience[{{ loop.index-1 }}][description]"
-                                                            rows="3"
-                                                            required>{{ experience.description|join('\n') }}</textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card grid" style="width: 70%; margin: auto">
-                                <div class="card-body">
-                                    <h4 class="card-title">Education <button type="button"
-                                            class="btn btn-sm btn-primary" id="addEducation">Add</button></h4>
-                                    <div id="educationContainer">
-                                        {% for education in data.education %}
-                                        <div class="educationItem card" id="education-{{loop.index-1}}"
-                                            style="padding: 10px;">
-                                            <div class="row" style="width: 100%;">
-                                                <button id="education-{{loop.index-1}}--button"
-                                                    class="mdl-button mdl-js-button mdl-button--fab closeButton"
-                                                    style="margin-left: 100%">
-                                                    <i class="material-icons">close</i>
-                                                </button>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Degree:</label>
-                                                        <input type="text" name="education[{{ loop.index-1 }}][degree]"
-                                                            class="form-control" value="{{ education.degree }}"
-                                                            required>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Major:</label>
-                                                        <input type="text" name="education[{{ loop.index-1 }}][major]"
-                                                            class="form-control" value="{{ education.major }}" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>University:</label>
-                                                        <input type="text"
-                                                            name="education[{{ loop.index-1 }}][university]"
-                                                            class="form-control" value="{{ education.university }}"
-                                                            required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>From:</label>
-                                                        <input type="month" name="education[{{ loop.index-1 }}][from]"
-                                                            class="form-control" value="{{ education.from }}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>To:</label>
-                                                        <input type="month" name="education[{{ loop.index-1 }}][to]"
-                                                            class="form-control" value="{{ education.to }}" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="card grid" style="width: 70%; margin: auto">
-                                <div class="card-body">
-                                    <h4 class="card-title">Technical Skills</h4>
+                <form id="resumeDataForm">
+                    <div class="card grid">
+                        <div class="card-body">
+                            <h4 class="card-title">Personal Information</h4>
+                            <div class="row">
+                                <div class="col">
                                     <div class="form-group">
-                                        <label>Languages (comma separated):</label>
-                                        <select class="tag-select form-control" name="technical_skills_languages[]"
-                                            value="{{ data.technical_skills_languages }}" multiple="multiple"></select>
+                                        <label for="name">Name:</label>
+                                        <input type="text" class="form-control" id="name" value="{{ data.name }}"
+                                            name="name" required>
                                     </div>
+                                </div>
+                                <div class="col">
                                     <div class="form-group">
-                                        <label>Developer Tools (comma separated):</label>
-                                        <select class="tag-select form-control"
-                                            name="technical_skills_developer_tools[]"
-                                            value="{{ data.technical_skills_developer_tools }}"
-                                            multiple="multiple"></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Technologies and Frameworks (comma separated):</label>
-                                        <select class="tag-select form-control"
-                                            name="technical_skills_technologies_and_frameworks[]"
-                                            value="{{ data.technical_skills_technologies_and_frameworks }}"
-                                            multiple="multiple"></select>
+                                        <label for="phone_number">Phone Number:</label>
+                                        <input type="text" class="form-control" id="phone_number"
+                                            value="{{ data.phone_number }}" name="phone_number" required>
                                     </div>
                                 </div>
                             </div>
-
-                            <button type="submit" class="btn btn-primary mt-3">Submit</button>
-                        </form>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" class="form-control" id="email_id"
+                                            value="{{ data.email_id }}" name="email_id" required>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="linkedin">LinkedIn:</label>
+                                        <input type="text" class="form-control" id="linkedin_link"
+                                            value="{{ data.linkedin_link }}" name="linkedin_link" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="objective">Objective:</label>
+                                        <textarea class="form-control" id="objective" name="objective" rows="3"
+                                            required>{{ data.objective }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </li>
-                <li class="splide__slide">
-                    <button class="btn btn-primary" id="editButton">Back to edit</button>
-                    <div id="previewResume">
-                        <div id="pdf-viewer" style="height: 800px; width: 640px; overflow: auto;"></div>
+
+                    <div class="card grid">
+                        <div class="card-body">
+                            <h4 class="card-title">Work Experience <button type="button" class="btn btn-sm btn-primary"
+                                    id="addWorkExperience">Add</button></h4>
+                            <div id="workExperienceContainer">
+                                {% for experience in data.work_experience %}
+                                <div class="workExperienceItem card" id="workExperience-{{loop.index-1}}"
+                                    style="padding: 10px;">
+                                    <div class="row" style="width: 100%;">
+                                        <button id="workExperience-{{loop.index-1}}--button"
+                                            class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                                            style="margin-left: 100%">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Title:</label>
+                                                <input type="text" class="form-control" value="{{ experience.title }}"
+                                                    name="work_experience[{{ loop.index-1 }}][title]" required>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Company:</label>
+                                                <input type="text" class="form-control" value="{{ experience.company }}"
+                                                    name="work_experience[{{ loop.index-1 }}][company]" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>From:</label>
+                                                <input type="month" class="form-control" value="{{ experience.from }}"
+                                                    name="work_experience[{{ loop.index-1 }}][from]" required>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>To:</label>
+                                                <input type="month" value="{{ experience.to }}"
+                                                    name="work_experience[{{ loop.index-1 }}][to]" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Description:</label>
+                                                <textarea class="form-control" rows="3"
+                                                    name="work_experience[{{ loop.index-1 }}][description]"
+                                                    required>{{ experience.description|join('\n') }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
-                </li>
-            </ul>
+
+                    <div class="card grid">
+                        <div class="card-body">
+                            <h4 class="card-title">Project Experience <button type="button"
+                                    class="btn btn-sm btn-primary" id="addProjectExperience">Add</button></h4>
+                            <div id="projectExperienceContainer">
+                                {% for experience in data.project_experience %}
+                                <div class="projectExperienceItem card" id="projectExperience-{{loop.index-1}}"
+                                    style="padding: 10px;">
+                                    <div class="row" style="width: 100%;">
+                                        <button id="projectExperience-{{loop.index-1}}--button"
+                                            class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                                            style="margin-left: 100%">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Title:</label>
+                                                <input type="text" class="form-control"
+                                                    name="project_experience[{{ loop.index-1 }}][title]"
+                                                    value="{{ experience.title }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Technologies (comma separated):</label>
+                                                <!-- <input type="text" class="form-control" required> -->
+                                                <select class="tag-select form-control"
+                                                    name="project_experience[{{ loop.index-1 }}][technologies]"
+                                                    value="{{ experience.technologies }}" multiple="multiple"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Description:</label>
+                                                <textarea class="form-control"
+                                                    name="project_experience[{{ loop.index-1 }}][description]" rows="3"
+                                                    required>{{ experience.description|join('\n') }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card grid">
+                        <div class="card-body">
+                            <h4 class="card-title">Education <button type="button" class="btn btn-sm btn-primary"
+                                    id="addEducation">Add</button></h4>
+                            <div id="educationContainer">
+                                {% for education in data.education %}
+                                <div class="educationItem card" id="education-{{loop.index-1}}" style="padding: 10px;">
+                                    <div class="row" style="width: 100%;">
+                                        <button id="education-{{loop.index-1}}--button"
+                                            class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                                            style="margin-left: 100%">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Degree:</label>
+                                                <input type="text" name="education[{{ loop.index-1 }}][degree]"
+                                                    class="form-control" value="{{ education.degree }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>Major:</label>
+                                                <input type="text" name="education[{{ loop.index-1 }}][major]"
+                                                    class="form-control" value="{{ education.major }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>University:</label>
+                                                <input type="text" name="education[{{ loop.index-1 }}][university]"
+                                                    class="form-control" value="{{ education.university }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>From:</label>
+                                                <input type="month" name="education[{{ loop.index-1 }}][from]"
+                                                    class="form-control" value="{{ education.from }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label>To:</label>
+                                                <input type="month" name="education[{{ loop.index-1 }}][to]"
+                                                    class="form-control" value="{{ education.to }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card grid">
+                        <div class="card-body">
+                            <h4 class="card-title">Technical Skills</h4>
+                            <div class="form-group">
+                                <label>Languages (comma separated):</label>
+                                <select class="tag-select form-control" name="technical_skills_languages[]"
+                                    value="{{ data.technical_skills_languages }}" multiple="multiple"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Developer Tools (comma separated):</label>
+                                <select class="tag-select form-control" name="technical_skills_developer_tools[]"
+                                    value="{{ data.technical_skills_developer_tools }}" multiple="multiple"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Technologies and Frameworks (comma separated):</label>
+                                <select class="tag-select form-control"
+                                    name="technical_skills_technologies_and_frameworks[]"
+                                    value="{{ data.technical_skills_technologies_and_frameworks }}"
+                                    multiple="multiple"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </form>
+            </div>
         </div>
+        <div class="tab-pane fade show" id="preview" role="tabpanel" align="center">
+            <div id="previewResume">
+                <div id="pdf-viewer" style="height: 800px; width: 640px; overflow: auto;"></div>
+            </div>
+        </div>
+        </ul>
     </div>
+</div>
 
 
 
@@ -439,7 +450,7 @@
     });
 
 
-    $("#addEducation").click(function() {
+    $("#addEducation").click(function () {
         console.log("clicked")
         var educationCount = $("#educationContainer").children().length;
         let educationHtml = `
@@ -533,21 +544,6 @@
         })
     })
 
-
-
-    const splide = new Splide('.splide');
-    splide.mount();
-
-    const previewButton = document.getElementById('previewButton');
-    const editButton = document.getElementById('editButton');
-    document.addEventListener('DOMContentLoaded', function () {
-        previewButton.addEventListener('click', function () {
-            splide.go(2);
-        });
-        editButton.addEventListener('click', function () {
-            splide.go(-1);
-        });
-    });
 
     const my_list = {{ data.project_experience | tojson | safe }};
     technical_skills = {{ data.technical_skills | tojson | safe }};
