@@ -43,8 +43,12 @@
                         </label> -->
                 <form id="resumeDataForm">
                     <div class="card grid">
+                        <div class="card-header">
+                            <strong>
+                                Personal Information
+                            </strong>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-title">Personal Information</h4>
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
@@ -81,7 +85,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="objective">Objective:</label>
-                                        <textarea class="form-control" id="objective" name="objective" rows="3"
+                                        <textarea class="form-control" id="objective" name="objective" rows="2"
                                             required>{{ data.objective }}</textarea>
                                     </div>
                                 </div>
@@ -90,13 +94,13 @@
                     </div>
 
                     <div class="card grid">
+                        <div class="card-header">
+                            <strong>Work Experience</strong>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-title">Work Experience <button type="button" class="btn btn-sm btn-primary"
-                                    id="addWorkExperience">Add</button></h4>
                             <div id="workExperienceContainer">
                                 {% for experience in data.work_experience %}
-                                <div class="workExperienceItem card" id="workExperience-{{loop.index-1}}"
-                                    style="padding: 10px;">
+                                <div class="workExperienceItem card px-5 py-3" id="workExperience-{{loop.index-1}}">
                                     <div class="row" style="width: 100%;">
                                         <button id="workExperience-{{loop.index-1}}--button"
                                             class="mdl-button mdl-js-button mdl-button--fab closeButton"
@@ -140,7 +144,7 @@
                                         <div class="col">
                                             <div class="form-group">
                                                 <label>Description:</label>
-                                                <textarea class="form-control" rows="3"
+                                                <textarea class="form-control" rows="5"
                                                     name="work_experience[{{ loop.index-1 }}][description]"
                                                     required>{{ experience.description|join('\n') }}</textarea>
                                             </div>
@@ -150,15 +154,25 @@
                                 {% endfor %}
                             </div>
                         </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col" align="center">
+                                    <button id="addWorkExperience" class="mdl-button mdl-js-button mdl-button--fab">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card grid">
+                        <div class="card-header">
+                            <strong>Project Experience</strong>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-title">Project Experience <button type="button"
-                                    class="btn btn-sm btn-primary" id="addProjectExperience">Add</button></h4>
                             <div id="projectExperienceContainer">
                                 {% for experience in data.project_experience %}
-                                <div class="projectExperienceItem card" id="projectExperience-{{loop.index-1}}"
+                                <div class="projectExperienceItem card px-5 py-3" id="projectExperience-{{loop.index-1}}"
                                     style="padding: 10px;">
                                     <div class="row" style="width: 100%;">
                                         <button id="projectExperience-{{loop.index-1}}--button"
@@ -191,7 +205,7 @@
                                             <div class="form-group">
                                                 <label>Description:</label>
                                                 <textarea class="form-control"
-                                                    name="project_experience[{{ loop.index-1 }}][description]" rows="3"
+                                                    name="project_experience[{{ loop.index-1 }}][description]" rows="5"
                                                     required>{{ experience.description|join('\n') }}</textarea>
                                             </div>
                                         </div>
@@ -200,15 +214,25 @@
                                 {% endfor %}
                             </div>
                         </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col" align="center">
+                                    <button id="addProjectExperience" class="mdl-button mdl-js-button mdl-button--fab">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card grid">
+                        <div class="card-header">
+                            <strong>Education</strong>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-title">Education <button type="button" class="btn btn-sm btn-primary"
-                                    id="addEducation">Add</button></h4>
                             <div id="educationContainer">
                                 {% for education in data.education %}
-                                <div class="educationItem card" id="education-{{loop.index-1}}" style="padding: 10px;">
+                                <div class="educationItem card px-5 py-3" id="education-{{loop.index-1}}" style="padding: 10px;">
                                     <div class="row" style="width: 100%;">
                                         <button id="education-{{loop.index-1}}--button"
                                             class="mdl-button mdl-js-button mdl-button--fab closeButton"
@@ -261,12 +285,25 @@
                                 {% endfor %}
                             </div>
                         </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col" align="center">
+                                    <button id="addEducation" class="mdl-button mdl-js-button mdl-button--fab">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
 
                     <div class="card grid">
+                        <div class="card-header">
+                            <strong>
+                                Technical Skills
+                            </strong>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-title">Technical Skills</h4>
                             <div class="form-group">
                                 <label>Languages (comma separated):</label>
                                 <select class="tag-select form-control" name="technical_skills_languages[]"
@@ -311,7 +348,7 @@
     $("#addWorkExperience").click(function () {
         var workExperienceCount = $("#workExperienceContainer").children().length;
         let workExperienceHtml = `
-            <div class="workExperienceItem card" id="workExperience-${workExperienceCount}" style="padding: 10px;">
+            <div class="workExperienceItem card px-5 py-3" id="workExperience-${workExperienceCount}">
                 <div class="row" style="width: 100%;">
                     <button id="workExperience-${workExperienceCount}--button"
                     class="mdl-button mdl-js-button mdl-button--fab closeButton" style="margin-left: 100%">
@@ -356,7 +393,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label>Description:</label>
-                            <textarea class="form-control" rows="3"
+                            <textarea class="form-control" rows="5"
                                 name="work_experience[${workExperienceCount}][description]"
                                 required></textarea>
                         </div>
@@ -385,8 +422,7 @@
     $("#addProjectExperience").click(function () {
         var projectExperienceCount = $("#projectExperienceContainer").children().length;
         let projectExperienceHtml = `
-        <div class="projectExperienceItem card" id="projectExperience-${projectExperienceCount}"
-                                            style="padding: 10px;">
+        <div class="projectExperienceItem card px-5 py-3" id="projectExperience-${projectExperienceCount}">
                                             <div class="row" style="width: 100%;">
                                                 <button id="projectExperience-${projectExperienceCount}--button"
                                                     class="mdl-button mdl-js-button mdl-button--fab closeButton"
@@ -418,7 +454,7 @@
                         <label>Description:</label>
                         <textarea class="form-control"
                             name="project_experience[${projectExperienceCount}][description]"
-                            rows="3"
+                            rows="5"
                             required></textarea>
                     </div>
                 </div>
@@ -454,8 +490,7 @@
         console.log("clicked")
         var educationCount = $("#educationContainer").children().length;
         let educationHtml = `
-        <div class="educationItem card" id="education-${educationCount}"
-            style="padding: 10px;">
+        <div class="educationItem card px-5 py-3" id="education-${educationCount}">
             <div class="row" style="width: 100%;">
                 <button id="education-${educationCount}--button"
                     class="mdl-button mdl-js-button mdl-button--fab closeButton"
