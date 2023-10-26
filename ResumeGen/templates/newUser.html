@@ -37,9 +37,13 @@
 
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="step1" role="tabpanel">
-                    <div class="card grid" style="width: 70%; margin: auto">
+                    <div class="card grid">
+                        <div class="card-header">
+                            <strong>
+                                Personal Information
+                            </strong>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-title">Personal Information</h4>
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
@@ -74,7 +78,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="objective">Objective:</label>
-                                        <textarea class="form-control" id="objective" name="objective" rows="3"
+                                        <textarea class="form-control" id="objective" name="objective" rows="2"
                                             required></textarea>
                                     </div>
                                 </div>
@@ -82,24 +86,31 @@
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-6"></div>
-                                <div class="col-6" align="right">
-                                    <button class="btn btn-primary next-step" type="button">Next</button>
+                                <div class="col-4" align="left">
+                                    
+                                </div>
+                                <div class="col-4" align="center">
+                                    
+                                </div>
+                                <div class="col-4" align="right">
+                                    <div class="col-6" align="right">
+                                        <button class="btn btn-primary next-step" type="button">Next</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="tab-pane fade" id="step2" role="tabpanel">
-                    <div class="card grid" style="width: 70%; margin: auto">
+                    <div class="card grid">
+                        <div class="card-header">
+                            <strong>Work Experience</strong>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-title">Work Experience <button type="button" class="btn btn-sm btn-primary"
-                                    id="addWorkExperience">Add</button></h4>
                             <div id="workExperienceContainer">
-                                <div class="workExperienceItem card mt-3" id="workExperience-0" style="padding: 10px;">
+                                <div class="workExperienceItem card px-5 py-3" id="workExperience-0">
                                     <div class="row" style="width: 100%;">
-                                        <button id="projectExperience-0--button"
+                                        <button id="workExperience-0--button"
                                             class="mdl-button mdl-js-button mdl-button--fab closeButton"
                                             style="margin-left: 100%">
                                             <i class="material-icons">close</i>
@@ -140,7 +151,7 @@
                                         <div class="col">
                                             <div class="form-group">
                                                 <label>Description:</label>
-                                                <textarea class="form-control" rows="3"
+                                                <textarea class="form-control" rows="5"
                                                     name="work_experience[0][description]" required></textarea>
                                             </div>
                                         </div>
@@ -150,23 +161,33 @@
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-6">
-                                    <button class="btn btn-primary back-step">Back</button>
+                                <div class="col-4" align="left">
+                                    <div class="col-6">
+                                        <button class="btn btn-primary back-step">Back</button>
+                                    </div>
                                 </div>
-                                <div class="col-6" align="right">
-                                    <button class="btn btn-primary next-step" type="button">Next</button>
+                                <div class="col-4" align="center">
+                                    <button id="addWorkExperience" class="mdl-button mdl-js-button mdl-button--fab">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                                <div class="col-4" align="right">
+                                    <div class="col-6" align="right">
+                                        <button class="btn btn-primary next-step" type="button">Next</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="step3" role="tabpanel">
-                    <div class="card grid" style="width: 70%; margin: auto">
+                    <div class="card grid">
+                        <div class="card-header">
+                            <strong>Project Experience</strong>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-title">Project Experience <button type="button"
-                                    class="btn btn-sm btn-primary" id="addProjectExperience">Add</button></h4>
                             <div id="projectExperienceContainer">
-                                <div class="projectExperienceItem card mt-3" id="projectExperience-0"
+                                <div class="projectExperienceItem card px-5 py-3" id="projectExperience-0"
                                     style="padding: 10px;">
                                     <div class="row" style="width: 100%;">
                                         <button id="projectExperience-0--button"
@@ -198,7 +219,7 @@
                                             <div class="form-group">
                                                 <label>Description:</label>
                                                 <textarea class="form-control" name="project_experience[0][description]"
-                                                    rows="3" required></textarea>
+                                                    rows="5" required></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -207,23 +228,33 @@
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-6">
-                                    <button class="btn btn-primary back-step">Back</button>
+                                <div class="col-4" align="left">
+                                    <div class="col-6">
+                                        <button class="btn btn-primary back-step">Back</button>
+                                    </div>
                                 </div>
-                                <div class="col-6" align="right">
-                                    <button class="btn btn-primary next-step" type="button">Next</button>
+                                <div class="col-4" align="center">
+                                    <button id="addProjectExperience" class="mdl-button mdl-js-button mdl-button--fab">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                                <div class="col-4" align="right">
+                                    <div class="col-6" align="right">
+                                        <button class="btn btn-primary next-step" type="button">Next</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="step4" role="tabpanel">
-                    <div class="card grid" style="width: 70%; margin: auto">
+                    <div class="card grid">
+                        <div class="card-header">
+                            <strong>Education</strong>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-title">Education <button type="button" class="btn btn-sm btn-primary"
-                                    id="addEducation">Add</button></h4>
                             <div id="educationContainer">
-                                <div class="educationItem card mt-3" id="education-0" style="padding: 10px;">
+                                <div class="educationItem card px-5 py-3" id="education-0" style="padding: 10px;">
                                     <div class="row" style="width: 100%;">
                                         <button id="education-0--button"
                                             class="mdl-button mdl-js-button mdl-button--fab closeButton"
@@ -267,7 +298,8 @@
                                         <div class="col">
                                             <div class="form-group">
                                                 <label>To:</label>
-                                                <input type="month" name="education[0][to]" class="form-control">
+                                                <input type="month" name="education[0][to]" class="form-control"
+                                                    required>
                                             </div>
                                         </div>
                                     </div>
@@ -276,20 +308,33 @@
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-6">
-                                    <button class="btn btn-primary back-step">Back</button>
+                                <div class="col-4" align="left">
+                                    <div class="col-6">
+                                        <button class="btn btn-primary back-step">Back</button>
+                                    </div>
                                 </div>
-                                <div class="col-6" align="right">
-                                    <button class="btn btn-primary next-step" type="button">Next</button>
+                                <div class="col-4" align="center">
+                                    <button id="addEducation" class="mdl-button mdl-js-button mdl-button--fab">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                                <div class="col-4" align="right">
+                                    <div class="col-6" align="right">
+                                        <button class="btn btn-primary next-step" type="button">Next</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="step5" role="tabpanel">
-                    <div class="card grid" style="width: 70%; margin: auto">
+                    <div class="card grid">
+                        <div class="card-header">
+                            <strong>
+                                Technical Skills
+                            </strong>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-title">Technical Skills</h4>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col">
@@ -385,9 +430,9 @@
 
     });
 
-        $("#addWorkExperience").click(function () {
-            var workExperienceCount = $("#workExperienceContainer").children().length;
-            let workExperienceHtml = `
+    $("#addWorkExperience").click(function () {
+        var workExperienceCount = $("#workExperienceContainer").children().length;
+        let workExperienceHtml = `
             <div class="workExperienceItem card mt-3" id="workExperience-${workExperienceCount}" style="padding: 10px;">
                 <div class="row" style="width: 100%;">
                     <button id="workExperience-${workExperienceCount}--button"
@@ -441,27 +486,27 @@
                 </div>
             </div>
                 `;
-            $("#workExperienceContainer").append(workExperienceHtml);
-            workExperienceCount += 1;
-            document.querySelectorAll('.closeButton').forEach(item => {
-                item.addEventListener('click', event => {
-                    console.log(event.currentTarget)
-                    // the target could be something INSIDE the button, so we need to get the parent
+        $("#workExperienceContainer").append(workExperienceHtml);
+        workExperienceCount += 1;
+        document.querySelectorAll('.closeButton').forEach(item => {
+            item.addEventListener('click', event => {
+                console.log(event.currentTarget)
+                // the target could be something INSIDE the button, so we need to get the parent
 
-                    const elementId = event.currentTarget.id.split('--')[0];
-                    console.log(elementId);
-                    const element = document.getElementById(elementId);
-                    console.log(element);
-                    element.remove();
-                })
+                const elementId = event.currentTarget.id.split('--')[0];
+                console.log(elementId);
+                const element = document.getElementById(elementId);
+                console.log(element);
+                element.remove();
             })
-        });
+        })
+    });
 
 
 
-        $("#addProjectExperience").click(function () {
-            var projectExperienceCount = $("#projectExperienceContainer").children().length;
-            let projectExperienceHtml = `
+    $("#addProjectExperience").click(function () {
+        var projectExperienceCount = $("#projectExperienceContainer").children().length;
+        let projectExperienceHtml = `
         <div class="projectExperienceItem card mt-3" id="projectExperience-${projectExperienceCount}"
                                             style="padding: 10px;">
                                             <div class="row" style="width: 100%;">
@@ -505,32 +550,32 @@
 
 
 
-            $("#projectExperienceContainer").append(projectExperienceHtml);
+        $("#projectExperienceContainer").append(projectExperienceHtml);
 
-            $('.tag-select').select2({
-                tags: true,
-                tokenSeparators: [',']
-            });
-
-            document.querySelectorAll('.closeButton').forEach(item => {
-                item.addEventListener('click', event => {
-                    console.log(event.currentTarget)
-                    // the target could be something INSIDE the button, so we need to get the parent
-
-                    const elementId = event.currentTarget.id.split('--')[0];
-                    console.log(elementId);
-                    const element = document.getElementById(elementId);
-                    console.log(element);
-                    element.remove();
-                })
-            })
+        $('.tag-select').select2({
+            tags: true,
+            tokenSeparators: [',']
         });
 
+        document.querySelectorAll('.closeButton').forEach(item => {
+            item.addEventListener('click', event => {
+                console.log(event.currentTarget)
+                // the target could be something INSIDE the button, so we need to get the parent
 
-        $("#addEducation").click(function () {
-            console.log("clicked")
-            var educationCount = $("#educationContainer").children().length;
-            let educationHtml = `
+                const elementId = event.currentTarget.id.split('--')[0];
+                console.log(elementId);
+                const element = document.getElementById(elementId);
+                console.log(element);
+                element.remove();
+            })
+        })
+    });
+
+
+    $("#addEducation").click(function () {
+        console.log("clicked")
+        var educationCount = $("#educationContainer").children().length;
+        let educationHtml = `
         <div class="educationItem card mt-3" id="education-${educationCount}"
             style="padding: 10px;">
             <div class="row" style="width: 100%;">
@@ -588,78 +633,78 @@
         `;
 
 
-            $("#educationContainer").append(educationHtml);
+        $("#educationContainer").append(educationHtml);
 
-            document.querySelectorAll('.closeButton').forEach(item => {
-                item.addEventListener('click', event => {
-                    console.log(event.currentTarget)
-                    // the target could be something INSIDE the button, so we need to get the parent
+        document.querySelectorAll('.closeButton').forEach(item => {
+            item.addEventListener('click', event => {
+                console.log(event.currentTarget)
+                // the target could be something INSIDE the button, so we need to get the parent
 
-                    const elementId = event.currentTarget.id.split('--')[0];
-                    console.log(elementId);
-                    const element = document.getElementById(elementId);
-                    console.log(element);
-                    element.remove();
-                })
+                const elementId = event.currentTarget.id.split('--')[0];
+                console.log(elementId);
+                const element = document.getElementById(elementId);
+                console.log(element);
+                element.remove();
             })
         })
+    })
 
 
 
 
 
-        $(document).ready(function () {
-            $('.tag-select').select2({
-                tags: true,
-                tokenSeparators: [','],
-                width: "100%"
+    $(document).ready(function () {
+        $('.tag-select').select2({
+            tags: true,
+            tokenSeparators: [','],
+            width: "100%"
+        });
+    });
+
+
+
+    $(document).ready(function () {
+        // Capture form submission
+        $('#resumeDataForm').submit(function (event) {
+            console.log("HERE!!!")
+            console.log(event.target)
+            event.preventDefault(); // Prevent the default form submission
+
+            // form = $('#resumeDataForm');
+            // Get all the <input type="month"> elements within the form
+            // const monthInputs = $('#resumeDataForm input[type="month"]');
+
+            // // Iterate through each input and format its value
+            // monthInputs.each(function() {
+            //   const rawValue = $(this).val();
+            //   const date = new Date(rawValue);
+            //   const formattedValue = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+            //   $(this).val(formattedValue);
+            // });
+
+
+
+
+            // Serialize the form data into a format suitable for a POST request
+            var formData = $('#resumeDataForm').serialize();
+
+            // Send a POST request to the server
+            $.ajax({
+                type: 'POST',
+                url: 'profile-data',
+                data: formData,
+                success: function (response) {
+                    // Handle the server's response if needed
+                    console.log('Data sent successfully:', response);
+                    window.location.href = "/profile";
+                },
+                error: function (error) {
+                    // Handle errors if any
+                    console.error('Error:', error);
+                }
             });
         });
-
-
-
-        $(document).ready(function () {
-            // Capture form submission
-            $('#resumeDataForm').submit(function (event) {
-                console.log("HERE!!!")
-                console.log(event.target)
-                event.preventDefault(); // Prevent the default form submission
-
-                // form = $('#resumeDataForm');
-                // Get all the <input type="month"> elements within the form
-                // const monthInputs = $('#resumeDataForm input[type="month"]');
-
-                // // Iterate through each input and format its value
-                // monthInputs.each(function() {
-                //   const rawValue = $(this).val();
-                //   const date = new Date(rawValue);
-                //   const formattedValue = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-                //   $(this).val(formattedValue);
-                // });
-
-
-
-
-                // Serialize the form data into a format suitable for a POST request
-                var formData = $('#resumeDataForm').serialize();
-
-                // Send a POST request to the server
-                $.ajax({
-                    type: 'POST',
-                    url: 'profile-data',
-                    data: formData,
-                    success: function (response) {
-                        // Handle the server's response if needed
-                        console.log('Data sent successfully:', response);
-                        window.location.href = "/profile";
-                    },
-                    error: function (error) {
-                        // Handle errors if any
-                        console.error('Error:', error);
-                    }
-                });
-            });
-        });
+    });
 
 
 
