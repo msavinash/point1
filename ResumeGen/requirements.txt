@@ -6,3 +6,4 @@ flask_cors
 flask_oauthlib
 PyPDF2
 firebase_admin
+Werkzeug==2.2.2
