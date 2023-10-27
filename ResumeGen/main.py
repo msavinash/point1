@@ -1,49 +1,72 @@
-from flask import Flask, Response, request
-from io import BytesIO
-from pdfGen import generate_print_pdf
-from jdRanking import rank
 import ast
-from time import time
+import base64
 import datetime
-from flask_cors import CORS
-
-
-from flask import Flask, request, jsonify, render_template
 import json
-from pprint import pprint
-import traceback
-from flask import Flask, redirect, url_for, render_template, session, request
-from flask_oauthlib.client import OAuth
-import requests
-import json
-
+import os
+import pprint
 import re
-
 import sys
+
+from io import BytesIO
+
+
+from time import time
+
+from flask import Flask, Response, request, jsonify, render_template, redirect, url_for, session, request
+from flask_cors import CORS
+from flask_oauthlib.client import OAuth
 
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
-# Use a service account.
-cred = credentials.Certificate('firestore_cred.json')
+from pdfGen import generate_print_pdf
+from jdRanking import rank
 
-app = firebase_admin.initialize_app(cred)
 
+# Constants
+OAUTH_CREDENTIALS = os.path.join("credentials", 'oauth.json')
+FIRESTORE_CREDENTIALS = os.path.join("credentials", 'firestore.json')
+COLLECTION_NAME = "resume-data"
+
+
+# Initialize Firestore DB
+firestoreCredentials = credentials.Certificate(FIRESTORE_CREDENTIALS)
+app = firebase_admin.initialize_app(firestoreCredentials)
 db = firestore.client()
 
 
 
+# Load Google OAuth credentials
+oauthCredentials = None
+with open(OAUTH_CREDENTIALS) as f:
+    oauthCredentials = json.load(f)
+
+# Google OAuth configuration
+oauth = OAuth(app)
+google = oauth.remote_app(
+    'google',
+    consumer_key=oauthCredentials["web"]["client_id"],
+    consumer_secret=oauthCredentials["web"]["client_secret"],
+    request_token_params={
+        'scope': 'email',
+    },
+    base_url='https://www.googleapis.com/oauth2/v1/',
+    request_token_url=None,
+    access_token_method='POST',
+    access_token_url='https://accounts.google.com/o/oauth2/token',
+    authorize_url='https://accounts.google.com/o/oauth2/auth',
+)
+
+
+
+
+# Initialize Flask app
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'
+app.secret_key = 'tailores is the best'
 CORS(app)
 
-collection_name = "resume-data"
 
-
-
-
-import base64
 
 def b64encode_filter(s):
     return base64.b64encode(s).decode("utf-8")
@@ -56,7 +79,7 @@ app.jinja_env.filters['b64encode'] = b64encode_filter
 # UserReg modules
 
 def check_user_exists(search_email):
-    doc_ref = db.collection(collection_name).document(search_email)
+    doc_ref = db.collection(COLLECTION_NAME).document(search_email)
     try:
         doc = doc_ref.get()
         if doc.exists:
@@ -72,7 +95,7 @@ def check_user_exists(search_email):
 
 
 def getResumeData(search_email):
-    doc_ref = db.collection(collection_name).document(search_email)
+    doc_ref = db.collection(COLLECTION_NAME).document(search_email)
     try:
         doc = doc_ref.get()
         if doc.exists:
@@ -148,30 +171,10 @@ def convert_to_resume_data(data):
 
 
 def addToFirestore(data):
-    doc_ref = db.collection(collection_name).document(data["email_id"])
+    doc_ref = db.collection(COLLECTION_NAME).document(data["email_id"])
     doc_ref.set(data)
 
 
-
-cred = None
-with open("cred.json") as f:
-    cred = json.load(f)
-
-# Google OAuth configuration
-oauth = OAuth(app)
-google = oauth.remote_app(
-    'google',
-    consumer_key=cred["web"]["client_id"],
-    consumer_secret=cred["web"]["client_secret"],
-    request_token_params={
-        'scope': 'email',
-    },
-    base_url='https://www.googleapis.com/oauth2/v1/',
-    request_token_url=None,
-    access_token_method='POST',
-    access_token_url='https://accounts.google.com/o/oauth2/token',
-    authorize_url='https://accounts.google.com/o/oauth2/auth',
-)
 
 
 
@@ -223,6 +226,8 @@ app.jinja_env.filters['format_date'] = format_date
 def userProfile():
     if 'google_token' in session and "email" in google.get('userinfo').data:
         user_email = google.get('userinfo').data['email']
+        if not check_user_exists(user_email):
+            return redirect("/newuser")
         data = getResumeData(user_email)
         # data = convert_newlines_to_list(data)
         print(user_email)
@@ -251,9 +256,9 @@ def index():
 def newUserIndex():
     if 'google_token' in session and "email" in google.get('userinfo').data:
         print(session['google_token'])
-        user_email = google.get('userinfo').data
-        print(user_email)
-        return render_template('newUser.html')
+        userData = google.get('userinfo').data
+        print(userData)
+        return render_template('newUser.html', email=userData["email"], name=userData["name"])
     else:
         return redirect("/login")
         # user_email = google.get('userinfo').data['email']

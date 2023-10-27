@@ -64,7 +64,7 @@
                                     <div class="form-group">
                                         <label for="email">Email:</label>
                                         <input type="email" class="form-control" id="email_id"
-                                            value="{{ data.email_id }}" name="email_id" required>
+                                            value="{{ data.email_id }}" name="email_id" required disabled>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -299,26 +299,45 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Languages (comma separated):</label>
-                                <select class="tag-select form-control" name="technical_skills_languages[]"
-                                    value="{{ data.technical_skills_languages }}" multiple="multiple"></select>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Languages</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <select class="tag-select form-control" name="technical_skills_languages[]"
+                                        value="{{ data.technical_skills_languages }}" multiple="multiple"></select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label>Developer Tools (comma separated):</label>
-                                <select class="tag-select form-control" name="technical_skills_developer_tools[]"
-                                    value="{{ data.technical_skills_developer_tools }}" multiple="multiple"></select>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Developer Tools</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <select class="tag-select form-control" name="technical_skills_developer_tools[]"
+                                        value="{{ data.technical_skills_developer_tools }}" multiple="multiple"></select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label>Technologies and Frameworks (comma separated):</label>
-                                <select class="tag-select form-control"
-                                    name="technical_skills_technologies_and_frameworks[]"
-                                    value="{{ data.technical_skills_technologies_and_frameworks }}"
-                                    multiple="multiple"></select>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Technologies and Frameworks</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <select class="tag-select form-control"
+                                        name="technical_skills_technologies_and_frameworks[]"
+                                        value="{{ data.technical_skills_technologies_and_frameworks }}"
+                                        multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    <button type="submit" class="btn btn-primary my-3">Update</button>
                 </form>
             </div>
         </div>
@@ -462,7 +481,8 @@
 
         $('.tag-select').select2({
             tags: true,
-            tokenSeparators: [',']
+            tokenSeparators: [','],
+            width: 'resolve'
         });
 
         document.querySelectorAll('.closeButton').forEach(item => {
@@ -619,7 +639,8 @@
     $(document).ready(function () {
         $('.tag-select').select2({
             tags: true,
-            tokenSeparators: [',']
+            tokenSeparators: [','],
+            width: 'resolve'
         });
     });
 

@@ -1,5 +1,6 @@
-const BASE_URL = 'http://localhost:5000';
+// const BASE_URL = 'http://localhost:5000';
 // const BASE_URL = 'https://resumegen.onrender.com';
+const BASE_URL = "https://tailorestest-xk3tn7p6ea-wl.a.run.app";
 
 function downloadPdf(userEmail) {
 	const progress = document.getElementById('progress');
@@ -13,7 +14,7 @@ function downloadPdf(userEmail) {
 		chrome.tabs.sendMessage(tabs[0].id, { action: "getJobDescription" }, function (response) {
 			console.log("Got response from content script:", response)
 			if (!response) {
-				alert("Please select text before using the buttons.");
+				alert("Please select the job description text before  generating the resume");
 				progress.style.display = 'None';
 				return;
 			}
@@ -139,8 +140,8 @@ function updateUI(isSignedIn, userEmail) {
 		<!-- <li class="nav-item" role="presentation">
 			<button id="infoButton" class="mdl-button mdl-js-button mdl-button--fab nav-link " data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="home" aria-selected="true">
 			<i class="material-icons">info</i>
-			</button> -->
-		</li>
+			</button>
+		</li> -->
 		<li class="nav-item" role="presentation">
 			<button id="settingsButton" class="mdl-button mdl-js-button mdl-button--fab nav-link " data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="home" aria-selected="true">
 			<i class="material-icons">settings</i>
@@ -206,7 +207,7 @@ function updateUI(isSignedIn, userEmail) {
 		const extensionBody = document.getElementById('extensionBody');
 		extensionBody.innerHTML = `
 	<div class="row">
-		Not using Point1 yet? Sign up for free today! 
+		Not using TailoRes yet? Sign up for free today! 
 	</div>
 	<div class="row mt-3">
 		<button class="btn btn-primary" id="signUpButton">Sign Up</button>
@@ -226,12 +227,13 @@ function signUp() {
 
 
 function signIn() {
+	signOut();
 	$("#signInButton").hide();
 	$("#signinLoader").show();
 	// console.log("signing in");
 	// signOut();
 	chrome.identity.getAuthToken({ interactive: true }, function (token) {
-		// console.log("token", token)
+		console.log("token", token)
 		fetch('https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses', {
 			headers: {
 				'Authorization': 'Bearer ' + token,
@@ -246,6 +248,7 @@ function signIn() {
 			})
 			.then(data => {
 				console.log("got data")
+				console.log(data);
 				userEmail = data.emailAddresses[0].value;
 				checkMyUserExists(userEmail).then((userExists) => {
 					if (userExists) {

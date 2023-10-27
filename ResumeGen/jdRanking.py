@@ -9,10 +9,6 @@ with open("allskills.txt") as f:
 
 jd = None
 
-with open("sampleJD.txt", 'r', encoding='utf-8', errors='ignore') as f:
-    jd = f.read()
-
-
 
 def rank1(project_descriptions, jd):
     # Initialize a list to store the modified project descriptions

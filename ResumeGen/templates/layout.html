@@ -90,14 +90,19 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> <!-- Material Icons -->
     <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.indigo-pink.min.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alata">
+
+
     <style>
         .select2-dropdown {
             display: none;
         }
 
-        .tag-select {
+        /* .tag-select {
             width: 50%;
-        }
+        } */
 
         /* .mdl-button--fab {
             background: none;
@@ -123,12 +128,15 @@
 </head>
 
 <body>
-    <h1>Point1</h1>
+    <div class="m-3">
+        <img src="static/logo.png" style="height: 50px;" />
+    </div>
+    <hr>
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
-        {% block footer %}
+        <!-- {% block footer %}
         &copy; Copyright 2010 by <a href="http://domain.invalid/">you</a>.
-        {% endblock %}
+        {% endblock %} -->
     </div>
 </body>
 

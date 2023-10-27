@@ -17,7 +17,7 @@
     }
 </style>
 <div class="container mt-5">
-    <h2>Enter Resume Data</h2>
+    <h4>Fill in your profile information to start generating tailored resumes for different job descriptions.</h4>
     <form id="resumeDataForm">
         <div>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" hidden>
@@ -48,7 +48,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="name">Name:</label>
-                                        <input type="text" class="form-control" id="name" name="name" required>
+                                        <input type="text" class="form-control" id="name" value="{{name}}" name="name" required>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -63,7 +63,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="email">Email:</label>
-                                        <input type="email" class="form-control" id="email_id" name="email_id" required>
+                                        <input type="email" class="form-control" id="email_id" name="email_id" value="{{email}}" required disabled>
                                     </div>
                                 </div>
                                 <div class="col">
