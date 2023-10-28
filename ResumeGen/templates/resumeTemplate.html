@@ -129,7 +129,7 @@
         <ul>
             {% for item in experience.description %}
                 <li>
-                    <span>{{ item  }}</span>
+                    <span>{{ item | safe }}</span>
                 </li>
             {% endfor %}
         </ul>

@@ -3,7 +3,7 @@ import base64
 import datetime
 import json
 import os
-import pprint
+from pprint import pprint
 import re
 import sys
 
@@ -384,10 +384,9 @@ def generate_getrankedpdf():
 @app.route('/generate_rankedpdf', methods=['POST'])
 # @app.route('/generate_rankedpdf', methods=['GET'])
 def generate_rankedpdf():
+    
     t = time()
     jd = None
-    with open("sampleJD.txt", 'r', encoding='utf-8', errors='ignore') as f:
-        jd = f.read()
     # Create an in-memory PDF
     pdf_buffer = BytesIO()
     # rankedProjects = request.json.get('data', [])
@@ -412,7 +411,7 @@ def generate_rankedpdf():
     projects = resumeData["project_experience"].copy()
     # print(projects)
     for index, project in enumerate(projects):
-        projects[index] = project["title"]+" ".join(project["technologies"])+" ".join(project["description"])
+        projects[index] = project["title"]+" "+" ".join(project["technologies"])+" "+" ".join(project["description"])
     print("Prepped project data for ranking:", time()-t, "s")
     t = time()
     ranks, words = rank(projects, jd)
@@ -421,6 +420,7 @@ def generate_rankedpdf():
     print("Ranked projects:", time()-t, "s")
     t = time()
     rankedProjects = [resumeData["project_experience"][i] for i in ranks]
+    workExperience = resumeData["work_experience"]
 
     for index, project in enumerate(rankedProjects):
         if type(project["description"]) == str:
@@ -439,14 +439,29 @@ def generate_rankedpdf():
                 # print(rankedProjects[pIndex]["description"][dIndex])
                 rankedProjects[pIndex]["description"][dIndex] = sentence
 
+
+    
+        for wIndex, work in enumerate(workExperience):
+            for dIndex, description in enumerate(work["description"]):
+                sentence = description
+                for word in words:
+                    # Create a regex pattern that matches the word case-insensitively
+                    pattern = re.compile(fr'\b({re.escape(word)})\b', re.IGNORECASE)
+                    sentence = pattern.sub(r'<b>\1</b>', sentence)
+                # print(rankedProjects[pIndex]["description"])
+                # print(rankedProjects[pIndex]["description"][dIndex])
+                workExperience[wIndex]["description"][dIndex] = sentence
+
     # print(rankedProjects)
     # print(type(rankedProjects))
     # print(rankedProjects)
     resumeData["project_experience"] = rankedProjects
+    resumeData["work_experience"] = workExperience
     # for index in range(len(resumeData["project_experience"])):
     #     resumeData["project_experience"][index] = ast.literal_eval(resumeData["project_experience"][index])
     # # print(resumeData["project_experience"])
     # print(resumeData)
+    # pprint(resumeData)
     print("Got data ready for pdf gen:", time()-t, "s")
     t = time()
     pdf_bytes = None

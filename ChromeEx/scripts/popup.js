@@ -1,6 +1,7 @@
-// const BASE_URL = 'http://localhost:5000';
+const BASE_URL = 'http://localhost:5000';
 // const BASE_URL = 'https://resumegen.onrender.com';
-const BASE_URL = "https://tailorestest-xk3tn7p6ea-wl.a.run.app";
+// const BASE_URL = "https://tailorestest-xk3tn7p6ea-wl.a.run.app";
+// const BASE_URL = "https://app.tailores.live"
 
 function downloadPdf(userEmail) {
 	const progress = document.getElementById('progress');
@@ -227,7 +228,7 @@ function signUp() {
 
 
 function signIn() {
-	signOut();
+	// signOut();
 	$("#signInButton").hide();
 	$("#signinLoader").show();
 	// console.log("signing in");
