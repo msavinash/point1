@@ -29,7 +29,7 @@
             <a class="nav-link active" id="edit-tab" data-toggle="pill" href="#edit" role="tab">Edit Profile</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="preview-tab" data-toggle="pill" href="#preview" role="tab">Preview PDf</a>
+            <a class="nav-link" id="preview-tab" data-toggle="pill" href="#preview" role="tab">Preview Resume</a>
         </li>
     </ul>
     <div class="tab-content" id="pills-tabContent">
@@ -47,7 +47,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="name">Name:</label>
-                                        <input type="text" class="form-control" id="name" value="{{ data.name }}"
+                                        <input type="text" class="form-control" id="name" value="{{ resumeData.name }}"
                                             name="name" required>
                                     </div>
                                 </div>
@@ -55,7 +55,7 @@
                                     <div class="form-group">
                                         <label for="phone_number">Phone Number:</label>
                                         <input type="text" class="form-control" id="phone_number"
-                                            value="{{ data.phone_number }}" name="phone_number" required>
+                                            value="{{ resumeData.phone_number }}" name="phone_number" required>
                                     </div>
                                 </div>
                             </div>
@@ -64,14 +64,14 @@
                                     <div class="form-group">
                                         <label for="email">Email:</label>
                                         <input type="email" class="form-control" id="email_id"
-                                            value="{{ data.email_id }}" name="email_id" required disabled>
+                                            value="{{ resumeData.email_id }}" name="email_id" required disabled>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="linkedin">LinkedIn:</label>
                                         <input type="text" class="form-control" id="linkedin_link"
-                                            value="{{ data.linkedin_link }}" name="linkedin_link" required>
+                                            value="{{ resumeData.linkedin_link }}" name="linkedin_link" required>
                                     </div>
                                 </div>
                             </div>
@@ -80,7 +80,7 @@
                                     <div class="form-group">
                                         <label for="objective">Objective:</label>
                                         <textarea class="form-control" id="objective" name="objective" rows="2"
-                                            required>{{ data.objective }}</textarea>
+                                            required>{{ resumeData.objective }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +93,7 @@
                         </div>
                         <div class="card-body">
                             <div id="workExperienceContainer">
-                                {% for experience in data.work_experience %}
+                                {% for experience in resumeData.work_experience %}
                                 <div class="workExperienceItem card px-5 py-3" id="workExperience-{{loop.index-1}}">
                                     <div class="row" style="width: 100%;">
                                         <button id="workExperience-{{loop.index-1}}--button"
@@ -165,7 +165,7 @@
                         </div>
                         <div class="card-body">
                             <div id="projectExperienceContainer">
-                                {% for experience in data.project_experience %}
+                                {% for experience in resumeData.project_experience %}
                                 <div class="projectExperienceItem card px-5 py-3" id="projectExperience-{{loop.index-1}}"
                                     style="padding: 10px;">
                                     <div class="row" style="width: 100%;">
@@ -186,7 +186,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>Technologies (comma separated):</label>
+                                                <label>Technologies:</label>
                                                 <!-- <input type="text" class="form-control" required> -->
                                                 <select class="tag-select form-control"
                                                     name="project_experience[{{ loop.index-1 }}][technologies]"
@@ -225,7 +225,7 @@
                         </div>
                         <div class="card-body">
                             <div id="educationContainer">
-                                {% for education in data.education %}
+                                {% for education in resumeData.education %}
                                 <div class="educationItem card px-5 py-3" id="education-{{loop.index-1}}" style="padding: 10px;">
                                     <div class="row" style="width: 100%;">
                                         <button id="education-{{loop.index-1}}--button"
@@ -305,7 +305,7 @@
                                     </div>
                                     <div class="col-8">
                                         <select class="tag-select form-control" name="technical_skills_languages[]"
-                                        value="{{ data.technical_skills_languages }}" multiple="multiple"></select>
+                                        value="{{ resumeData.technical_skills_languages }}" multiple="multiple"></select>
                                     </div>
                                 </div>
                             </div>
@@ -316,7 +316,7 @@
                                     </div>
                                     <div class="col-8">
                                         <select class="tag-select form-control" name="technical_skills_developer_tools[]"
-                                        value="{{ data.technical_skills_developer_tools }}" multiple="multiple"></select>
+                                        value="{{ resumeData.technical_skills_developer_tools }}" multiple="multiple"></select>
                                     </div>
                                 </div>
                             </div>
@@ -328,7 +328,7 @@
                                     <div class="col-8">
                                         <select class="tag-select form-control"
                                         name="technical_skills_technologies_and_frameworks[]"
-                                        value="{{ data.technical_skills_technologies_and_frameworks }}"
+                                        value="{{ resumeData.technical_skills_technologies_and_frameworks }}"
                                         multiple="multiple"></select>
                                     </div>
                                 </div>
@@ -594,8 +594,8 @@
     })
 
 
-    const my_list = {{ data.project_experience | tojson | safe }};
-    technical_skills = {{ data.technical_skills | tojson | safe }};
+    const my_list = {{ resumeData.project_experience | tojson | safe }};
+    technical_skills = {{ resumeData.technical_skills | tojson | safe }};
 
     for (let i = 0; i < my_list.length; i++) {
         nameAttribute = `project_experience[${i}][technologies]`;
@@ -652,7 +652,7 @@
         $('#resumeDataForm').submit(function (event) {
             event.preventDefault();
             var formData = $('#resumeDataForm').serialize();
-
+            formData += '&email_id={{ resumeData.email_id }}';
             $.ajax({
                 type: 'POST',
                 url: 'profile-data',
@@ -694,7 +694,7 @@
     // (See also https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/
     // Base64_encoding_and_decoding.)
     var pdfData = atob(
-        '{{ encoded_data }}');
+        '{{ encodedData }}');
 
     // Loaded via <script> tag, create shortcut to access PDF.js exports.
     var { pdfjsLib } = globalThis;

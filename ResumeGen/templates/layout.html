@@ -129,7 +129,14 @@
 
 <body>
     <div class="m-3">
-        <img src="static/logo.png" style="height: 50px;" />
+        <div class="row">
+            <div class="col-md-6">
+                <img src="static/logo.png" style="height: 50px;" />
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary float-right" onclick="window.location.href='/logout'">Logout</button>
+            </div>
+        
     </div>
     <hr>
     <div id="content">{% block content %}{% endblock %}</div>

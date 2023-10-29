@@ -687,7 +687,7 @@
 
             // Serialize the form data into a format suitable for a POST request
             var formData = $('#resumeDataForm').serialize();
-
+            formData += '&email_id={{ email }}';
             // Send a POST request to the server
             $.ajax({
                 type: 'POST',

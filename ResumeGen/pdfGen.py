@@ -55,7 +55,7 @@ def create_pdf(html_content, page_width="8.5in", page_height="11in"):
     return pdf_bytes
 
 
-def generate_print_pdf(resumeData):
+def generatePdf(resumeData):
     html_template = None
     with open("templates/resumeTemplate.html", errors="ignore") as f:
         html_template = f.read()
