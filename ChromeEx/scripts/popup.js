@@ -1,9 +1,32 @@
-const BASE_URL = 'http://localhost:5000';
+// const BASE_URL = 'http://localhost:5000';
 // const BASE_URL = 'https://resumegen.onrender.com';
 // const BASE_URL = "https://tailorestest-xk3tn7p6ea-wl.a.run.app";
-// const BASE_URL = "https://app.tailores.live"
+const BASE_URL = "https://app.tailores.live"
+
+
+function startScan() {
+	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+		chrome.tabs.sendMessage(tabs[0].id, { action: "startScanning" }, function (response) {
+			console.log("Got response from content script:", response)
+		})
+	}
+)};
+
+
+
+function stopScan() {
+	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+		chrome.tabs.sendMessage(tabs[0].id, { action: "stopScanning" }, function (response) {
+			console.log("Got response from content script:", response)
+		})
+	}
+)};
+
+
+
 
 function downloadPdf(userEmail) {
+	startScan();
 	const progress = document.getElementById('progress');
 	const progressBar = document.getElementById('progress-bar');
 
@@ -37,6 +60,7 @@ function downloadPdf(userEmail) {
 			})
 				.then((response) => response.blob())
 				.then((blob) => {
+					stopScan();
 					progressBar.style.width = '70%';
 					const filename = 'resume.pdf';
 					const reader = new FileReader();
