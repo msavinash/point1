@@ -222,35 +222,8 @@ function updateUI(isSignedIn, userEmail) {
 
 
 
-function signUp(access_token) {
+function signUp() {
 	chrome.tabs.create({ url: `${BASE_URL}/newuser` });
-
-	const apiUrl = `${BASE_URL}/newuser`;
-
-      // Make the fetch request
-      fetch(apiUrl, {
-		headers: {
-			'Authorization': 'Bearer ' + access_token,
-		}
-	  })
-      .then(response => {
-        if (response.ok) {
-          return response.text(); // Get the HTML content as text
-        } else {
-          throw new Error('Request failed');
-        }
-      })
-      .then(htmlContent => {
-        // Open the HTML response in a new tab
-        const newTab = window.open();
-        newTab.document.write(htmlContent);
-        newTab.document.close();
-      })
-      .catch(error => {
-        // Handle any errors that occurred during the fetch
-        console.error(error);
-      });
-
 }
 
 
@@ -284,7 +257,7 @@ function signIn() {
 						updateUI(true, userEmail);
 					}
 					else {
-						signUp(token);
+						signUp();
 					}
 				});
 			})
