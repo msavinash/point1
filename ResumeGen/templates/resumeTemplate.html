@@ -5,183 +5,156 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>AvinashMangaloreSuresh-SoftwareEngineerResume</title>
-    <style type="text/css">
-        * {
-            margin: 0;
-            padding: 0;
-            text-indent: 0;
-        }
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-        h1 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 14pt;
-        }
-
-        .s1 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: underline;
-            font-size: 11pt;
-        }
-
-        .a {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: underline;
-            font-size: 11pt;
-        }
-
-        .s2 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 11pt;
-        }
-
-        .s3 {
-            color: black;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 10pt;
-        }
-
-        h2 {
-            color: #1154CC;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 10pt;
-        }
-
-        .s4 {
-            color: #1154CC;
-            font-family: Arial, sans-serif;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            font-size: 10pt;
-        }
-
-
-        .page-break {
-            page-break-before: always;
-        }
-
-        div {
-            padding: 5px;
-        }
-
-        p {
+    <style>
+        body {
+            font-family: Calibri;
             line-height: 1;
-            /* Adjust as needed, e.g., 1 for normal line height */
+            font-size: 19px;
         }
 
+        #header {
+            text-align: center;
+        }
 
-        h1,
-        h2,
-        p {
+        .section-heading {
             margin: 0;
-            padding: 0;
+            font-weight: bold;
+        }
+
+        .subsection-heading {
+            margin: 0;
+            font-weight: bold;
+            color: #1154cc;
+        }
+
+        .date {
+            text-align: right;
+        }
+
+        .subsection-heading-table {
+            width: 100%;
         }
 
 
-        @page {
-            /* size: letter landscape; */
-            margin: 1.2cm;
+        .subsection-body-list {
+            margin: 0;
+        }
+        .resume-name {
+            margin: 0px;
         }
     </style>
 </head>
 
-<body style=" line-height: 101%; font-size: 13.5px;">
-    <h1 style="padding-top: 3pt;padding-left: 10pt;text-indent: 0pt;text-align: center;">{{ resumeData.name }}</h1>
-    <p class="s1" style="padding-left: 10pt;text-indent: 0pt;text-align: center;"><a
-            href="mailto:{{ resumeData.email_id }}" class="a" target="_blank">{{ resumeData.phone_number }} | </a>{{ resumeData.email_id }} |
-        {{ resumeData.linkedin_link }}</p>
-    <p class="s2" style="padding-left: 10pt;text-indent: 0pt;line-height: 107%;text-align: center; margin-top: 100%">{{ resumeData.objective }}</p>
-    <br>
-    <p class="s3">WORK EXPERIENCE</p>
-
-    {% for experience in resumeData.work_experience %}
-        <h2>
-            <table>
-                <tr>
-                    <td>{{ experience.title }}, <span class="s4">{{ experience.company }} </span></td>
-                    <td align="right"><span class="s4">
-                        {{ experience.from | format_date }} - {{ experience.to | format_date}}</span></td>
-                </tr>
-            </table>
-        </h2>
-
-
-        <ul>
-            {% for item in experience.description %}
-                <li>
-                    <span>{{ item | safe }}</span>
-                </li>
+<body>
+    <div id="header">
+        <h1 class="resume-name">{{ resumeData.name }}</h1>
+        <u>
+            <h5>{{ resumeData.phone_number }} | <a href="mailto:{{ resumeData.email_id }}">{{
+                    resumeData.email_id }}</a> |
+                <a href="{{ resumeData.linkedin_link }}">{{ resumeData.linkedin_link }}</a>
+            </h5>
+        </u>
+        <p>
+            {{ resumeData.objective }}
+        </p>
+    </div>
+    <div id="body">
+        <div class="section">
+            <h5 class="section-heading">WORK EXPERIENCE</h5>
+            {% for experience in resumeData.work_experience %}
+            <div class="subsection">
+                <div class="subsection-heading">
+                    <table class="subsection-heading-table">
+                        <tr>
+                            <td><span>{{ experience.title }}, <span style="font-weight: normal;">{{ experience.company }}</span></span></td>
+                            <td class="date"><span>{{ experience.from | format_date }} - {{ experience.to |
+                                    format_date}}</span></td>
+                        </tr>
+                    </table>
+                    <!-- <span class="col-9">
+                            {{ experience.title }}, {{ experience.company }}
+                        </span>
+                        <div class="col-3 date">
+                            {{ experience.from | format_date }} - {{ experience.to | format_date}}
+                        </div> -->
+                </div>
+                <div class="subsection-body">
+                    <ul class="subsection-body-list">
+                        {% for item in experience.description %}
+                        <li>
+                            <span>{{ item | safe }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
+        <br>
+        <div class="section">
+            <h5 class="section-heading">PROJECT EXPERIENCE</h5>
+            {% for project in resumeData.project_experience %}
+            <div class="subsection">
+                <div class="subsection-heading">
+                    <table class="subsection-heading-table">
+                        <tr>
+                            <td><span>{{ project.title }}, <span style="font-weight: normal;">{{ project.technologies | join(", ") }}</span></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="subsection-body">
+                    <ul class="subsection-body-list">
+                        {% for item in project.description %}
+                        <li>
+                            <span>{{ item | safe }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <br>
+        <div class="section">
+            <h5 class="section-heading">EDUCATION</h5>
+            {% for education in resumeData.education %}
+            <div class="subsection">
+                <div class="subsection-heading">
+                    <table class="subsection-heading-table">
+                        <tr>
+                            <td><span>{{ education.degree }}, {{ education.major }}, {{ education.university }}</span>
+                            </td>
+                            <td class="date"><span>{{ education.from | format_date }} - {{ education.to | format_date
+                                    }}</span></td>
+                        </tr>
+                    </table>
+                </div>
+                {% endfor %}
+            </div>
 
-    {% endfor %}
-    
-    <br>
+            <br>
+            <div class="section">
+                <h5 class="section-heading">TECHNICAL SKILLS</h5>
+                <div class="subsection">
+                    <span class="subsection-heading">Languages: </span>
+                    <span>{{ resumeData.technical_skills.languages | join(", ") }}</span>
+                </div>
+                <div class="subsection">
+                    <span class="subsection-heading">Developer Tools: </span>
+                    <span>{{resumeData.technical_skills.developer_tools | join(", ") }}</span>
+                </div>
+                <div class="subsection">
+                    <span class="subsection-heading">Technologies/Frameworks: </span>
+                    <span>{{ resumeData.technical_skills.technologies_and_frameworks | join(", ") }}</span>
+                </div>
 
-    <p class="s3">PROJECT EXPERIENCE</p>
-    {% for project in resumeData.project_experience %}
-    <h2>
-        <table>
-            <tr>
-                <td>{{ project.title }}, <span class="s4">{{ project.technologies | join(", ") }}</span></td>
-            </tr>
-        </table>
-    </h2>
-    <ul>
-        {% for item in project.description %}
-        <li data-list-text="●">
-            <span>{{ item | safe }}</span>
-        </li>
-        {% endfor %}
-    </ul>
-    {% endfor %}
-    
-    <br>
-
-    <p class="s3">EDUCATION</p>
-    {% for education in resumeData.education %}
-    <p class="s3">
-        <table>
-            <tr>
-                <td>{{ education.degree }}, {{ education.major }}, <span class="p">{{ education.university }}</td>
-                <td align="right"><span class="s4">{{ education.from | format_date }} - {{ education.to | format_date }}</span></td>
-            </tr>
-        </table>
-        <!-- {{ education.degree }}, {{ education.major }}, <span class="p">{{ education.university }} {{ education.from }} - {{ education.to }}</span></p> -->
-    {% endfor %}
-
-    <br>
-
-    <p class="s3">TECHNICAL SKILLS</p>
-    <p>
-    <h2 style="display: inline;">Languages: </h2><span
-        class="p">{{ resumeData.technical_skills.languages | join(", ") }}</span></p>
-    <p>
-    <h2 style="display: inline;">Developer Tools: </h2><span
-        class="p">{{ resumeData.technical_skills.developer_tools | join(", ") }}</span></p>
-    <p>
-    <h2 style="display: inline;">Technologies/Frameworks: </h2>
-    <span class="p">{{ resumeData.technical_skills.technologies_and_frameworks | join(", ") }}</span></p>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

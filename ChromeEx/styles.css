@@ -1,22 +1,15 @@
-.nav-tabs {
-  border: none;
+.nav-pills .nav-link.active {
+    background-color: #000000;
+    color: #ffffff;
+}
+.nav-link:hover {
+    color: #000000;
 }
 
-.nav-tabs .nav-link {
-  border: none;
+.form-check-input:checked {
+    background-color: #000000;
+    border-color: #000000;
 }
-
-.nav-link:focus {
-  border: none;
-}
-
-
-.nav-item.active .nav-link {
-  background-color: #007bff; /* Replace with the actual primary color value */
-  color: #fff; /* You can change the text color to match */
-}
-
-
 
 .mdl-button--fab {
   background: none;
@@ -25,6 +18,8 @@
   height: 36px;
   width: 36px;
 }
+
+
 
 html {
     width: 400px;

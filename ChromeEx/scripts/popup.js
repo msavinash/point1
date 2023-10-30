@@ -1,7 +1,7 @@
-// const BASE_URL = 'http://localhost:5000';
+const BASE_URL = 'http://localhost:5000';
 // const BASE_URL = 'https://resumegen.onrender.com';
 // const BASE_URL = "https://tailorestest-xk3tn7p6ea-wl.a.run.app";
-const BASE_URL = "https://app.tailores.live"
+// const BASE_URL = "https://app.tailores.live"
 
 
 function startScan() {
@@ -133,7 +133,7 @@ function updateUI(isSignedIn, userEmail) {
 						</div>
 					</div>
 					<div class="col-4 align-items-center">
-						<button id="downloadButton" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" style="color: green; height: 100px; width: 100px;">
+						<button id="downloadButton" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" style="color: black; height: 100px; width: 100px;">
 						<i class="material-icons" style="font-size: 110px; left: 7%;">download_for_offline</i>
 						</button>
 					</div>
