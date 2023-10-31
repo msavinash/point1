@@ -71,6 +71,21 @@
         .slider.round:before {
             border-radius: 50%;
         }
+
+        .btn-primary {
+            background-color: black !important;
+            border-color: rgb(92, 91, 91) !important;
+        }
+
+
+        .nav-pills .nav-link {
+            color: black !important;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: black !important;
+            color: white !important;
+        }
     </style>
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -129,11 +144,11 @@
 
 <body>
     <div class="m-3">
-        <div class="row">
+        <div class="row mx-3">
             <div class="col-md-6">
                 <img src="static/logo.png" style="height: 50px;" />
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" style="margin: auto;">
                 <button class="btn btn-primary float-right" onclick="window.location.href='/logout'">Logout</button>
             </div>
         

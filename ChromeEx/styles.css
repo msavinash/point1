@@ -28,6 +28,27 @@ html {
 }
 
 
+.progress-bar {
+    background-color: #4f4f4f;
+}
+
+
+.text-primary {
+    color: #000000 !important;
+}
+
+.mdl-button {
+  text-transform: none;
+}
+
+
+.mdl-button--raised.mdl-button--colored {
+    background-color: #000000 !important;
+}
+
+.mdl-button--raised.mdl-button--colored:hover {
+    background-color: rgb(121 121 123) !important;
+}
 
 .gsi-material-button {
     -moz-user-select: none;

@@ -10,7 +10,8 @@ function startScan() {
 			console.log("Got response from content script:", response)
 		})
 	}
-)};
+	)
+};
 
 
 
@@ -20,13 +21,13 @@ function stopScan() {
 			console.log("Got response from content script:", response)
 		})
 	}
-)};
+	)
+};
 
 
 
 
 function downloadPdf(userEmail) {
-	startScan();
 	const progress = document.getElementById('progress');
 	const progressBar = document.getElementById('progress-bar');
 
@@ -42,6 +43,7 @@ function downloadPdf(userEmail) {
 				progress.style.display = 'None';
 				return;
 			}
+			startScan();
 			jobDescription = response.jobDescription;
 			progressBar.style.width = '10%';
 			console.log("Job Description:", jobDescription);
@@ -139,16 +141,16 @@ function updateUI(isSignedIn, userEmail) {
 					</div>
 				</div>
 				<div id="progress" class="progress mt-3" style="display: None;">
-					<div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" style="width: 0;"></div>
+					<div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" style="width: 0%;"></div>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">Info</div>
-			<div class="tab-pane fade" id="settings" role="tabpanel" style="width: 50%; margin-left: 25%">
+			<div class="tab-pane fade" id="settings" role="tabpanel" style="width: 80%; margin: auto">
 				<div class="row mt-3">
-					<button class="btn btn-primary" id="viewProfileButton">View Profile</button>
+					<button class="mdl-button mdl-js-button mdl-js-ripple-effect settings-options" id="viewProfileButton">View Profile</button>
 				</div>
 				<div class="row mt-3">
-					<button class="btn btn-danger" id="signOutButton">Sign Out</button>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored settings-options" id="signOutButton">Sign Out</button>
 				</div>
 			</div>
 		</div>
@@ -231,13 +233,20 @@ function updateUI(isSignedIn, userEmail) {
 	`;
 		const extensionBody = document.getElementById('extensionBody');
 		extensionBody.innerHTML = `
-	<div class="row">
-		Not using TailoRes yet? Sign up for free today! 
-	</div>
-	<div class="row mt-3">
-		<button class="btn btn-primary" id="signUpButton">Sign Up</button>
-	</div>
+		<div class="extension-body m-4">
+			<div class="row">
+				<h6>
+				Say goodbye one-size-fits-all resumes. <br> Start using TailoRes for free starting now! 
+				</h6>
+			</div>
+		</div>
 	`
+	const extensionFooter = document.getElementById('extensionFooter');
+	extensionFooter.innerHTML = `
+	<div class="row mt-3">
+	<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="signUpButton">Sign Up</button>
+</div>
+	`;
 		document.getElementById('signInButton').addEventListener('click', signIn);
 		document.getElementById('signUpButton').addEventListener('click', signUp);
 		$("#signinLoader").hide();

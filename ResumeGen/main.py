@@ -25,6 +25,7 @@ from pdfGen import generatePdf
 from jdRanking import rank
 from utils import *
 
+
 # Constants
 OAUTH_CREDENTIALS = os.path.join("credentials", 'oauth.json')
 FIRESTORE_CREDENTIALS = os.path.join("credentials", 'firestore.json')
@@ -89,8 +90,10 @@ def login():
 
 @app.route('/logout')
 def logout():
+    accessToken = session.get('google_token')[0]
+    revokeGoogleAccessToken(accessToken)
     session.pop('google_token', None)
-    # google.revoke()
+    print("logout", 'google_token' in session)
     return redirect(url_for('index'))
 
 
@@ -136,26 +139,12 @@ def userProfile():
 def newUserIndex():
     if 'google_token' in session and "email" in google.get('userinfo').data:
         userData = google.get('userinfo').data
+        email = userData["email"]
+        if checkUserExists(email, db, COLLECTION_NAME, google):
+            return redirect("/")    
         return render_template('newUser.html', email=userData["email"], name=userData["name"])
     else:
         return redirect("/login")
-    
-# @app.route('/newuser')
-# def newUserIndex():
-#     # check if authorization header is present in request
-#     authorization_header = request.headers.get('Authorization').split(" ")[1]
-#     print("Authorization header:", authorization_header)
-#     session['google_token'] = (authorization_header, '')
-#     make_google_api_request(authorization_header)
-#     # print(google.get('userinfo', ).data)
-#     return "ha"
-#     # if 'google_token' in session and "email" in google.get('userinfo').data:
-#     #     userData = google.get('userinfo').data
-#     #     return render_template('newUser.html', email=userData["email"], name=userData["name"])
-#     # else:
-#     #     return redirect("/login")
-
- 
 
 
 @app.route('/profile-data', methods=['POST'])

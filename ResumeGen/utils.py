@@ -1,7 +1,7 @@
 
 import base64
 import datetime
-
+import requests
 
 def b64encodeFilter(s):
     return base64.b64encode(s).decode("utf-8")
@@ -116,28 +116,23 @@ def addToFirestore(data, db, COLLECTION_NAME):
     doc_ref.set(data)
 
 
-import requests
 
-def make_google_api_request(access_token):
-    # Define the API endpoint you want to access
-    api_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
 
-    # Set up the headers with the access token
-    headers = {
-        'Authorization': f'Bearer {access_token}'
-    }
 
-    # Make the authenticated request
-    response = requests.get(api_url, headers=headers)
 
+def revokeGoogleAccessToken(access_token):
+    # Define the token revocation URL
+    token_revocation_url = "https://accounts.google.com/o/oauth2/revoke"
+
+    # Create a dictionary containing the token to revoke
+    data = {'token': access_token}
+
+    # Send a POST request to the token revocation URL
+    response = requests.post(token_revocation_url, data=data)
+
+    # Check the response status code
     if response.status_code == 200:
-        # Successful response, parse the data
-        data = response.json()
-        print(data)
-        return data
+        return True  # Token revoked successfully
     else:
-        print("ERROR!!")
-        # Handle errors
-        error_message = response.text
-        print(f"The API responded with: {error_message}")
-        return error_message
+        return False  # Token revocation failed
+
