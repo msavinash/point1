@@ -5,15 +5,29 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>AvinashMangaloreSuresh-SoftwareEngineerResume</title>
+
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Calibri"> -->
+    <link href='http://fonts.googleapis.com/css?family=Jolly+Lodger' rel='stylesheet' type='text/css'>
+
+    <!-- https://fonts.googleapis.com/css?family=Calibri:400,700,400italic,700italic -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+
+
+    <!-- <link href="bootstrap.min.css" rel="stylesheet"> -->
+    <!-- <script src="jquery.min.js"></script> -->
+    <!-- <script src="bootstrap.min.js"></script> -->
 
     <style>
+
         body {
-            font-family: Calibri;
+            font-family: 'Calibri';
+            /* font-family: MyCalibri; */
+            /* font-family: monospace; */
             line-height: 1;
-            font-size: 19px;
+            font-size: 21px;
         }
 
         #header {
@@ -43,6 +57,7 @@
         .subsection-body-list {
             margin: 0;
         }
+
         .resume-name {
             margin: 0px;
         }
@@ -70,7 +85,8 @@
                 <div class="subsection-heading">
                     <table class="subsection-heading-table">
                         <tr>
-                            <td><span>{{ experience.title }}, <span style="font-weight: normal;">{{ experience.company }}</span></span></td>
+                            <td><span>{{ experience.title }}, <span style="font-weight: normal;">{{ experience.company
+                                        }}</span></span></td>
                             <td class="date"><span>{{ experience.from | format_date }} - {{ experience.to |
                                     format_date}}</span></td>
                         </tr>
@@ -102,7 +118,8 @@
                 <div class="subsection-heading">
                     <table class="subsection-heading-table">
                         <tr>
-                            <td><span>{{ project.title }}, <span style="font-weight: normal;">{{ project.technologies | join(", ") }}</span></span></td>
+                            <td><span>{{ project.title }}, <span style="font-weight: normal;">{{ project.technologies |
+                                        join(", ") }}</span></span></td>
                         </tr>
                     </table>
                 </div>

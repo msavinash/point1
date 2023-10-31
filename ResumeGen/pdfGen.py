@@ -7,6 +7,7 @@ from io import BytesIO
 import PyPDF2
 from io import BytesIO
 import pdfkit
+import os
 
 
 def count_pdf_pages(pdf_content):
@@ -22,10 +23,12 @@ def generatePdf(resumeData):
     html_template = None
     with open("templates/resumeTemplate.html", errors="ignore") as f:
         html_template = f.read()
-    html_content = render_template_string(html_template, resumeData=resumeData)
-    # with open("tml.html", "w") as f:
-    #     f.write(html_content)
-    options={'page-size':'A4'}#, 'dpi':400}
+    pwd = os.getcwd()
+    html_content = render_template_string(html_template, resumeData=resumeData, pwd=pwd)
+    with open("tml.html", "w") as f:
+        f.write(html_content)
+    options={'page-size':'A4', 'enable-local-file-access': None, 'margin-top': '0.37in', 'margin-right': '0.37in', 'margin-bottom': '0.37in', 'margin-left': '0.37in'}#, 'dpi':400}
     result = pdfkit.from_string(html_content, options=options)
+    # result = pdfkit.from_file("tml.html", options=options)
     num_pages = count_pdf_pages(result)
     return result, num_pages
