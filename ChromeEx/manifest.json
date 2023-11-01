@@ -2,7 +2,7 @@
 	"manifest_version": 3,
 	"description": "Effortlessly create job-specific resumes at the click of a button and elevate your job search",
 	"name": "TailoRes",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjnSqAM36LZ0FwBiO9BNSVZbx1sHWvSrNLX4L0C0/wO1/OTpsBM5kNRNSMlhm/91+1ptm04vRpF6Bx1nycy1WC3hblsZcWm8gTXPowO06T4aWsOiwr2iHQ114GMnWR4ioIjwrTmFKzrO/hjgeQdbswYrry/LJum0KCjGYiMYE2j1T/FQKZ3vAu2lPU03ZDBSRwZmrU2EXf6g23lBhL8wwUtSULTLxlV8zrlTKAioXW/VDvi8EM53pykOW1azQWMGZvVOosDRDcmy0mKBboLDOSmjfSqPcq3UDvcrjlgL2a1dm9fG/b05R2HzHJflAiJ8AfNXYw0WZz0hT9FApxSfDEQIDAQAB",
 	"permissions": [
 		"storage",

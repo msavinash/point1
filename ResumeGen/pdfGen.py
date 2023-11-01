@@ -19,9 +19,9 @@ def count_pdf_pages(pdf_content):
 
 
 
-def generatePdf(resumeData):
+def generatePdf(resumeData, design):
     html_template = None
-    with open("templates/resumeTemplate.html", errors="ignore") as f:
+    with open("templates/"+design+".html", errors="ignore") as f:
         html_template = f.read()
     pwd = os.getcwd()
     html_content = render_template_string(html_template, resumeData=resumeData, pwd=pwd)

@@ -30,6 +30,7 @@ from utils import *
 OAUTH_CREDENTIALS = os.path.join("credentials", 'oauth.json')
 FIRESTORE_CREDENTIALS = os.path.join("credentials", 'firestore.json')
 COLLECTION_NAME = "resume-data"
+DEFAULT_DESIGN = "Design-1"
 
 
 # Initialize Firestore DB
@@ -128,9 +129,21 @@ def userProfile():
         if not checkUserExists(userEmail, db, COLLECTION_NAME, google):
             return redirect("/newuser")
         resumeData = getResumeData(userEmail, db, COLLECTION_NAME, google)
-        pdfBytes, _ = generatePdf(resumeData)
+        design = DEFAULT_DESIGN
+        if "design" in resumeData:
+            design = resumeData["design"]
+        pdfBytes, _ = generatePdf(resumeData, design)
         encodedData = base64.b64encode(pdfBytes).decode('utf-8')
-        return render_template("user.html", resumeData=resumeData, encodedData=encodedData)
+
+        designs = []
+        if "design" in resumeData:
+            design = resumeData["design"]
+        else:
+            design = DEFAULT_DESIGN
+        for file in os.listdir("templates"):
+            if file.startswith("Design"):                           ################################################################
+                designs.append(file.split(".")[0])
+        return render_template("user.html", resumeData=resumeData, encodedData=encodedData, designs=designs, selectedDesign=design)
     else:
         return redirect("/login")
 
@@ -179,6 +192,7 @@ def generateRankedPdf():
     print("Got request params:", time()-t, "s")
     t = time()
     resumeData = getResumeData(email, db, COLLECTION_NAME, google)
+    # print(resumeData)
     print("Got data from Firestore:", time()-t, "s")
     t = time()
     projects = resumeData["project_experience"].copy()
@@ -219,17 +233,22 @@ def generateRankedPdf():
     resumeData["work_experience"] = workExperience
     print("Got data ready for pdf gen:", time()-t, "s")
     t = time()
+    design = None
+    if "design" in resumeData:
+        design = resumeData["design"]
+    else:
+        design = DEFAULT_DESIGN
     pdf_bytes = None
     if onepage == "true":
         while True:
-            pdf_bytes, num_pages = generatePdf(resumeData)
+            pdf_bytes, num_pages = generatePdf(resumeData, design)
             print("Num pages:", num_pages)
             if num_pages > 1:
                 resumeData["project_experience"] = resumeData["project_experience"][:-1]
             else:
                 break
     else:
-        pdf_bytes, _ = generatePdf(resumeData)
+        pdf_bytes, _ = generatePdf(resumeData, design)
     print("Generated PDF:", time()-t, "s")
     pdfBuffer.seek(0)
     response = Response(pdf_bytes, content_type='application/pdf')

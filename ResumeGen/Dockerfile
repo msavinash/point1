@@ -14,14 +14,14 @@ RUN apt-get update && apt-get install -y wkhtmltopdf
 
 COPY . ./
 
+# RUN echo $(fc-list) && sleep 10
 RUN apt-get -y install fontconfig
 COPY ./fonts ~/.fonts
 COPY ./fonts /usr/shared/fonts
 COPY ./fonts /usr/share/fonts/truetype
 # refresh system font cache
 RUN fc-cache -f -v
-
-
+# RUN echo $(fc-list) && sleep 10
 # RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install -r requirements.txt
 

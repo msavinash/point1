@@ -337,6 +337,27 @@
                         </div>
                     </div>
 
+                    <div class="card grid">
+                        <div class="card-header">
+                            <strong>
+                                Design
+                            </strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <select class="form-control" name="design" value="{{ resumeData.design }}">
+                                    {% for design in designs %}
+                                        {% if design == selectedDesign %}
+                                            <option value="{{design}}" selected>{{design}}</option>
+                                        {% else %}
+                                            <option value="{{design}}">{{design}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <button type="submit" class="btn btn-primary my-3">Update</button>
                 </form>
             </div>

@@ -84,7 +84,7 @@ def preprocessResumeData(data):
         return extracted_data
 
     # Extracting data
-    resume_data = extract_data("", ["name", "phone_number", "email_id", "linkedin_link", "objective"])
+    resume_data = extract_data("", ["name", "phone_number", "email_id", "linkedin_link", "objective", "design"])
     resume_data["work_experience"] = extractListData("work_experience", ["title", "company", "from", "to", "description"])
     resume_data["project_experience"] = extractListData("project_experience", ["title", "technologies", "description"])
     resume_data["education"] = extractListData("education", ["degree", "major", "university", "from", "to"])
