@@ -8,7 +8,8 @@
 		"storage",
 		"downloads",
 		"storage",
-		"identity"
+		"identity",
+		"activeTab"
 	],
 	"icons": {
 		"16": "icons/icon16.png",

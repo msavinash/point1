@@ -1,6 +1,5 @@
 import ast
 import base64
-import datetime
 import json
 import os
 from pprint import pprint
@@ -12,6 +11,7 @@ from io import BytesIO
 
 
 from time import time
+from datetime import datetime
 
 from flask import Flask, Response, request, jsonify, render_template, redirect, url_for, session, request
 from flask_cors import CORS
@@ -24,6 +24,7 @@ from firebase_admin import firestore
 from pdfGen import generatePdf
 from jdRanking import rank
 from utils import *
+
 
 
 # Constants
@@ -158,6 +159,12 @@ def newUserIndex():
         return render_template('newUser.html', email=userData["email"], name=userData["name"])
     else:
         return redirect("/login")
+    
+
+
+@app.route('/next-steps')
+def nextSteps():
+    return render_template('nextSteps.html')
 
 
 @app.route('/profile-data', methods=['POST'])
@@ -165,10 +172,10 @@ def store_user_data():
     try:
         data = request.form
         resumeDataJson = preprocessResumeData(data)
-        print("Preprocessed data")
-        pprint(resumeDataJson)
+        # print("Preprocessed data")
+        # pprint(resumeDataJson)
         # exit(0)
-        addToFirestore(resumeDataJson, db, COLLECTION_NAME)
+        addToFirestore(resumeDataJson, db, COLLECTION_NAME, "email_id")
         return jsonify({'message': 'User data stored successfully'})
 
     except Exception as e:
@@ -192,6 +199,17 @@ def generateRankedPdf():
     jd = request.form.get('job_description')
     highlight = request.form.get("highlight")
     onepage = request.form.get("onepage")
+    timestamp = datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+    source = request.form.get("source")
+    log = {
+        "email": email,
+        "jd": jd,
+        "timestamp": timestamp,
+        "highlight": highlight,
+        "onepage": onepage,
+        "source": source
+    }
+    addToFirestore(log, db, "logs")
     print("Got request params:", time()-t, "s")
     t = time()
     resumeData = getResumeData(email, db, COLLECTION_NAME, google)

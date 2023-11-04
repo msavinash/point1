@@ -111,9 +111,12 @@ def formatDate(date_str):
     
 
 
-def addToFirestore(data, db, COLLECTION_NAME):
-    doc_ref = db.collection(COLLECTION_NAME).document(data["email_id"])
-    doc_ref.set(data)
+def addToFirestore(data, db, COLLECTION_NAME, key=None):
+    if key:
+        doc_ref = db.collection(COLLECTION_NAME).document(data[key])
+        doc_ref.set(data)
+    else:
+        db.collection(COLLECTION_NAME).add(data)
 
 
 

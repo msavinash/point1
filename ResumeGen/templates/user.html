@@ -148,15 +148,25 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label>To</label>
+                                            {% if not experience.to %}
                                             <input type="month" name="work_experience[{{loop.index-1}}][to]"
-                                                class="form-control" value="{{ experience.to }}" id="to-0">
+                                                class="form-control" value="{{ experience.to }}" id="to-{{loop.index-1}}" disabled>
+                                            {% else %}
+                                            <input type="month" name="work_experience[{{loop.index-1}}][to]"
+                                                class="form-control" value="{{ experience.to }}" id="to-{{loop.index-1}}">
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row form-check mb-4">
                                     <div class="col">
+                                        {% if not experience.to %}
                                         <input class="form-check-input working" type="checkbox" value=""
-                                            id="working-{{loop.index-1}}">
+                                            id="working-{{loop.index-1}}" checked>
+                                        {% else %}
+                                        <input class="form-check-input working" type="checkbox" value=""
+                                        id="working-{{loop.index-1}}" >
+                                        {% endif %}
                                         <label class="form-check-label" for="working-{{loop.index-1}}">
                                             This is my current job
                                         </label>
@@ -373,8 +383,9 @@
                         </div>
                     </div>
                 </div>
-
-                <button type="submit" class="btn btn-primary my-3">Update</button>
+                <div align="right">
+                    <button type="submit" class="btn btn-primary my-3">Update</button>
+                </div>
             </form>
         </div>
         <div class="tab-pane fade show" id="preview" role="tabpanel" align="center">

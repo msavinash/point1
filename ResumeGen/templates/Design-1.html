@@ -87,8 +87,13 @@
                         <tr>
                             <td><span>{{ experience.title }}, <span style="font-weight: normal;">{{ experience.company
                                         }}</span></span></td>
+
+                            {% if not experience.to %}
+                            <td class="date"><span>{{ experience.from | format_date }} - Present</span></td>
+                            {% else %}
                             <td class="date"><span>{{ experience.from | format_date }} - {{ experience.to |
-                                    format_date}}</span></td>
+                                format_date}}</span></td>
+                            {% endif %}
                         </tr>
                     </table>
                     <!-- <span class="col-9">

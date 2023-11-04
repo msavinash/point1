@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% block title %}Next Steps{% endblock %}
+
+{% block content %}
+
+<style>
+    .card-body {
+        padding: 0px;
+    }
+
+    .step-number {
+        font-size: 8em;
+        margin: auto;
+        line-height: normal;
+    }
+</style>
+
+<div style="width: 80%; margin: auto;">
+    <h1>What happens next?</h1>
+
+    <div align="center">
+        <div class="card mb-3" style="width: 80%;">
+            <div class="row g-0 mx-5">
+                <div class="col-md-2 step-number" align="left">
+                    <span>1.</span>
+                </div>
+                <div class="col-md-10" align="left">
+                    <div class="card-body">
+                        <h4 class="card-title">Login on your Chrome Extension</h5>
+                            <p class="card-text">Now that you've signed up, login on the Chrome Extension. Pin the
+                                extension
+                                to your browser for easy access.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="card mb-3" style="width: 80%;">
+            <div class="row g-0 mx-5">
+                <div class="col-md-10" align="right">
+                    <div class="card-body">
+                        <h4 class="card-title">Select Job Description Text</h5>
+                            <p class="card-text">When you visit a page with job description, select the text. Include
+                                the
+                                skills and technologies for best results.</p>
+                    </div>
+                </div>
+                <div class="col-md-2 step-number" align="right" align="right">
+                    <span class="">2.</span>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="card mb-3" style="width: 80%;">
+            <div class="row g-0 mx-5">
+                <div class="col-md-2 step-number" align="left">
+                    <span class="">3.</span>
+                </div>
+                <div class="col-md-10" align="left">
+                    <div class="card-body">
+                        <h4 class="card-title">Customize Your Options</h5>
+                            <p class="card-text">Once the job description is selected, open the extension and customize
+                                options like highlighting keywords and choosing a single page resume</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="card mb-3" style="width: 80%;">
+            <div class="row g-0 mx-5">
+                <div class="col-md-10" align="right">
+                    <div class="card-body">
+                        <h4 class="card-title">Generate Your Resume</h5>
+                            <p class="card-text">One click of a button and get a customized resume for that job
+                                description.
+                            </p>
+                    </div>
+                </div>
+                <div class="col-md-2 step-number" align="right">
+                    <span class="">4.</span>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary d-flex justify-content-center align-content-between" onclick="window.location.href='/profile'">
+            <span>Dashboard</span><i class="material-icons mr-1">arrow_forward</i>
+        </button>
+    </div>
+</div>
+{% endblock %}

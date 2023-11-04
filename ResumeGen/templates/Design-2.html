@@ -165,8 +165,16 @@
                         <tr class="subsection-heading-1">
                             <td><span>{{ experience.title }}</span>
                             </td>
+
+                            {% if not experience.to %}
+                            <td class="date heading-support"><span>{{ experience.from | format_date }} - Present</span></td>
+                            {% else %}
                             <td class="date heading-support"><span>{{ experience.from | format_date }} - {{ experience.to | format_date
-                                    }}</span></td>
+                            }}</span></td>
+                            {% endif %}
+
+
+                            
 
                         </tr>
                         <tr class="subsection-heading-2">
