@@ -22,6 +22,10 @@
     .card {
         margin-top: 20px;
     }
+
+    .addMore {
+        width: 100%;
+    }
 </style>
 <div class="container mt-5" style="width: 50%; margin: auto">
     <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
@@ -34,15 +38,17 @@
     </ul>
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="edit" role="tabpanel">
-            <div id="editResume">
-                <form id="resumeDataForm">
-                    <div class="card grid">
+            <form id="resumeDataForm">
+                <div id="editResume">
+                    <div class="card grid accordion">
                         <div class="card-header">
-                            <strong>
-                                Personal Information
-                            </strong>
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#personalInformationBody" aria-expanded="true"
+                                aria-controls="personalInformationBody">
+                                <strong>Personal Information</strong>
+                            </button>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body accordion-collapse collapse show" id="personalInformationBody">
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
@@ -87,288 +93,297 @@
                         </div>
                     </div>
 
-                    <div class="card grid">
-                        <div class="card-header">
+                </div>
+
+                <div class="card grid accordion">
+                    <div class="card-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#workExperienceBody" aria-expanded="true"
+                            aria-controls="workExperienceBody">
                             <strong>Work Experience</strong>
-                        </div>
-                        <div class="card-body">
-                            <div id="workExperienceContainer">
-                                {% for experience in resumeData.work_experience %}
-                                <div class="workExperienceItem card px-5 py-3" id="workExperience-{{loop.index-1}}">
-                                    <div class="row" style="width: 100%;">
-                                        <button id="workExperience-{{loop.index-1}}--button"
-                                            class="mdl-button mdl-js-button mdl-button--fab closeButton"
-                                            style="margin-left: 100%">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>Title:</label>
-                                                <input type="text" class="form-control" value="{{ experience.title }}"
-                                                    name="work_experience[{{ loop.index-1 }}][title]" required>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>Company:</label>
-                                                <input type="text" class="form-control" value="{{ experience.company }}"
-                                                    name="work_experience[{{ loop.index-1 }}][company]" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>From:</label>
-                                                <input type="month" class="form-control" value="{{ experience.from }}"
-                                                    name="work_experience[{{ loop.index-1 }}][from]" required>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>To:</label>
-                                                <input type="month" value="{{ experience.to }}"
-                                                    name="work_experience[{{ loop.index-1 }}][to]" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>Description:</label>
-                                                <textarea class="form-control" rows="5"
-                                                    name="work_experience[{{ loop.index-1 }}][description]"
-                                                    required>{{ experience.description|join('\n') }}</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col" align="center">
-                                    <button id="addWorkExperience" class="mdl-button mdl-js-button mdl-button--fab">
-                                        <i class="material-icons">add</i>
+                        </button>
+                    </div>
+                    <div class="card-body" id="workExperienceBody">
+                        <div id="workExperienceContainer">
+                            {% for experience in resumeData.work_experience %}
+                            <div class="workExperienceItem px-5 py-3" id="workExperience-{{loop.index-1}}">
+                                {% if loop.index > 1 %}
+                                <hr class="item-seperator">
+                                {% endif %}
+                                <div class="row" style="width: 100%;">
+                                    <button id="workExperience-{{loop.index-1}}--button"
+                                        class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                                        style="margin-left: 100%">
+                                        <i class="material-icons">close</i>
                                     </button>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Company</label>
+                                            <input type="text" class="form-control"
+                                                name="work_experience[{{loop.index-1}}][company]"
+                                                value="{{ experience.company}}" required>
+                                        </div>
 
-                    <div class="card grid">
-                        <div class="card-header">
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Position Title</label>
+                                            <input type="text" class="form-control"
+                                                name="work_experience[{{loop.index-1}}][title]"
+                                                value="{{ experience.title }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>From</label>
+                                            <input type="month" class="form-control"
+                                                name="work_experience[{{loop.index-1}}][from]"
+                                                value="{{ experience.from }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>To</label>
+                                            <input type="month" name="work_experience[{{loop.index-1}}][to]"
+                                                class="form-control" value="{{ experience.to }}" id="to-0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-check mb-4">
+                                    <div class="col">
+                                        <input class="form-check-input working" type="checkbox" value=""
+                                            id="working-{{loop.index-1}}">
+                                        <label class="form-check-label" for="working-{{loop.index-1}}">
+                                            This is my current job
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea class="form-control" rows="5"
+                                                name="work_experience[{{loop.index-1}}][description]"
+                                                placeholder="Describe your responsibilities"
+                                                required>{{ experience.description|join('\n') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button class="btn btn-primary m-2 addMore" type="button" id="addWorkExperience">Add
+                            More</button>
+                    </div>
+                </div>
+
+                <div class="card grid accordion">
+                    <div class="card-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#projectExperienceBody" aria-expanded="true"
+                            aria-controls="projectExperienceBody">
                             <strong>Project Experience</strong>
-                        </div>
-                        <div class="card-body">
-                            <div id="projectExperienceContainer">
-                                {% for experience in resumeData.project_experience %}
-                                <div class="projectExperienceItem card px-5 py-3" id="projectExperience-{{loop.index-1}}"
-                                    style="padding: 10px;">
-                                    <div class="row" style="width: 100%;">
-                                        <button id="projectExperience-{{loop.index-1}}--button"
-                                            class="mdl-button mdl-js-button mdl-button--fab closeButton"
-                                            style="margin-left: 100%">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>Title:</label>
-                                                <input type="text" class="form-control"
-                                                    name="project_experience[{{ loop.index-1 }}][title]"
-                                                    value="{{ experience.title }}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>Technologies:</label>
-                                                <!-- <input type="text" class="form-control" required> -->
-                                                <select class="tag-select form-control"
-                                                    name="project_experience[{{ loop.index-1 }}][technologies]"
-                                                    value="{{ experience.technologies }}" multiple="multiple"></select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>Description:</label>
-                                                <textarea class="form-control"
-                                                    name="project_experience[{{ loop.index-1 }}][description]" rows="5"
-                                                    required>{{ experience.description|join('\n') }}</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col" align="center">
-                                    <button id="addProjectExperience" class="mdl-button mdl-js-button mdl-button--fab">
-                                        <i class="material-icons">add</i>
+                        </button>
+                    </div>
+                    <div class="card-body" id="projectExperienceBody">
+                        <div id="projectExperienceContainer">
+                            {% for experience in resumeData.project_experience %}
+                            <div class="projectExperienceItem px-5 py-3" id="projectExperience-{{loop.index-1}}"
+                                style="padding: 10px;">
+                                <div class="row" style="width: 100%;">
+                                    <button id="projectExperience-{{loop.index-1}}--button"
+                                        class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                                        style="margin-left: 100%">
+                                        <i class="material-icons">close</i>
                                     </button>
                                 </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Title</label>
+                                            <input type="text" class="form-control"
+                                                name="project_experience[{{loop.index-1}}][title]"
+                                                value="{{ experience.title }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Technologies</label>
+                                            <!-- <input type="text" class="form-control" required> -->
+                                            <select class="tag-select form-control"
+                                                name="project_experience[{{loop.index-1}}][technologies]"
+                                                value="{{ experience.technologies }}" multiple="multiple"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea class="form-control"
+                                                name="project_experience[{{loop.index-1}}][description]" rows="5"
+                                                placeholder="Describe the project and technologies used">{{ experience.description|join('\n') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            {% endfor %}
                         </div>
+                        <button class="btn btn-primary m-2 addMore" id="addProjectExperience">Add More</button>
                     </div>
+                </div>
 
-                    <div class="card grid">
-                        <div class="card-header">
+                <div class="card grid accordion">
+                    <div class="card-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#educationBody" aria-expanded="true" aria-controls="educationBody">
                             <strong>Education</strong>
-                        </div>
-                        <div class="card-body">
-                            <div id="educationContainer">
-                                {% for education in resumeData.education %}
-                                <div class="educationItem card px-5 py-3" id="education-{{loop.index-1}}" style="padding: 10px;">
-                                    <div class="row" style="width: 100%;">
-                                        <button id="education-{{loop.index-1}}--button"
-                                            class="mdl-button mdl-js-button mdl-button--fab closeButton"
-                                            style="margin-left: 100%">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>Degree:</label>
-                                                <input type="text" name="education[{{ loop.index-1 }}][degree]"
-                                                    class="form-control" value="{{ education.degree }}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>Major:</label>
-                                                <input type="text" name="education[{{ loop.index-1 }}][major]"
-                                                    class="form-control" value="{{ education.major }}" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>University:</label>
-                                                <input type="text" name="education[{{ loop.index-1 }}][university]"
-                                                    class="form-control" value="{{ education.university }}" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>From:</label>
-                                                <input type="month" name="education[{{ loop.index-1 }}][from]"
-                                                    class="form-control" value="{{ education.from }}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label>To:</label>
-                                                <input type="month" name="education[{{ loop.index-1 }}][to]"
-                                                    class="form-control" value="{{ education.to }}" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col" align="center">
-                                    <button id="addEducation" class="mdl-button mdl-js-button mdl-button--fab">
-                                        <i class="material-icons">add</i>
+                        </button>
+                    </div>
+                    <div class="card-body" id="educationBody">
+                        <div id="educationContainer">
+                            {% for education in resumeData.education %}
+                            <div class="educationItem px-5 py-3" id="education-{{loop.index-1}}" style="padding: 10px;">
+                                <div class="row" style="width: 100%;">
+                                    <button id="education-0--button"
+                                        class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                                        style="margin-left: 100%">
+                                        <i class="material-icons">close</i>
                                     </button>
                                 </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Degree</label>
+                                            <input type="text" name="education[{{loop.index-1}}][degree]"
+                                                value="{{ education.degree }}" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Major</label>
+                                            <input type="text" name="education[{{loop.index-1}}][major]"
+                                                value="{{ education.major }}" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>University</label>
+                                            <input type="text" name="education[{{loop.index-1}}][university]"
+                                                value="{{ education.university }}" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>From</label>
+                                            <input type="month" name="education[{{loop.index-1}}][from]"
+                                                value="{{ education.from }}" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>To</label>
+                                            <input type="month" name="education[{{loop.index-1}}][to]"
+                                                value="{{ education.to }}" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            {% endfor %}
                         </div>
+                        <button class="btn btn-primary m-2 addMore" id="addEducation">Add More</button>
                     </div>
+                </div>
 
 
-                    <div class="card grid">
-                        <div class="card-header">
-                            <strong>
-                                Technical Skills
-                            </strong>
+                <div class="card grid">
+                    <div class="card-header">
+                        <strong>
+                            Technical Skills
+                        </strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>Languages</label>
+                                </div>
+                                <div class="col-8">
+                                    <select class="tag-select form-control" name="technical_skills_languages[]"
+                                        value="{{ resumeData.technical_skills_languages }}"
+                                        multiple="multiple"></select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label>Languages</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <select class="tag-select form-control" name="technical_skills_languages[]"
-                                        value="{{ resumeData.technical_skills_languages }}" multiple="multiple"></select>
-                                    </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>Developer Tools</label>
+                                </div>
+                                <div class="col-8">
+                                    <select class="tag-select form-control" name="technical_skills_developer_tools[]"
+                                        value="{{ resumeData.technical_skills_developer_tools }}"
+                                        multiple="multiple"></select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label>Developer Tools</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <select class="tag-select form-control" name="technical_skills_developer_tools[]"
-                                        value="{{ resumeData.technical_skills_developer_tools }}" multiple="multiple"></select>
-                                    </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>Technologies and Frameworks</label>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label>Technologies and Frameworks</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <select class="tag-select form-control"
+                                <div class="col-8">
+                                    <select class="tag-select form-control"
                                         name="technical_skills_technologies_and_frameworks[]"
                                         value="{{ resumeData.technical_skills_technologies_and_frameworks }}"
                                         multiple="multiple"></select>
-                                    </div>
                                 </div>
-                                
                             </div>
+
                         </div>
                     </div>
+                </div>
 
-                    <div class="card grid">
-                        <div class="card-header">
-                            <strong>
-                                Design
-                            </strong>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group">
-                                <select class="form-control" name="design" value="{{ resumeData.design }}">
-                                    {% for design in designs %}
-                                        {% if design == selectedDesign %}
-                                            <option value="{{design}}" selected>{{design}}</option>
-                                        {% else %}
-                                            <option value="{{design}}">{{design}}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div>
+                <div class="card grid">
+                    <div class="card-header">
+                        <strong>
+                            Design
+                        </strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <select class="form-control" name="design" value="{{ resumeData.design }}">
+                                {% for design in designs %}
+                                {% if design == selectedDesign %}
+                                <option value="{{design}}" selected>{{design}}</option>
+                                {% else %}
+                                <option value="{{design}}">{{design}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
+                </div>
 
-                    <button type="submit" class="btn btn-primary my-3">Update</button>
-                </form>
-            </div>
+                <button type="submit" class="btn btn-primary my-3">Update</button>
+            </form>
         </div>
         <div class="tab-pane fade show" id="preview" role="tabpanel" align="center">
             <div id="previewResume">
                 <div id="pdf-viewer" style="height: 800px; width: 640px; overflow: auto;"></div>
             </div>
         </div>
-        </ul>
     </div>
+</div>
 </div>
 
 
@@ -381,61 +396,80 @@
 
     $("#addWorkExperience").click(function () {
         var workExperienceCount = $("#workExperienceContainer").children().length;
-        let workExperienceHtml = `
-            <div class="workExperienceItem card px-5 py-3" id="workExperience-${workExperienceCount}">
-                <div class="row" style="width: 100%;">
-                    <button id="workExperience-${workExperienceCount}--button"
-                    class="mdl-button mdl-js-button mdl-button--fab closeButton" style="margin-left: 100%">
-                        <i class="material-icons">close</i>
-                    </button>
+        let workExperienceHtml1 = `
+            <div class="workExperienceItem" id="workExperience-${workExperienceCount}" style="padding: 10px;">`
+
+
+        let workExperienceHtml2 = `
+            <div class="row" style="width: 100%;">
+                <button id="workExperience-${workExperienceCount}--button"
+                    class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                    style="margin-left: 100%">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" class="form-control"
+                            name="work_experience[${workExperienceCount}][company]" required>
+                    </div>
+                    
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Title:</label>
-                            <input type="text" class="form-control"
-                                name="work_experience[${workExperienceCount}][title]" required>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Company:</label>
-                            <input type="text" class="form-control"
-                                name="work_experience[${workExperienceCount}][company]"
-                                required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>From:</label>
-                            <input type="month" class="form-control"
-                                name="work_experience[${workExperienceCount}][from]" required>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>To:</label>
-                            <input type="month"
-                                name="work_experience[${workExperienceCount}][to]"
-                                class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Description:</label>
-                            <textarea class="form-control" rows="5"
-                                name="work_experience[${workExperienceCount}][description]"
-                                required></textarea>
-                        </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Position Title</label>
+                        <input type="text" class="form-control" name="work_experience[${workExperienceCount}][title]"
+                            required>
                     </div>
                 </div>
             </div>
-                `;
-        $("#workExperienceContainer").append(workExperienceHtml);
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>From</label>
+                        <input type="month" class="form-control" name="work_experience[${workExperienceCount}][from]"
+                            required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>To</label>
+                        <input type="month" name="work_experience[${workExperienceCount}][to]" class="form-control" id="to-${workExperienceCount}">
+                    </div>
+                </div>
+            </div>
+            <div class="row form-check mb-4">
+                <div class="col">
+                    <input class="form-check-input working" type="checkbox" value="" id="working-${workExperienceCount}">
+                    <label class="form-check-label" for="working-${workExperienceCount}">
+                        This is my current job
+                    </label>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" rows="5"
+                            name="work_experience[${workExperienceCount}][description]" placeholder="Describe your responsibilities" required></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `
+
+
+        var hr = document.createElement("hr");
+        if (workExperienceCount != 0) {
+            workExperienceHtml1 += `<hr class="item-seperator">` + workExperienceHtml2
+        }
+        else {
+            workExperienceHtml1 += workExperienceHtml2
+        }
+        $("#workExperienceContainer").append(workExperienceHtml1);
         workExperienceCount += 1;
         document.querySelectorAll('.closeButton').forEach(item => {
             item.addEventListener('click', event => {
@@ -449,14 +483,40 @@
                 element.remove();
             })
         })
+
+
+
+
+        document.querySelectorAll('.working').forEach(item => {
+            item.addEventListener('change', event => {
+                console.log(event.currentTarget)
+                // the target could be something INSIDE the button, so we need to get the parent
+
+                const elementId = event.currentTarget.id.split('--')[0];
+                index = event.currentTarget.id.split('-')[1];
+                console.log(index)
+                if (item.checked) {
+                    $("#to-" + index).prop('disabled', true);
+                    // $(this).closest('.workExperienceItem').find('.to').prop('disabled', true);
+                }
+                else {
+                    $("#to-" + index).prop('disabled', false);
+                    $(this).closest('.workExperienceItem').find('.to').prop('disabled', false);
+                }
+            })
+        })
     });
 
 
 
     $("#addProjectExperience").click(function () {
         var projectExperienceCount = $("#projectExperienceContainer").children().length;
-        let projectExperienceHtml = `
-        <div class="projectExperienceItem card px-5 py-3" id="projectExperience-${projectExperienceCount}">
+        let projectExperienceHtml1 = `
+        <div class="projectExperienceItem mt-3" id="projectExperience-${projectExperienceCount}"
+                                            style="padding: 10px;">`
+
+        let projectExperienceHtml2 = `
+                                
                                             <div class="row" style="width: 100%;">
                                                 <button id="projectExperience-${projectExperienceCount}--button"
                                                     class="mdl-button mdl-js-button mdl-button--fab closeButton"
@@ -467,14 +527,14 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>Title:</label>
+                        <label>Title</label>
                         <input type="text" class="form-control"
                             name="project_experience[${projectExperienceCount}][title]" required>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Technologies (comma separated):</label>
+                        <label>Technologies</label>
                         <!-- <input type="text" class="form-control" required> -->
                         <select class="tag-select form-control"
                             name="project_experience[${projectExperienceCount}][technologies]"
@@ -485,7 +545,7 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>Description:</label>
+                        <label>Description</label>
                         <textarea class="form-control"
                             name="project_experience[${projectExperienceCount}][description]"
                             rows="5"
@@ -495,15 +555,20 @@
             </div>
         </div>
                 `;
+        if (projectExperienceCount != 0) {
+            projectExperienceHtml1 += `<hr class="item-seperator">` + projectExperienceHtml2
+        }
+        else {
+            projectExperienceHtml1 += projectExperienceHtml2
+        }
 
 
-
-        $("#projectExperienceContainer").append(projectExperienceHtml);
+        $("#projectExperienceContainer").append(projectExperienceHtml1);
 
         $('.tag-select').select2({
             tags: true,
             tokenSeparators: [','],
-            width: 'resolve'
+            width: "100%"
         });
 
         document.querySelectorAll('.closeButton').forEach(item => {
@@ -518,14 +583,20 @@
                 element.remove();
             })
         })
+
+
+
     });
 
 
     $("#addEducation").click(function () {
         console.log("clicked")
         var educationCount = $("#educationContainer").children().length;
-        let educationHtml = `
-        <div class="educationItem card px-5 py-3" id="education-${educationCount}">
+        let educationHtml1 = `
+        <div class="educationItem mt-3" id="education-${educationCount}"
+            style="padding: 10px;">
+        `;
+        let educationHtml2 = `
             <div class="row" style="width: 100%;">
                 <button id="education-${educationCount}--button"
                     class="mdl-button mdl-js-button mdl-button--fab closeButton"
@@ -536,7 +607,7 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>Degree:</label>
+                        <label>Degree</label>
                         <input type="text" name="education[${educationCount}][degree]"
                             class="form-control""
                             required>
@@ -544,7 +615,7 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Major:</label>
+                        <label>Major</label>
                         <input type="text" name="education[${educationCount}][major]"
                             class="form-control" required>
                     </div>
@@ -553,7 +624,7 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>University:</label>
+                        <label>University</label>
                         <input type="text"
                             name="education[${educationCount}][university]"
                             class="form-control"
@@ -564,14 +635,14 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>From:</label>
+                        <label>From</label>
                         <input type="month" name="education[${educationCount}][from]"
                             class="form-control" required>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>To:</label>
+                        <label>To</label>
                         <input type="month" name="education[${educationCount}][to]"
                             class="form-control" required>
                     </div>
@@ -581,7 +652,15 @@
         `;
 
 
-        $("#educationContainer").append(educationHtml);
+        if (educationCount != 0) {
+            educationHtml1 += `<hr class="item-seperator">` + educationHtml2
+        }
+        else {
+            educationHtml1 += educationHtml2
+        }
+
+
+        $("#educationContainer").append(educationHtml1);
 
         document.querySelectorAll('.closeButton').forEach(item => {
             item.addEventListener('click', event => {
@@ -596,7 +675,6 @@
             })
         })
     })
-
 
 
 
@@ -687,6 +765,21 @@
                     console.error('Error:', error);
                 }
             });
+        });
+
+        $(".working").change(function () {
+            index = $(this).attr('id').split('-')[1];
+            console.log(index)
+            if (this.checked) {
+                index = $(this).attr('id').split('-')[1];
+                $("#to-" + index).prop('disabled', true);
+                // $(this).closest('.workExperienceItem').find('.to').prop('disabled', true);
+            }
+            else {
+                index = $(this).attr('id').split('-')[1];
+                $("#to-" + index).prop('disabled', false);
+                $(this).closest('.workExperienceItem').find('.to').prop('disabled', false);
+            }
         });
     });
 

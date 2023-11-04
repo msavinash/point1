@@ -15,9 +15,21 @@
         transition: width 400ms ease;
         width: 0;
     }
+
+    .addMore {
+        width: 100%;
+    }
+
+    .item-seperator {
+        margin-top: 0px;
+    }
+
+    label {
+        font-weight: bold;
+    }
 </style>
-<div class="container mt-5">
-    <h4>Fill in your profile information to start generating tailored resumes for different job descriptions.</h4>
+<div class="container mt-5" style="width: 900px;">
+    <h3>Complete your profile.</h3>
     <form id="resumeDataForm">
         <div>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" hidden>
@@ -47,13 +59,14 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="name">Name:</label>
-                                        <input type="text" class="form-control" id="name" value="{{name}}" name="name" required>
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" id="name" value="{{name}}" name="name"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="phone_number">Phone Number:</label>
+                                        <label for="phone_number">Phone Number</label>
                                         <input type="text" class="form-control" id="phone_number" name="phone_number"
                                             required>
                                     </div>
@@ -62,13 +75,14 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="email">Email:</label>
-                                        <input type="email" class="form-control" id="email_id" name="email_id" value="{{email}}" required disabled>
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email_id" name="email_id"
+                                            value="{{email}}" required disabled>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="linkedin">LinkedIn:</label>
+                                        <label for="linkedin">LinkedIn</label>
                                         <input type="text" class="form-control" id="linkedin_link" name="linkedin_link"
                                             required>
                                     </div>
@@ -77,9 +91,9 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="objective">Objective:</label>
-                                        <textarea class="form-control" id="objective" name="objective" rows="2"
-                                            required></textarea>
+                                        <label for="objective">Objective</label>
+                                        <textarea class="form-control" id="objective" name="objective"
+                                            rows="2"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -87,10 +101,10 @@
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-4" align="left">
-                                    
+
                                 </div>
                                 <div class="col-4" align="center">
-                                    
+
                                 </div>
                                 <div class="col-4" align="right">
                                     <div class="col-6" align="right">
@@ -108,7 +122,7 @@
                         </div>
                         <div class="card-body">
                             <div id="workExperienceContainer">
-                                <div class="workExperienceItem card px-5 py-3" id="workExperience-0">
+                                <div class="workExperienceItem px-5 py-3" id="workExperience-0">
                                     <div class="row" style="width: 100%;">
                                         <button id="workExperience-0--button"
                                             class="mdl-button mdl-js-button mdl-button--fab closeButton"
@@ -119,45 +133,59 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>Title:</label>
-                                                <input type="text" class="form-control" name="work_experience[0][title]"
-                                                    required>
+                                                <label>Company</label>
+                                                <input type="text" class="form-control"
+                                                    name="work_experience[0][company]" required>
                                             </div>
+
                                         </div>
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>Company:</label>
-                                                <input type="text" class="form-control"
-                                                    name="work_experience[0][company]" required>
+                                                <label>Position Title</label>
+                                                <input type="text" class="form-control" name="work_experience[0][title]"
+                                                    required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>From:</label>
+                                                <label>From</label>
                                                 <input type="month" class="form-control" name="work_experience[0][from]"
                                                     required>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>To:</label>
-                                                <input type="month" name="work_experience[0][to]" class="form-control">
+                                                <label>To</label>
+                                                <input type="month" name="work_experience[0][to]" class="form-control"
+                                                    id="to-0">
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row form-check mb-4">
+                                        <div class="col">
+                                            <input class="form-check-input working" type="checkbox" value=""
+                                                id="working-0">
+                                            <label class="form-check-label" for="working-0">
+                                                This is my current job
+                                            </label>
+                                        </div>
+
                                     </div>
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>Description:</label>
+                                                <label>Description</label>
                                                 <textarea class="form-control" rows="5"
-                                                    name="work_experience[0][description]" required></textarea>
+                                                    name="work_experience[0][description]"
+                                                    placeholder="Describe your responsibilities" required></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <button class="btn btn-primary m-2 addMore" id="addWorkExperience">Add More</button>
                         </div>
                         <div class="card-footer">
                             <div class="row">
@@ -167,9 +195,9 @@
                                     </div>
                                 </div>
                                 <div class="col-4" align="center">
-                                    <button id="addWorkExperience" class="mdl-button mdl-js-button mdl-button--fab">
+                                    <!-- <button id="addWorkExperience" class="mdl-button mdl-js-button mdl-button--fab">
                                         <i class="material-icons">add</i>
-                                    </button>
+                                    </button> -->
                                 </div>
                                 <div class="col-4" align="right">
                                     <div class="col-6" align="right">
@@ -187,7 +215,7 @@
                         </div>
                         <div class="card-body">
                             <div id="projectExperienceContainer">
-                                <div class="projectExperienceItem card px-5 py-3" id="projectExperience-0"
+                                <div class="projectExperienceItem px-5 py-3" id="projectExperience-0"
                                     style="padding: 10px;">
                                     <div class="row" style="width: 100%;">
                                         <button id="projectExperience-0--button"
@@ -199,14 +227,14 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>Title:</label>
+                                                <label>Title</label>
                                                 <input type="text" class="form-control"
                                                     name="project_experience[0][title]" required>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>Technologies (comma separated):</label>
+                                                <label>Technologies</label>
                                                 <!-- <input type="text" class="form-control" required> -->
                                                 <select class="tag-select form-control"
                                                     name="project_experience[0][technologies]"
@@ -217,14 +245,15 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>Description:</label>
+                                                <label>Description</label>
                                                 <textarea class="form-control" name="project_experience[0][description]"
-                                                    rows="5" required></textarea>
+                                                    rows="5" placeholder="Describe the project and technologies used"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <button class="btn btn-primary m-2 addMore" id="addProjectExperience">Add More</button>
                         </div>
                         <div class="card-footer">
                             <div class="row">
@@ -234,9 +263,9 @@
                                     </div>
                                 </div>
                                 <div class="col-4" align="center">
-                                    <button id="addProjectExperience" class="mdl-button mdl-js-button mdl-button--fab">
+                                    <!-- <button id="addProjectExperience" class="mdl-button mdl-js-button mdl-button--fab">
                                         <i class="material-icons">add</i>
-                                    </button>
+                                    </button> -->
                                 </div>
                                 <div class="col-4" align="right">
                                     <div class="col-6" align="right">
@@ -254,7 +283,7 @@
                         </div>
                         <div class="card-body">
                             <div id="educationContainer">
-                                <div class="educationItem card px-5 py-3" id="education-0" style="padding: 10px;">
+                                <div class="educationItem px-5 py-3" id="education-0" style="padding: 10px;">
                                     <div class="row" style="width: 100%;">
                                         <button id="education-0--button"
                                             class="mdl-button mdl-js-button mdl-button--fab closeButton"
@@ -265,14 +294,14 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>Degree:</label>
+                                                <label>Degree</label>
                                                 <input type="text" name="education[0][degree]" class="form-control"
                                                     required>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>Major:</label>
+                                                <label>Major</label>
                                                 <input type="text" name="education[0][major]" class="form-control"
                                                     required>
                                             </div>
@@ -281,7 +310,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>University:</label>
+                                                <label>University</label>
                                                 <input type="text" name="education[0][university]" class="form-control"
                                                     required>
                                             </div>
@@ -290,14 +319,14 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>From:</label>
+                                                <label>From</label>
                                                 <input type="month" name="education[0][from]" class="form-control"
                                                     required>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="form-group">
-                                                <label>To:</label>
+                                                <label>To</label>
                                                 <input type="month" name="education[0][to]" class="form-control"
                                                     required>
                                             </div>
@@ -305,6 +334,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <button class="btn btn-primary m-2 addMore" id="addEducation">Add More</button>
                         </div>
                         <div class="card-footer">
                             <div class="row">
@@ -314,9 +344,9 @@
                                     </div>
                                 </div>
                                 <div class="col-4" align="center">
-                                    <button id="addEducation" class="mdl-button mdl-js-button mdl-button--fab">
+                                    <!-- <button id="addEducation" class="mdl-button mdl-js-button mdl-button--fab">
                                         <i class="material-icons">add</i>
-                                    </button>
+                                    </button> -->
                                 </div>
                                 <div class="col-4" align="right">
                                     <div class="col-6" align="right">
@@ -338,7 +368,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col">
-                                        <label>Languages (comma separated):</label>
+                                        <label>Languages</label>
                                     </div>
                                     <div class="col">
                                         <select class="tag-select form-control" name="technical_skills_languages[]"
@@ -349,7 +379,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col">
-                                        <label>Developer Tools (comma separated):</label>
+                                        <label>Developer Tools</label>
                                     </div>
                                     <div class="col">
                                         <select class="tag-select form-control"
@@ -360,7 +390,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col">
-                                        <label>Technologies and Frameworks (comma separated):</label>
+                                        <label>Technologies and Frameworks</label>
                                     </div>
                                     <div class="col">
                                         <select class="tag-select form-control"
@@ -428,65 +458,98 @@
             }
         });
 
+        $(".working").change(function () {
+            index = $(this).attr('id').split('-')[1];
+            console.log(index)
+            if (this.checked) {
+                index = $(this).attr('id').split('-')[1];
+                $("#to-" + index).prop('disabled', true);
+                // $(this).closest('.workExperienceItem').find('.to').prop('disabled', true);
+            }
+            else {
+                index = $(this).attr('id').split('-')[1];
+                $("#to-" + index).prop('disabled', false);
+                $(this).closest('.workExperienceItem').find('.to').prop('disabled', false);
+            }
+        });
     });
 
     $("#addWorkExperience").click(function () {
         var workExperienceCount = $("#workExperienceContainer").children().length;
-        let workExperienceHtml = `
-            <div class="workExperienceItem card mt-3" id="workExperience-${workExperienceCount}" style="padding: 10px;">
-                <div class="row" style="width: 100%;">
-                    <button id="workExperience-${workExperienceCount}--button"
-                    class="mdl-button mdl-js-button mdl-button--fab closeButton" style="margin-left: 100%">
-                        <i class="material-icons">close</i>
-                    </button>
+        let workExperienceHtml1 = `
+            <div class="workExperienceItem" id="workExperience-${workExperienceCount}" style="padding: 10px;">`
+
+
+        let workExperienceHtml2 = `
+            <div class="row" style="width: 100%;">
+                <button id="workExperience-${workExperienceCount}--button"
+                    class="mdl-button mdl-js-button mdl-button--fab closeButton"
+                    style="margin-left: 100%">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" class="form-control"
+                            name="work_experience[${workExperienceCount}][company]" required>
+                    </div>
+                    
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Title:</label>
-                            <input type="text" class="form-control"
-                                name="work_experience[${workExperienceCount}][title]" required>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Company:</label>
-                            <input type="text" class="form-control"
-                                name="work_experience[${workExperienceCount}][company]"
-                                required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>From:</label>
-                            <input type="month" class="form-control"
-                                name="work_experience[${workExperienceCount}][from]" required>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>To:</label>
-                            <input type="month"
-                                name="work_experience[${workExperienceCount}][to]"
-                                class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Description:</label>
-                            <textarea class="form-control" rows="3"
-                                name="work_experience[${workExperienceCount}][description]"
-                                required></textarea>
-                        </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Position Title</label>
+                        <input type="text" class="form-control" name="work_experience[${workExperienceCount}][title]"
+                            required>
                     </div>
                 </div>
             </div>
-                `;
-        $("#workExperienceContainer").append(workExperienceHtml);
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>From</label>
+                        <input type="month" class="form-control" name="work_experience[${workExperienceCount}][from]"
+                            required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>To</label>
+                        <input type="month" name="work_experience[${workExperienceCount}][to]" class="form-control" id="to-${workExperienceCount}">
+                    </div>
+                </div>
+            </div>
+            <div class="row form-check mb-4">
+                <div class="col">
+                    <input class="form-check-input working" type="checkbox" value="" id="working-${workExperienceCount}">
+                    <label class="form-check-label" for="working-${workExperienceCount}">
+                        This is my current job
+                    </label>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" rows="5"
+                            name="work_experience[${workExperienceCount}][description]" placeholder="Describe your responsibilities" required></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `
+
+
+        var hr = document.createElement("hr");
+        if (workExperienceCount != 0) {
+            workExperienceHtml1 += `<hr class="item-seperator">` + workExperienceHtml2
+        }
+        else {
+            workExperienceHtml1 += workExperienceHtml2
+        }
+        $("#workExperienceContainer").append(workExperienceHtml1);
         workExperienceCount += 1;
         document.querySelectorAll('.closeButton').forEach(item => {
             item.addEventListener('click', event => {
@@ -500,15 +563,40 @@
                 element.remove();
             })
         })
+
+
+
+
+        document.querySelectorAll('.working').forEach(item => {
+            item.addEventListener('change', event => {
+                console.log(event.currentTarget)
+                // the target could be something INSIDE the button, so we need to get the parent
+
+                const elementId = event.currentTarget.id.split('--')[0];
+                index = event.currentTarget.id.split('-')[1];
+                console.log(index)
+                if (item.checked) {
+                    $("#to-" + index).prop('disabled', true);
+                    // $(this).closest('.workExperienceItem').find('.to').prop('disabled', true);
+                }
+                else {
+                    $("#to-" + index).prop('disabled', false);
+                    $(this).closest('.workExperienceItem').find('.to').prop('disabled', false);
+                }
+            })
+        })
     });
 
 
 
     $("#addProjectExperience").click(function () {
         var projectExperienceCount = $("#projectExperienceContainer").children().length;
-        let projectExperienceHtml = `
-        <div class="projectExperienceItem card mt-3" id="projectExperience-${projectExperienceCount}"
-                                            style="padding: 10px;">
+        let projectExperienceHtml1 = `
+        <div class="projectExperienceItem mt-3" id="projectExperience-${projectExperienceCount}"
+                                            style="padding: 10px;">`
+
+        let projectExperienceHtml2 = `
+                                
                                             <div class="row" style="width: 100%;">
                                                 <button id="projectExperience-${projectExperienceCount}--button"
                                                     class="mdl-button mdl-js-button mdl-button--fab closeButton"
@@ -519,14 +607,14 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>Title:</label>
+                        <label>Title</label>
                         <input type="text" class="form-control"
                             name="project_experience[${projectExperienceCount}][title]" required>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Technologies (comma separated):</label>
+                        <label>Technologies</label>
                         <!-- <input type="text" class="form-control" required> -->
                         <select class="tag-select form-control"
                             name="project_experience[${projectExperienceCount}][technologies]"
@@ -537,7 +625,7 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>Description:</label>
+                        <label>Description</label>
                         <textarea class="form-control"
                             name="project_experience[${projectExperienceCount}][description]"
                             rows="3"
@@ -547,14 +635,20 @@
             </div>
         </div>
                 `;
+        if(projectExperienceCount != 0){
+            projectExperienceHtml1 += `<hr class="item-seperator">` + projectExperienceHtml2
+        }
+        else{
+            projectExperienceHtml1 += projectExperienceHtml2
+        }
 
 
-
-        $("#projectExperienceContainer").append(projectExperienceHtml);
+        $("#projectExperienceContainer").append(projectExperienceHtml1);
 
         $('.tag-select').select2({
             tags: true,
-            tokenSeparators: [',']
+            tokenSeparators: [','],
+            width: "100%"
         });
 
         document.querySelectorAll('.closeButton').forEach(item => {
@@ -569,15 +663,20 @@
                 element.remove();
             })
         })
+
+
+
     });
 
 
     $("#addEducation").click(function () {
         console.log("clicked")
         var educationCount = $("#educationContainer").children().length;
-        let educationHtml = `
-        <div class="educationItem card mt-3" id="education-${educationCount}"
+        let educationHtml1 = `
+        <div class="educationItem mt-3" id="education-${educationCount}"
             style="padding: 10px;">
+        `;
+        let educationHtml2 = `
             <div class="row" style="width: 100%;">
                 <button id="education-${educationCount}--button"
                     class="mdl-button mdl-js-button mdl-button--fab closeButton"
@@ -588,7 +687,7 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>Degree:</label>
+                        <label>Degree</label>
                         <input type="text" name="education[${educationCount}][degree]"
                             class="form-control""
                             required>
@@ -596,7 +695,7 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Major:</label>
+                        <label>Major</label>
                         <input type="text" name="education[${educationCount}][major]"
                             class="form-control" required>
                     </div>
@@ -605,7 +704,7 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>University:</label>
+                        <label>University</label>
                         <input type="text"
                             name="education[${educationCount}][university]"
                             class="form-control"
@@ -616,14 +715,14 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>From:</label>
+                        <label>From</label>
                         <input type="month" name="education[${educationCount}][from]"
                             class="form-control" required>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>To:</label>
+                        <label>To</label>
                         <input type="month" name="education[${educationCount}][to]"
                             class="form-control" required>
                     </div>
@@ -633,7 +732,15 @@
         `;
 
 
-        $("#educationContainer").append(educationHtml);
+        if(educationCount != 0){
+            educationHtml1 += `<hr class="item-seperator">` + educationHtml2
+        }
+        else{
+            educationHtml1 += educationHtml2
+        }
+
+
+        $("#educationContainer").append(educationHtml1);
 
         document.querySelectorAll('.closeButton').forEach(item => {
             item.addEventListener('click', event => {

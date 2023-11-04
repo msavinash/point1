@@ -165,6 +165,9 @@ def store_user_data():
     try:
         data = request.form
         resumeDataJson = preprocessResumeData(data)
+        print("Preprocessed data")
+        pprint(resumeDataJson)
+        # exit(0)
         addToFirestore(resumeDataJson, db, COLLECTION_NAME)
         return jsonify({'message': 'User data stored successfully'})
 
