@@ -189,7 +189,9 @@ def store_user_data():
         return jsonify({'error': str(e)}), 500
     
 
-
+@app.route('/profile')
+def profile():
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/generate_rankedpdf', methods=['POST'])
