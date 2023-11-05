@@ -1,7 +1,7 @@
-const BASE_URL = 'http://localhost:5000';
+// const BASE_URL = 'http://localhost:5000';
 // const BASE_URL = 'https://resumegen.onrender.com';
 // const BASE_URL = "https://tailorestest-xk3tn7p6ea-wl.a.run.app";
-// const BASE_URL = "https://app.tailores.live"
+const BASE_URL = "https://app.tailores.live"
 
 
 function startScan() {

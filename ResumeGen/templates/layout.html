@@ -158,6 +158,22 @@
         .accordion-button:focus {
             box-shadow: none;
         }
+
+        header {
+            top: 0;
+            width: 100%;
+            position: sticky;
+            background-color: white;
+            z-index: 100;
+        }
+        footer {
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 255, 255);
+            text-align: center;
+        }
     </style>
 
 
@@ -167,22 +183,26 @@
 </head>
 
 <body>
-    <div class="m-3">
-        <div class="row mx-3">
+    <header>
+        <div class="row mx-3 py-3">
             <div class="col-md-6">
                 <img src="static/logo.png" style="height: 50px;" />
             </div>
             <div class="col-md-6" style="margin: auto;">
                 <button class="btn btn-primary float-right" onclick="window.location.href='/logout'">Logout</button>
             </div>
-        
-    </div>
-    <hr>
+        </div>
+    <hr style="margin: 0;">
+    </header>
+    <div>
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
-        <!-- {% block footer %}
-        &copy; Copyright 2010 by <a href="http://domain.invalid/">you</a>.
-        {% endblock %} -->
+        <footer class="footer">
+            <!-- <p>&copy; TailoRes</p>
+            <p><a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-of-service">Terms of Service</a></p> -->
+            <!-- <p>Contact: info@yourwebsite.com</p>
+            <p>Follow us on social media: <a href="https://twitter.com/yourwebsite"><img src="twitter-icon.png" alt="Twitter"></a> <a href="https://facebook.com/yourwebsite"><img src="facebook-icon.png" alt="Facebook"></a></p> -->
+        </footer>
     </div>
 </body>
 

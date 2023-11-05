@@ -2,6 +2,7 @@
 import base64
 import datetime
 import requests
+from google.cloud.firestore_v1.base_query import FieldFilter, BaseCompositeFilter
 
 def b64encodeFilter(s):
     return base64.b64encode(s).decode("utf-8")
@@ -21,7 +22,10 @@ def checkUserExists(search_email, db, COLLECTION_NAME, google):
     except google.cloud.exceptions.NotFound:
         print('Document not found')
         return False
-    
+
+def getResumeCount(userEmail, db, COLLECTION_NAME):
+    docs = db.collection(COLLECTION_NAME).where(filter=FieldFilter("email", "==", userEmail)).stream()
+    return len(list(docs))
 
 
 def getResumeData(search_email, db, COLLECTION_NAME, google):

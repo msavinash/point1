@@ -30,7 +30,8 @@ from utils import *
 # Constants
 OAUTH_CREDENTIALS = os.path.join("credentials", 'oauth.json')
 FIRESTORE_CREDENTIALS = os.path.join("credentials", 'firestore.json')
-COLLECTION_NAME = "resume-data"
+USER_COLLECTION_NAME = "resume-data"
+LOG_COLLECTION_NAME = "logs"
 DEFAULT_DESIGN = "Design-1"
 
 
@@ -80,7 +81,7 @@ app.jinja_env.filters['format_date'] = formatDate
 @app.route('/')
 def index():
     if 'google_token' in session and "email" in google.get('userinfo').data:
-        return redirect("/profile")
+        return redirect("/dashboard")
     else:
         return redirect("/login")
 
@@ -109,7 +110,7 @@ def authorized():
         )
     session['google_token'] = (response['access_token'], '')
     userEmail = google.get('userinfo').data['email']
-    userExists = checkUserExists(userEmail, db, COLLECTION_NAME, google)
+    userExists = checkUserExists(userEmail, db, USER_COLLECTION_NAME, google)
 
     if userExists:
         return redirect("/")
@@ -122,14 +123,14 @@ def getGoogleOauthToken():
     return session.get('google_token')
 
 
-@app.route('/profile')
-def userProfile():
+@app.route('/dashboard')
+def dashboard():
     if 'google_token' in session and "email" in google.get('userinfo').data:
         userEmail = google.get('userinfo').data['email']
         print("User email:", userEmail)
-        if not checkUserExists(userEmail, db, COLLECTION_NAME, google):
+        if not checkUserExists(userEmail, db, USER_COLLECTION_NAME, google):
             return redirect("/newuser")
-        resumeData = getResumeData(userEmail, db, COLLECTION_NAME, google)
+        resumeData = getResumeData(userEmail, db, USER_COLLECTION_NAME, google)
         design = DEFAULT_DESIGN
         if "design" in resumeData:
             design = resumeData["design"]
@@ -144,7 +145,8 @@ def userProfile():
         for file in os.listdir("templates"):
             if file.startswith("Design"):                           ################################################################
                 designs.append(file.split(".")[0])
-        return render_template("user.html", resumeData=resumeData, encodedData=encodedData, designs=designs, selectedDesign=design)
+        resumeCount = getResumeCount(userEmail, db, LOG_COLLECTION_NAME)
+        return render_template("user.html", resumeData=resumeData, encodedData=encodedData, designs=designs, selectedDesign=design, resumeCount=resumeCount)
     else:
         return redirect("/login")
 
@@ -154,7 +156,7 @@ def newUserIndex():
     if 'google_token' in session and "email" in google.get('userinfo').data:
         userData = google.get('userinfo').data
         email = userData["email"]
-        if checkUserExists(email, db, COLLECTION_NAME, google):
+        if checkUserExists(email, db, USER_COLLECTION_NAME, google):
             return redirect("/")    
         return render_template('newUser.html', email=userData["email"], name=userData["name"])
     else:
@@ -175,7 +177,7 @@ def store_user_data():
         # print("Preprocessed data")
         # pprint(resumeDataJson)
         # exit(0)
-        addToFirestore(resumeDataJson, db, COLLECTION_NAME, "email_id")
+        addToFirestore(resumeDataJson, db, USER_COLLECTION_NAME, "email_id")
         return jsonify({'message': 'User data stored successfully'})
 
     except Exception as e:
@@ -209,10 +211,10 @@ def generateRankedPdf():
         "onepage": onepage,
         "source": source
     }
-    addToFirestore(log, db, "logs")
+    addToFirestore(log, db, LOG_COLLECTION_NAME)
     print("Got request params:", time()-t, "s")
     t = time()
-    resumeData = getResumeData(email, db, COLLECTION_NAME, google)
+    resumeData = getResumeData(email, db, USER_COLLECTION_NAME, google)
     # print(resumeData)
     print("Got data from Firestore:", time()-t, "s")
     t = time()
@@ -282,7 +284,7 @@ def generateRankedPdf():
 @app.route('/checkmyuserexists', methods=['GET'])
 def checkmyuserexists():
     email = request.args.get('email')
-    if checkUserExists(email, db, COLLECTION_NAME, google):
+    if checkUserExists(email, db, USER_COLLECTION_NAME, google):
         print("Found document with email:")
         return "true"
     else:
