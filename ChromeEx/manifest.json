@@ -31,6 +31,9 @@
 			]
 		}
 	],
+	"background": {
+		"service_worker": "scripts/background.js"
+	},
 	"oauth2": {
         "client_id": "1060330181597-sg542lo7d3mcckggvv4dgsdc5qv633p6.apps.googleusercontent.com",
         "scopes":["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"]
