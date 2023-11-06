@@ -157,8 +157,11 @@ def newUserIndex():
         userData = google.get('userinfo').data
         email = userData["email"]
         if checkUserExists(email, db, USER_COLLECTION_NAME, google):
-            return redirect("/")    
-        return render_template('newUser.html', email=userData["email"], name=userData["name"])
+            return redirect("/")   
+        name = "" 
+        if "name" in userData:
+            name = userData["name"]
+        return render_template('newUser.html', email=userData["email"], name=name)
     else:
         return redirect("/login")
     
