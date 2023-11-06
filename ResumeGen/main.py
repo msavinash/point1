@@ -172,6 +172,11 @@ def nextSteps():
     return render_template('nextSteps.html')
 
 
+@app.route('/welcome')
+def welcome():
+    return render_template('welcome.html')
+
+
 @app.route('/profile-data', methods=['POST'])
 def store_user_data():
     try:

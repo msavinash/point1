@@ -27,27 +27,36 @@
     label {
         font-weight: bold;
     }
+
+    .tab-pane {
+        height: 0px;
+    }
+
+    .tab-pane.show.active {
+        height: auto;
+    }
 </style>
 <div class="container mt-5" style="width: 900px;">
     <h3>Complete your profile.</h3>
-    <form id="resumeDataForm">
-        <div>
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" hidden>
-                <li class="nav-item">
-                    <a class="nav-link active" id="step1-tab" data-toggle="pill" href="#step1" role="tab">Step 1</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="step2-tab" data-toggle="pill" href="#step2" role="tab">Step 2</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="step3-tab" data-toggle="pill" href="#step3" role="tab">Step 3</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="step4-tab" data-toggle="pill" href="#step4" role="tab">Step 4</a>
-                </li>
-            </ul>
+    <div>
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" hidden>
+            <li class="nav-item">
+                <a class="nav-link active" id="step1-tab" data-toggle="pill" href="#step1" role="tab">Step 1</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="step2-tab" data-toggle="pill" href="#step2" role="tab">Step 2</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="step3-tab" data-toggle="pill" href="#step3" role="tab">Step 3</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="step4-tab" data-toggle="pill" href="#step4" role="tab">Step 4</a>
+            </li>
+        </ul>
 
-            <div class="tab-content" id="pills-tabContent">
+        <div class="tab-content" id="pills-tabContent">
+            <form id="resumeDataForm">
+
                 <div class="tab-pane fade show active" id="step1" role="tabpanel">
                     <div class="card grid">
                         <div class="card-header">
@@ -247,7 +256,8 @@
                                             <div class="form-group">
                                                 <label>Description</label>
                                                 <textarea class="form-control" name="project_experience[0][description]"
-                                                    rows="5" placeholder="Describe the project and technologies used"></textarea>
+                                                    rows="5"
+                                                    placeholder="Describe the project and technologies used"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -412,10 +422,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
-</div>
-</form>
+        <div id="alertBox"></div>
+    </div>
 </div>
 
 <script>
@@ -426,8 +436,24 @@
     $(document).ready(function () {
 
         $('.next-step').click(function () {
-            console.log("HERE")
+            // console.log("HERE")
+            // check if current page form is valid
+
             let currentStep = $(this).closest('.tab-pane');
+            let inputs = currentStep.find('input, textarea, select');
+            let isValid = true;
+            inputs.each(function () {
+                if (!this.checkValidity()) {
+                    isValid = false;
+                }
+            });
+            if (!isValid) {
+                $("#alertBox").html(`<div class="alert alert-warning alert-dismissible fade show" role="alert">Please check in on some of those fields above.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>`)
+                return;
+            }
+
             let nextStep = currentStep.next();
 
             if (nextStep.length) {
@@ -635,10 +661,10 @@
             </div>
         </div>
                 `;
-        if(projectExperienceCount != 0){
+        if (projectExperienceCount != 0) {
             projectExperienceHtml1 += `<hr class="item-seperator">` + projectExperienceHtml2
         }
-        else{
+        else {
             projectExperienceHtml1 += projectExperienceHtml2
         }
 
@@ -732,10 +758,10 @@
         `;
 
 
-        if(educationCount != 0){
+        if (educationCount != 0) {
             educationHtml1 += `<hr class="item-seperator">` + educationHtml2
         }
-        else{
+        else {
             educationHtml1 += educationHtml2
         }
 
