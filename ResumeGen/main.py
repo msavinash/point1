@@ -177,6 +177,11 @@ def welcome():
     return render_template('welcome.html')
 
 
+@app.route('/privacy-policy')
+def privacyPolicy():
+    return render_template('privacyPolicy.html')
+
+
 @app.route('/profile-data', methods=['POST'])
 def store_user_data():
     try:
