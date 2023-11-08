@@ -1,7 +1,6 @@
 Flask
 nltk
 Gunicorn
-xhtml2pdf
 flask_cors
 flask_oauthlib
 PyPDF2
