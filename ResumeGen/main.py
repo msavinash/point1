@@ -320,5 +320,7 @@ def checkmyuserexists():
 
 
 if __name__ == "__main__":
+    context = ("../../certificate.crt", "../../private.key"")
+    # app.run(ssl_context=context)
     app.run()
     # getResumeData()
