@@ -174,8 +174,8 @@ def nextSteps():
 
 @app.route('/welcome')
 def welcome():
-    return [lsir]
-    # return render_template('welcome.html')
+    # return [lsir]
+    return render_template('welcome.html')
 
 
 @app.route('/privacy-policy')
