@@ -174,12 +174,22 @@ def nextSteps():
 
 @app.route('/welcome')
 def welcome():
-    return render_template('welcome.html')
+    return [lsir]
+    # return render_template('welcome.html')
 
 
 @app.route('/privacy-policy')
 def privacyPolicy():
     return render_template('privacyPolicy.html')
+
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('500.html'), 500
 
 
 @app.route('/profile-data', methods=['POST'])

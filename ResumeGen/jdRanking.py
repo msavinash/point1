@@ -1,11 +1,14 @@
 from nltk.tokenize import word_tokenize
+# from nltk.corpus import stopwords
 import ast
 from pprint import pprint
 
-# Sample list of words
-word_list = None
-with open("allskills.txt") as f:
-    word_list = ast.literal_eval(f.read())
+import pickle
+
+# # Sample list of words
+# word_list = None
+# with open("allskills.txt") as f:
+#     word_list = ast.literal_eval(f.read())
 
 jd = None
 
@@ -17,14 +20,27 @@ def getSkillsInJD(jd):
     jdtoke = word_tokenize(jd.lower())
     # print("JD Tokenized")
     # print(jdtoke)
-    skills = None
-    with open("linkedinskill", 'r', encoding='utf-8', errors='ignore') as f:
-        skills = list(map(lambda x: x.strip().lower(), f.readlines()))
+    # skills = None
+    # with open("linkedinskill", 'r', encoding='utf-8', errors='ignore') as f:
+    #     skills = list(map(lambda x: x.strip().lower(), f.readlines()))
+    # # split multiple word skills
+    # allskills = set()
+    # for skill in skills:
+    #     allskills.update(skill.split())
+
+    # # remove stop words using nltk
+    # stop_words = set(stopwords.words('english'))
+    # allskills = allskills.difference(stop_words)
+
+    # pickle.dump(allskills, open("allskills.pkl", "wb"))
+
+    allskills = pickle.load(open("allskills.pkl", "rb"))
+
     # pprint(skills)
     jd = " ".join(jdtoke)
     jd = " "+jd+" "
     jdSkills = []
-    for skill in skills:
+    for skill in allskills:
         if " "+skill+" " in jd:
             jdSkills.append(skill)
     return jdSkills

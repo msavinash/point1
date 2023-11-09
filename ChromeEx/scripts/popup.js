@@ -1,111 +1,131 @@
-// const BASE_URL = 'http://localhost:5000';
+const BASE_URL = "https://localhost:5000";
 // const BASE_URL = 'https://resumegen.onrender.com';
 // const BASE_URL = "https://tailorestest-xk3tn7p6ea-wl.a.run.app";
-const BASE_URL = "https://app.tailores.live"
-
+// const BASE_URL = "https://app.tailores.live"
 
 function startScan() {
-	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-		chrome.tabs.sendMessage(tabs[0].id, { action: "startScanning" }, function (response) {
-			console.log("Got response from content script:", response)
-		})
-	}
-	)
-};
-
-
-
-function stopScan() {
-	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-		chrome.tabs.sendMessage(tabs[0].id, { action: "stopScanning" }, function (response) {
-			console.log("Got response from content script:", response)
-		})
-	}
-	)
-};
-
-
-
-
-function downloadPdf(userEmail) {
-	const progress = document.getElementById('progress');
-	const progressBar = document.getElementById('progress-bar');
-
-	progress.style.display = '';
-	progressBar.style.width = '10%';
-	jobDescription = null;
-	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-		console.log("tabs", tabs)
-		chrome.tabs.sendMessage(tabs[0].id, { action: "getJobDescription" }, function (response) {
-			console.log("Got response from content script:", response)
-			if (!response) {
-				alert("Please select the job description text before  generating the resume");
-				progress.style.display = 'None';
-				return;
-			}
-			startScan();
-			jobDescription = response.jobDescription;
-			progressBar.style.width = '10%';
-			console.log("Job Description:", jobDescription);
-
-			console.log("Job Description:", jobDescription);
-			console.log("User Email:", userEmail);
-			const formData = new FormData();
-			formData.append('job_description', jobDescription);
-			formData.append('email', userEmail);
-			formData.append('highlight', document.getElementById('highlightKeywordSwitch').checked);
-			formData.append('onepage', document.getElementById('singlePageSwitch').checked);
-			// get main tab link
-			tabUrl = tabs[0].url;
-			formData.append('source', tabUrl);
-			progressBar.style.width = '50%';
-			fetch(`${BASE_URL}/generate_rankedpdf`, {
-				method: 'POST',
-				body: formData
-			})
-				.then((response) => response.blob())
-				.then((blob) => {
-					stopScan();
-					progressBar.style.width = '70%';
-					const filename = 'resume.pdf';
-					const reader = new FileReader();
-					reader.onload = () => {
-						progressBar.style.width = '80%';
-						const buffer = reader.result;
-						const blobUrl = `data:${blob.type};base64,${btoa(new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), ''))}`;
-						chrome.downloads.download({
-							url: blobUrl,
-							filename: filename,
-							saveAs: true,
-							conflictAction: "uniquify"
-						}, () => {
-							progressBar.style.width = '100%';
-							console.log('PDF download complete');
-							setTimeout(() => { progress.style.display = 'None'; }, 1000)
-							console.log("done");
-						});
-					};
-					reader.readAsArrayBuffer(blob);
-					progressBar.style.width = '0%';
-
-				})
-				.catch((error) => {
-					console.error('Failed to generate PDF:', error);
-				});
-		})
-	});
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.sendMessage(
+      tabs[0].id,
+      { action: "startScanning" },
+      function (response) {
+        console.log("Got response from content script:", response);
+      }
+    );
+  });
 }
 
+function stopScan() {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.sendMessage(
+      tabs[0].id,
+      { action: "stopScanning" },
+      function (response) {
+        console.log("Got response from content script:", response);
+      }
+    );
+  });
+}
+
+function downloadPdf(userEmail) {
+  const progress = document.getElementById("progress");
+  const progressBar = document.getElementById("progress-bar");
+
+  progress.style.display = "";
+  progressBar.style.width = "10%";
+  jobDescription = null;
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    console.log("tabs", tabs);
+    chrome.tabs.sendMessage(
+      tabs[0].id,
+      { action: "getJobDescription" },
+      function (response) {
+        console.log("Got response from content script:", response);
+        if (!response) {
+          alert(
+            "Please select the job description text before  generating the resume"
+          );
+          progress.style.display = "None";
+          return;
+        }
+        startScan();
+        jobDescription = response.jobDescription;
+        progressBar.style.width = "10%";
+        console.log("Job Description:", jobDescription);
+
+        console.log("Job Description:", jobDescription);
+        console.log("User Email:", userEmail);
+        const formData = new FormData();
+        formData.append("job_description", jobDescription);
+        formData.append("email", userEmail);
+        formData.append(
+          "highlight",
+          document.getElementById("highlightKeywordSwitch").checked
+        );
+        formData.append(
+          "onepage",
+          document.getElementById("singlePageSwitch").checked
+        );
+        // get main tab link
+        tabUrl = tabs[0].url;
+        formData.append("source", tabUrl);
+        progressBar.style.width = "50%";
+        fetch(`${BASE_URL}/generate_rankedpdf`, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.blob())
+          .then((blob) => {
+            stopScan();
+            progressBar.style.width = "70%";
+            const filename = "resume.pdf";
+            const reader = new FileReader();
+            reader.onload = () => {
+              progressBar.style.width = "80%";
+              const buffer = reader.result;
+              const blobUrl = `data:${blob.type};base64,${btoa(
+                new Uint8Array(buffer).reduce(
+                  (data, byte) => data + String.fromCharCode(byte),
+                  ""
+                )
+              )}`;
+              chrome.downloads.download(
+                {
+                  url: blobUrl,
+                  filename: filename,
+                  saveAs: true,
+                  conflictAction: "uniquify",
+                },
+                () => {
+                  progressBar.style.width = "100%";
+                  console.log("PDF download complete");
+                  setTimeout(() => {
+                    progress.style.display = "None";
+                  }, 1000);
+                  console.log("done");
+                }
+              );
+            };
+            reader.readAsArrayBuffer(blob);
+            progressBar.style.width = "0%";
+          })
+          .catch((error) => {
+            console.error("Failed to generate PDF:", error);
+          });
+      }
+    );
+  });
+}
 
 function updateUI(isSignedIn, userEmail) {
-	const extensionBody = document.getElementById('extensionBody');
-	const topRight = document.getElementById('topRight');
-	if (isSignedIn) {
-		topRight.innerHTML = `<button id="closeButton" class="mdl-button mdl-js-button mdl-button--icon">
+  const extensionBody = document.getElementById("extensionBody");
+  const topRight = document.getElementById("topRight");
+  if (isSignedIn) {
+    topRight.innerHTML = `<button id="closeButton" class="mdl-button mdl-js-button mdl-button--icon">
 		<i class="material-icons">close</i>
-		</button>`
-		console.log("signed in")
-		extensionBody.innerHTML = `
+		</button>`;
+    console.log("signed in");
+    extensionBody.innerHTML = `
 		<div class="tab-content my-3" id="myTabContent">
 			<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 				<div class="row">
@@ -159,8 +179,8 @@ function updateUI(isSignedIn, userEmail) {
 		</div>
         `;
 
-		extensionFooter = document.getElementById('extensionFooter');
-		extensionFooter.innerHTML = `
+    extensionFooter = document.getElementById("extensionFooter");
+    extensionFooter.innerHTML = `
 		<ul class="nav nav-pills nav-fill my-3" id="myTab" role="tablist">
 		<li class="nav-item" role="presentation">
 			<button id="homeButton" class="mdl-button mdl-js-button mdl-button--fab nav-link active" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
@@ -178,42 +198,43 @@ function updateUI(isSignedIn, userEmail) {
 			</button>
 		</li>
 	</ul>
-	`
-		document.getElementById('signOutButton').addEventListener('click', signOut);
-		document.getElementById('downloadButton').addEventListener('click', function () {
-			ans = downloadPdf(userEmail);
+	`;
+    document.getElementById("signOutButton").addEventListener("click", signOut);
+    document
+      .getElementById("downloadButton")
+      .addEventListener("click", function () {
+        ans = downloadPdf(userEmail);
+      });
+    // document.getElementById('viewProfileButton').addEventListener('click', function () {
+    // 	chrome.tabs.create({ url: `${BASE_URL}/profile` });
+    // });
+    // document.getElementById('settingsButton').addEventListener('click', function () {
+    // 	window.location.href = 'profile.html'; // this will change the popup view to page2.html
+    // });
+    document
+      .getElementById("viewProfileButton")
+      .addEventListener("click", function () {
+        chrome.tabs.create({ url: `${BASE_URL}/profile` });
+      });
 
-		});
-		// document.getElementById('viewProfileButton').addEventListener('click', function () {
-		// 	chrome.tabs.create({ url: `${BASE_URL}/profile` });
-		// });
-		// document.getElementById('settingsButton').addEventListener('click', function () {
-		// 	window.location.href = 'profile.html'; // this will change the popup view to page2.html
-		// });
-		document.getElementById('viewProfileButton').addEventListener('click', function () {
-			chrome.tabs.create({ url: `${BASE_URL}/profile` });
-		});
+    // document.getElementById('signOutButton').addEventListener('click', function () {
+    // 	// Add your sign-out functionality here
+    // 	signOut();
+    // });
 
-		// document.getElementById('signOutButton').addEventListener('click', function () {
-		// 	// Add your sign-out functionality here
-		// 	signOut();
-		// });
+    // document.getElementById('backButton').addEventListener('click', function () {
+    // 	console.log('back')
+    // 	window.location.href = 'popup.html';
+    // });
 
-		// document.getElementById('backButton').addEventListener('click', function () {
-		// 	console.log('back')
-		// 	window.location.href = 'popup.html';
-		// });
-
-
-		document.getElementById('closeButton').addEventListener('click', function () {
-			window.close();
-		});
-
-
-	} else {
-
-		console.log("not signed in")
-		topRight.innerHTML = `
+    document
+      .getElementById("closeButton")
+      .addEventListener("click", function () {
+        window.close();
+      });
+  } else {
+    console.log("not signed in");
+    topRight.innerHTML = `
 		<button class="gsi-material-button" id="signInButton">
 		<div class="gsi-material-button-state"></div>
 		<div class="gsi-material-button-content-wrapper">
@@ -234,8 +255,8 @@ function updateUI(isSignedIn, userEmail) {
 			<span class="visually-hidden"></span>
 		</div>
 	`;
-		const extensionBody = document.getElementById('extensionBody');
-		extensionBody.innerHTML = `
+    const extensionBody = document.getElementById("extensionBody");
+    extensionBody.innerHTML = `
 		<div class="extension-body m-4">
 			<div class="row">
 				<h6>
@@ -243,165 +264,125 @@ function updateUI(isSignedIn, userEmail) {
 				</h6>
 			</div>
 		</div>
-	`
-	const extensionFooter = document.getElementById('extensionFooter');
-	extensionFooter.innerHTML = `
+	`;
+    const extensionFooter = document.getElementById("extensionFooter");
+    extensionFooter.innerHTML = `
 	<div class="row mt-3">
 	<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="signUpButton">Sign Up</button>
 </div>
 	`;
-		document.getElementById('signInButton').addEventListener('click', signIn);
-		document.getElementById('signUpButton').addEventListener('click', signUp);
-		$("#signinLoader").hide();
-	}
+    document.getElementById("signInButton").addEventListener("click", signIn);
+    document.getElementById("signUpButton").addEventListener("click", signUp);
+    $("#signinLoader").hide();
+  }
 }
-
-
 
 function signUp() {
-	chrome.tabs.create({ url: `${BASE_URL}/newuser` });
+  chrome.tabs.create({ url: `${BASE_URL}/newuser` });
 }
 
-
 function signIn() {
-	// signOut();
-	$("#signInButton").hide();
-	$("#signinLoader").show();
-	// console.log("signing in");
-	// signOut();
-	chrome.identity.getAuthToken({ interactive: true }, function (token) {
-		console.log("token", token)
-		fetch('https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses', {
-			headers: {
-				'Authorization': 'Bearer ' + token,
-			},
-		})
-			.then(response => {
-				// console.log("got response")
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
-				}
-				return response.json();
-			})
-			.then(data => {
-				console.log("got data")
-				console.log(data);
-				userEmail = data.emailAddresses[0].value;
-				checkMyUserExists(userEmail).then((userExists) => {
-					if (userExists) {
-						chrome.storage.sync.set({ 'userEmail': userEmail });
-						updateUI(true, userEmail);
-					}
-					else {
-						signUp();
-					}
-				});
-			})
-			.catch(error => {
-				console.error('Error making request to People API:', error);
-			});
-	});
-
+  // signOut();
+  $("#signInButton").hide();
+  $("#signinLoader").show();
+  // console.log("signing in");
+  // signOut();
+  chrome.identity.getAuthToken({ interactive: true }, function (token) {
+    console.log("token", token);
+    fetch(
+      "https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses",
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
+      .then((response) => {
+        // console.log("got response")
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("got data");
+        console.log(data);
+        userEmail = data.emailAddresses[0].value;
+        checkMyUserExists(userEmail).then((userExists) => {
+          if (userExists) {
+            chrome.storage.sync.set({ userEmail: userEmail });
+            updateUI(true, userEmail);
+          } else {
+            signUp();
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Error making request to People API:", error);
+      });
+  });
 }
 
 function signOut() {
-	// chrome.storage.sync.remove('userEmail');
-	chrome.identity.getAuthToken({ interactive: false }, function (currentToken) {
-		if (!chrome.runtime.lastError) {
-			fetch('https://accounts.google.com/o/oauth2/revoke?token=' + currentToken, {
-				method: 'post',
-				mode: 'cors',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
-			}).then(function (response) {
-				chrome.identity.removeCachedAuthToken({ token: currentToken }, function () {
-					console.log('Token removed from cache.');
-				});
-				chrome.storage.sync.remove('userEmail');
-				if (response.status === 200) {
-					console.log('Token revoked successfully.');
-				} else {
-					console.log('Error revoking token:', response.statusText);
-				}
-				location.reload();
-			});
-
-		} else {
-			alert(chrome.runtime.lastError.message)
-			console.error(chrome.runtime.lastError);
-		}
-	});
+  // chrome.storage.sync.remove('userEmail');
+  chrome.identity.getAuthToken({ interactive: false }, function (currentToken) {
+    if (!chrome.runtime.lastError) {
+      fetch(
+        "https://accounts.google.com/o/oauth2/revoke?token=" + currentToken,
+        {
+          method: "post",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      ).then(function (response) {
+        chrome.identity.removeCachedAuthToken(
+          { token: currentToken },
+          function () {
+            console.log("Token removed from cache.");
+          }
+        );
+        chrome.storage.sync.remove("userEmail");
+        if (response.status === 200) {
+          console.log("Token revoked successfully.");
+        } else {
+          console.log("Error revoking token:", response.statusText);
+        }
+        location.reload();
+      });
+    } else {
+      alert(chrome.runtime.lastError.message);
+      console.error(chrome.runtime.lastError);
+    }
+  });
 }
-
 
 function checkMyUserExists(userEmail) {
-	console.log("checking if user exists");
-	const url = `${BASE_URL}/checkmyuserexists?email=${userEmail}`;
-	return fetch(url)
-		.then((response) => response.text())
-		.then((data) => {
-			console.log(data);
-			if (data == "false") {
-				console.log("user does not exist");
-				return false;
-			} else {
-				console.log("user exists");
-				return true;
-			}
-		})
-		.catch((error) => {
-			console.error('Error:', error);
-			throw error;
-		});
+  console.log("checking if user exists");
+  const url = `${BASE_URL}/checkmyuserexists?email=${userEmail}`;
+  return fetch(url)
+    .then((response) => response.text())
+    .then((data) => {
+      console.log(data);
+      if (data == "false") {
+        console.log("user does not exist");
+        return false;
+      } else {
+        console.log("user exists");
+        return true;
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      throw error;
+    });
 }
 
-
-document.addEventListener('DOMContentLoaded', function () {
-	chrome.storage.sync.get('userEmail', function (data) {
-		const userEmail = data.userEmail;
-		const isSignedIn = userEmail ? true : false;
-		updateUI(isSignedIn, userEmail);
-	});
+document.addEventListener("DOMContentLoaded", function () {
+  chrome.storage.sync.get("userEmail", function (data) {
+    const userEmail = data.userEmail;
+    const isSignedIn = userEmail ? true : false;
+    updateUI(isSignedIn, userEmail);
+  });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

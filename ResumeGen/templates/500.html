@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+
+<div style="margin: 2%" align="center">
+    <h1 style="margin: 0px;">Error</h1>
+    <h1 style="font-size: 300px; margin: 0px;" align="center">500.</h1>
+    <h2>Sorry, this one's on us. <br>We'll ask one of our devs to fix it. <br>In the
+        meantime
+        wanna
+        go
+        back the the Dashboard?</h1>
+        <button type="button" class="btn btn-primary d-flex justify-content-center align-content-between"
+            onclick="window.location.href='/profile'">
+            <span>Dashboard</span><i class="material-icons mr-1">arrow_forward</i>
+        </button>
+</div>
+
+
+{% endblock %}
